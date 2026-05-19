@@ -1,0 +1,10 @@
+{
+  "id": "appointments",
+  "description": "Booking professional appointments",
+  "params": {
+    "serviceType": { "type": "string", "required": true, "description": "Type of professional (coach, lawyer, accountant, advisor)" },
+    "location": { "type": "string", "required": false, "description": "City or 'remote' for video sessions" },
+    "preferredDate": { "type": "string", "required": false, "description": "ISO date YYYY-MM-DD" },
+    "duration": { "type": "number", "required": false, "description": "Session duration in minutes" }
+  }
+}

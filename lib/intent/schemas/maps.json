@@ -1,0 +1,8 @@
+{
+  "id": "maps",
+  "description": "Points of interest and places near destination",
+  "params": {
+    "destination": { "type": "string", "required": true, "description": "City or area to explore" },
+    "placeType": { "type": "string", "required": false, "description": "restaurant | attraction | shopping | transport | hospital" }
+  }
+}

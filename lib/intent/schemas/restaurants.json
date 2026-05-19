@@ -1,0 +1,11 @@
+{
+  "id": "restaurants",
+  "description": "Restaurant and dining discovery",
+  "params": {
+    "location": { "type": "string", "required": true, "description": "City, neighborhood, or address" },
+    "date": { "type": "string", "required": false, "description": "ISO date YYYY-MM-DD for reservation" },
+    "partySize": { "type": "number", "required": false, "description": "Number of diners" },
+    "cuisine": { "type": "string", "required": false, "description": "Type of cuisine (italian, japanese, etc.)" },
+    "priceRange": { "type": "string", "required": false, "description": "budget | mid-range | fine-dining" }
+  }
+}

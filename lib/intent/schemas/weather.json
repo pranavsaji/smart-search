@@ -1,0 +1,9 @@
+{
+  "id": "weather",
+  "description": "Weather forecast for a destination",
+  "params": {
+    "destination": { "type": "string", "required": true, "description": "City or region" },
+    "startDate": { "type": "string", "required": false, "description": "ISO date YYYY-MM-DD" },
+    "endDate": { "type": "string", "required": false, "description": "ISO date YYYY-MM-DD" }
+  }
+}

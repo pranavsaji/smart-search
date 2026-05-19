@@ -1,0 +1,10 @@
+{
+  "id": "digital_services",
+  "description": "Digital and online services",
+  "params": {
+    "serviceType": { "type": "string", "required": true, "description": "Type of digital service (developer, designer, copywriter, domain)" },
+    "description": { "type": "string", "required": false, "description": "Project or service description" },
+    "budget": { "type": "string", "required": false, "description": "Budget range (budget | mid-range | premium)" },
+    "timeline": { "type": "string", "required": false, "description": "Delivery timeline (asap | 1-week | 1-month | flexible)" }
+  }
+}

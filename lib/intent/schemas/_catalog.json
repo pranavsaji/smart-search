@@ -1,0 +1,16 @@
+{
+  "services": [
+    { "id": "flights", "description": "Flight search and booking", "triggers": ["fly", "flight", "airport", "airline"] },
+    { "id": "stays", "description": "Hotel and accommodation booking", "triggers": ["hotel", "stay", "resort", "airbnb", "lodge"] },
+    { "id": "cars", "description": "Car rental or road trip", "triggers": ["car", "drive", "driving", "road trip", "rental", "hire", "rent a car", "car hire", "pickup truck", "suv rental"] },
+    { "id": "restaurants", "description": "Restaurant and dining discovery", "triggers": ["eat", "restaurant", "food", "dinner", "lunch"] },
+    { "id": "experiences", "description": "Tours, activities, and experiences", "triggers": ["tour", "activity", "experience", "things to do", "attraction"] },
+    { "id": "products", "description": "Product and shopping search", "triggers": ["buy", "shop", "order", "purchase", "shoes", "clothes"] },
+    { "id": "weather", "description": "Weather forecast", "triggers": ["weather", "temperature", "forecast", "climate"] },
+    { "id": "maps", "description": "Points of interest and places", "triggers": ["map", "places", "nearby", "attractions", "explore"] },
+    { "id": "appointments", "description": "Booking professional appointments", "triggers": ["appointment", "consult", "schedule", "meeting", "coach", "lawyer"] },
+    { "id": "home_services", "description": "Home maintenance and services", "triggers": ["plumber", "electrician", "cleaner", "handyman", "repair"] },
+    { "id": "health_services", "description": "Health and medical services", "triggers": ["doctor", "physio", "dentist", "therapist", "health"] },
+    { "id": "digital_services", "description": "Digital and online services", "triggers": ["software", "saas", "subscription", "digital", "online service"] }
+  ]
+}

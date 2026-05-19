@@ -1,0 +1,10 @@
+{
+  "id": "cars",
+  "description": "Car rental search",
+  "params": {
+    "pickupLocation": { "type": "string", "required": true, "description": "City or airport for pickup" },
+    "pickupDate": { "type": "string", "required": true, "description": "ISO date YYYY-MM-DD" },
+    "dropoffDate": { "type": "string", "required": true, "description": "ISO date YYYY-MM-DD" },
+    "carType": { "type": "string", "required": false, "description": "economy | compact | suv | luxury | van" }
+  }
+}

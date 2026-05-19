@@ -1,0 +1,36 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/expire-gifts",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/expire-offers",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/proactive",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/agent-tasks",
+      "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/cron/watchlist",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/life-events",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/analytics-rollup",
+      "schedule": "30 0 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-insights",
+      "schedule": "0 8 * * 1"
+    }
+  ]
+}

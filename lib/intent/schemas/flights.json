@@ -1,0 +1,13 @@
+{
+  "id": "flights",
+  "description": "Flight search and booking",
+  "params": {
+    "origin": { "type": "string", "required": true, "description": "IATA city code or city name for departure" },
+    "destination": { "type": "string", "required": true, "description": "IATA city code or city name for arrival" },
+    "departureDate": { "type": "string", "required": true, "description": "ISO date YYYY-MM-DD" },
+    "returnDate": { "type": "string", "required": false, "description": "ISO date YYYY-MM-DD for return leg (omit for one-way)" },
+    "passengers": { "type": "number", "required": false, "description": "Number of passengers (default 1)" },
+    "cabinClass": { "type": "string", "required": false, "description": "economy | premium_economy | business | first" }
+  },
+  "requiresAtLeastOne": ["origin", "departureDate"]
+}

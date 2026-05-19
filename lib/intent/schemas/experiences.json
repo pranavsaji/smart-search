@@ -1,0 +1,10 @@
+{
+  "id": "experiences",
+  "description": "Tours, activities, and experiences",
+  "params": {
+    "destination": { "type": "string", "required": true, "description": "City or region for the experience" },
+    "date": { "type": "string", "required": false, "description": "ISO date YYYY-MM-DD" },
+    "category": { "type": "string", "required": false, "description": "tours | outdoor | cultural | food | nightlife | sports" },
+    "groupSize": { "type": "number", "required": false, "description": "Number of participants" }
+  }
+}

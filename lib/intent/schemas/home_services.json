@@ -1,0 +1,10 @@
+{
+  "id": "home_services",
+  "description": "Home maintenance and services",
+  "params": {
+    "serviceType": { "type": "string", "required": true, "description": "Type of service (plumber, electrician, cleaner, handyman)" },
+    "location": { "type": "string", "required": true, "description": "City or postcode" },
+    "urgency": { "type": "string", "required": false, "description": "today | this-week | flexible" },
+    "description": { "type": "string", "required": false, "description": "Brief description of the job" }
+  }
+}

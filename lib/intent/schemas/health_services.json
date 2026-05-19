@@ -1,0 +1,10 @@
+{
+  "id": "health_services",
+  "description": "Health and medical services",
+  "params": {
+    "specialty": { "type": "string", "required": true, "description": "Type of practitioner (GP, dentist, therapist, physio)" },
+    "location": { "type": "string", "required": false, "description": "City or 'online' for video consultations" },
+    "preferredDate": { "type": "string", "required": false, "description": "ISO date YYYY-MM-DD" },
+    "gender": { "type": "string", "required": false, "description": "Preferred practitioner gender (male | female | any)" }
+  }
+}

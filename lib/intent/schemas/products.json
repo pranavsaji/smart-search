@@ -1,0 +1,11 @@
+{
+  "id": "products",
+  "description": "Product and shopping search",
+  "params": {
+    "query": { "type": "string", "required": true, "description": "Product search query" },
+    "category": { "type": "string", "required": false, "description": "Product category (electronics, fashion, etc.)" },
+    "maxPrice": { "type": "number", "required": false, "description": "Maximum price in local currency" },
+    "brand": { "type": "string", "required": false, "description": "Specific brand filter" },
+    "currency": { "type": "string", "required": false, "description": "Currency code (GBP, USD, EUR)" }
+  }
+}

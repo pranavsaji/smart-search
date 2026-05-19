@@ -1,0 +1,12 @@
+{
+  "id": "stays",
+  "description": "Hotel and accommodation booking",
+  "params": {
+    "destination": { "type": "string", "required": true, "description": "City or area to stay" },
+    "checkIn": { "type": "string", "required": true, "description": "ISO date YYYY-MM-DD" },
+    "checkOut": { "type": "string", "required": true, "description": "ISO date YYYY-MM-DD" },
+    "guests": { "type": "number", "required": false, "description": "Number of guests" },
+    "rooms": { "type": "number", "required": false, "description": "Number of rooms" },
+    "propertyType": { "type": "string", "required": false, "description": "hotel | apartment | villa | hostel" }
+  }
+}
