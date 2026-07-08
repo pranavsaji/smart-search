@@ -18,7 +18,7 @@ export default function NotFound() {
           <Link href="/">
             <Button className="gap-2">
               <Home className="h-3.5 w-3.5" />
-              Back to iAM
+              Back to Smart Search
             </Button>
           </Link>
         </div>

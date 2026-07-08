@@ -56,7 +56,7 @@ jest.mock('@/lib/payments/stripe', () => ({
 
 jest.mock('@/lib/config/env', () => ({
   env: {
-    IAM_PRO_PRICE_ID: () => 'price_pro_test',
+    SMARTSEARCH_PRO_PRICE_ID: () => 'price_pro_test',
     VENDOR_GROWTH_PRICE_ID: () => 'price_growth_test',
     VENDOR_ENTERPRISE_PRICE_ID: () => 'price_enterprise_test',
   },
@@ -228,7 +228,7 @@ describe('createProSubscription', () => {
     })
   })
 
-  it('creates Stripe subscription with IAM_PRO_PRICE_ID', async () => {
+  it('creates Stripe subscription with SMARTSEARCH_PRO_PRICE_ID', async () => {
     await createProSubscription({ userId: 'user-1', stripeCustomerId: 'cus_1', paymentMethodId: 'pm_1' })
     expect(mockSubscriptionsCreate).toHaveBeenCalledWith(expect.objectContaining({
       customer: 'cus_1',
@@ -249,15 +249,15 @@ describe('createProSubscription', () => {
     expect(mockRedisDel).toHaveBeenCalledWith('subscription:user:user-1')
   })
 
-  it('throws when IAM_PRO_PRICE_ID not configured (empty string)', async () => {
+  it('throws when SMARTSEARCH_PRO_PRICE_ID not configured (empty string)', async () => {
     // Simulate unconfigured price ID by temporarily overriding the mock
     const envModule = await import('@/lib/config/env')
-    const original = envModule.env.IAM_PRO_PRICE_ID
-    envModule.env.IAM_PRO_PRICE_ID = () => ''
+    const original = envModule.env.SMARTSEARCH_PRO_PRICE_ID
+    envModule.env.SMARTSEARCH_PRO_PRICE_ID = () => ''
     await expect(
       createProSubscription({ userId: 'user-1', stripeCustomerId: 'cus_1', paymentMethodId: 'pm_1' })
-    ).rejects.toThrow('IAM_PRO_PRICE_ID not configured')
-    envModule.env.IAM_PRO_PRICE_ID = original
+    ).rejects.toThrow('SMARTSEARCH_PRO_PRICE_ID not configured')
+    envModule.env.SMARTSEARCH_PRO_PRICE_ID = original
   })
 })
 

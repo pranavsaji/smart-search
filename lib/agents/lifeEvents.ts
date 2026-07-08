@@ -130,7 +130,7 @@ class MovingDetector implements LifeEventDetector {
       confidence: Math.min(1, confidence),
       signals,
       title: 'Moving somewhere new?',
-      body: "Looks like a move is on the cards. Want iAM to line up movers, utilities, and a cleaner?",
+      body: "Looks like a move is on the cards. Want Smart Search to line up movers, utilities, and a cleaner?",
       suggestedIntents: [
         'Find and book movers for next month',
         'Set up broadband and utilities at my new place',
@@ -149,7 +149,7 @@ export const DETECTORS: LifeEventDetector[] = [
     ['baby', 'crib', 'stroller', 'nursery', 'pram', 'pediatric', 'paediatric', 'maternity'],
     0.3,
     'Congratulations may be in order!',
-    'We spotted baby-related activity. iAM can help with the nursery, health checks, and more.',
+    'We spotted baby-related activity. Smart Search can help with the nursery, health checks, and more.',
     ['Find a paediatrician near me', 'Shop nursery essentials', 'Book a newborn photoshoot'],
   ),
   new KeywordDetector(
@@ -157,7 +157,7 @@ export const DETECTORS: LifeEventDetector[] = [
     ['wedding', 'venue', 'catering', 'engagement', 'florist', 'bridal', 'honeymoon'],
     0.3,
     'Planning a wedding?',
-    'iAM can help assemble your wedding — venue, catering, photography, and the honeymoon.',
+    'Smart Search can help assemble your wedding — venue, catering, photography, and the honeymoon.',
     ['Find wedding venues for next summer', 'Book a wedding photographer', 'Plan a honeymoon to the Maldives'],
   ),
   new KeywordDetector(
@@ -165,7 +165,7 @@ export const DETECTORS: LifeEventDetector[] = [
     ['resume', 'cv', 'linkedin', 'interview', 'onboarding', 'office relocation', 'work visa'],
     0.3,
     'New job on the horizon?',
-    'Starting somewhere new? iAM can sort your commute, wardrobe, and workspace.',
+    'Starting somewhere new? Smart Search can sort your commute, wardrobe, and workspace.',
     ['Find a tailor for work clothes', 'Set up a home office', 'Plan my commute options'],
   ),
 ]
@@ -179,7 +179,7 @@ export function detectTravelSeason(snapshot: ActivitySnapshot): DetectionResult 
     confidence: Math.min(1, travel * 0.25),
     signals: [{ source: 'booking_history', description: `${travel} travel bookings`, weight: Math.min(1, travel * 0.25) }],
     title: "You're in travel mode ✈️",
-    body: 'Lots of trips lately — want iAM to bundle airport transfers, insurance, and lounge access?',
+    body: 'Lots of trips lately — want Smart Search to bundle airport transfers, insurance, and lounge access?',
     suggestedIntents: ['Add travel insurance for my upcoming trips', 'Book airport lounge access', 'Arrange airport transfers'],
   }
 }

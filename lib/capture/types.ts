@@ -48,6 +48,6 @@ export interface CaptureRequest {
 
 export interface CaptureResponse {
   captureId: string
-  stageUrl: string          // redirect URL to open in iAM
+  stageUrl: string          // redirect URL to open in Smart Search
   intentSummary?: string    // short description of what was understood
 }

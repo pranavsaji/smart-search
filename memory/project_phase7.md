@@ -5,9 +5,9 @@ metadata:
   type: project
 ---
 
-Phase 7 implemented 2026-05-26. Direct Commerce: vendors sell natively inside iAM with no deeplinks.
+Phase 7 implemented 2026-05-26. Direct Commerce: vendors sell natively inside Smart Search with no deeplinks.
 
-**Why:** Replace Rainforest/Amazon proxy (isBookable: false) with first-party catalog (isBookable: true). Full checkout, stock management, and order tracking inside iAM.
+**Why:** Replace Rainforest/Amazon proxy (isBookable: false) with first-party catalog (isBookable: true). Full checkout, stock management, and order tracking inside Smart Search.
 
 **Key files built:**
 - `lib/services/catalog/adapter.ts` — CatalogAdapter (id: `catalog_products`, type: `products`)

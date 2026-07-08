@@ -14,7 +14,7 @@ export function getPhaseBPrompt(phaseA: PhaseAResult, previousIntent?: ParsedInt
     ? `\nThis is an UPDATE to an existing request. Previous intent: ${JSON.stringify({ destination: previousIntent.destination, dates: previousIntent.dates, activityTypes: previousIntent.activityTypes })}\nOnly change what is explicitly modified in the new message.`
     : ''
 
-  return `You are Phase B of iAM's intent pipeline. Phase A identified these services: ${phaseA.services.join(', ')}.
+  return `You are Phase B of Smart Search's intent pipeline. Phase A identified these services: ${phaseA.services.join(', ')}.
 
 Today: ${today}. Default dates if unspecified: start=${defaultStart}, end=${defaultEnd}.
 Phase A extracted (use for service/location hints only — DO NOT trust Phase A dates): ${JSON.stringify(phaseA.extracted)}

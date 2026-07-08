@@ -12,7 +12,7 @@ export default async function StyleSettingsPage() {
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight">Style Profile</h1>
           <p className="mt-2 text-muted-foreground">
-            iAM uses your style profile to personalise shopping recommendations and product rankings.
+            Smart Search uses your style profile to personalise shopping recommendations and product rankings.
           </p>
         </div>
         <StyleProfileSettings />

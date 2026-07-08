@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "iAM — Open in iAM",
+  "name": "Smart Search",
   "version": "1.0.0",
-  "description": "Capture any product, hotel, or flight page and open it directly in iAM.",
+  "description": "Capture any product, hotel, or flight page and open it directly in Smart Search.",
   "permissions": ["activeTab", "storage", "cookies"],
   "host_permissions": ["<all_urls>"],
   "background": {

@@ -43,7 +43,7 @@ jest.mock('@/lib/auth', () => ({
 }))
 
 jest.mock('@/lib/ecosystem/keys', () => ({
-  generateApiKey: jest.fn(() => ({ raw: 'iam_rawkey1234567890ab', hash: 'hashofkey', prefix: 'iam_rawkey1' })),
+  generateApiKey: jest.fn(() => ({ raw: 'ss_rawkey1234567890ab', hash: 'hashofkey', prefix: 'ss_rawkey1' })),
   generateKeyId: jest.fn(() => 'keyid-abc-123'),
   tierMonthlyLimit: jest.fn((tier: string) => tier === 'free' ? 1000 : 10000),
 }))
@@ -182,9 +182,9 @@ describe('POST /api/ecosystem/keys', () => {
     const res = await keysPOST(req)
     expect(res.status).toBe(201)
     const body = await res.json()
-    expect(body.rawKey).toBe('iam_rawkey1234567890ab')
+    expect(body.rawKey).toBe('ss_rawkey1234567890ab')
     expect(body.keyHash).toBeUndefined() // hash stripped
-    expect(body.prefix).toBe('iam_rawkey1')
+    expect(body.prefix).toBe('ss_rawkey1')
   })
 
   it('returns 401 when not authenticated', async () => {
@@ -212,7 +212,7 @@ describe('GET /api/ecosystem/keys', () => {
     mockSession()
     mockFindOne.mockResolvedValue({ developerId: 'dev-1', tier: 'free' })
     const keys = [
-      { keyId: 'k1', developerId: 'dev-1', name: 'Prod', keyHash: 'secrethash', prefix: 'iam_abc1' },
+      { keyId: 'k1', developerId: 'dev-1', name: 'Prod', keyHash: 'secrethash', prefix: 'ss_abc1' },
     ]
     mockFind.mockReturnValue(makeCursor(keys))
 
@@ -222,7 +222,7 @@ describe('GET /api/ecosystem/keys', () => {
     const body = await res.json()
     expect(Array.isArray(body)).toBe(true)
     expect(body[0].keyHash).toBeUndefined()
-    expect(body[0].prefix).toBe('iam_abc1')
+    expect(body[0].prefix).toBe('ss_abc1')
   })
 })
 
@@ -331,7 +331,7 @@ describe('POST /api/ecosystem/adapters', () => {
 
   const validBody = {
     name: 'Acme Hotels',
-    description: 'A hotel search and booking adapter for iAM',
+    description: 'A hotel search and booking adapter for Smart Search',
     category: 'travel',
     endpoints: {
       search: 'https://api.acme.com/search',

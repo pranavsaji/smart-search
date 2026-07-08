@@ -2,7 +2,7 @@
 //
 // Aggregates a user's recent activity into InsightStats, turns it into a
 // narrative (LLM or mock), and persists one idempotent InsightReport per user
-// per period. Powers the weekly "Your iAM Insights" email + in-app panel.
+// per period. Powers the weekly "Your Smart Search Insights" email + in-app panel.
 //
 // Stats are reduced in JS from fetched documents (rather than aggregation
 // pipelines) so they stay trivially unit-testable and tolerant of the varied

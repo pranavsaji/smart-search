@@ -76,7 +76,7 @@ describe('processCapturedPage()', () => {
     })
 
     // Encoded URL should be decodable back to the intent
-    const url = new URL(`https://iam.app${result.stageUrl}`)
+    const url = new URL(`https://smartsearch.app${result.stageUrl}`)
     const decoded = decodeURIComponent(url.searchParams.get('intent') ?? '')
     expect(decoded).toContain('London')
     expect(decoded).toContain('Paris')

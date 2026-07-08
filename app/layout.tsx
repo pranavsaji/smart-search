@@ -17,11 +17,11 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-  title: { default: 'iAM — Intent Operating System', template: '%s · iAM' },
+  title: { default: 'Smart Search — Intent Operating System', template: '%s · Smart Search' },
   description: 'One-prompt orchestration. Travel, shopping, dining, and more.',
-  keywords: ['iAM', 'intent', 'ai', 'travel', 'shopping', 'booking'],
+  keywords: ['Smart Search', 'intent', 'ai', 'travel', 'shopping', 'booking'],
   openGraph: {
-    title: 'iAM — Intent Operating System',
+    title: 'Smart Search — Intent Operating System',
     description: 'One-prompt orchestration. Travel, shopping, dining, and more.',
     type: 'website',
   },

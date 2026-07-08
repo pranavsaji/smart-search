@@ -4,7 +4,7 @@ import { Bot } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { AgentsClient } from '@/components/agents/AgentsClient'
 
-export const metadata = { title: 'AI Agents · iAM' }
+export const metadata = { title: 'AI Agents · Smart Search' }
 
 export default async function AgentsPage() {
   const session = await auth().catch(() => null)
@@ -12,7 +12,7 @@ export default async function AgentsPage() {
   const user = session.user as { id?: string; handle?: string; name?: string }
 
   return (
-    <AppShell user={user} title="AI Agents" subtitle="Set goals — iAM works on them over time" icon={Bot}>
+    <AppShell user={user} title="AI Agents" subtitle="Set goals — Smart Search works on them over time" icon={Bot}>
       <AgentsClient userId={user.id ?? ''} />
     </AppShell>
   )

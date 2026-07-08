@@ -208,7 +208,7 @@ export function StageShell({ stageId, parsedIntent, stageContext, userId, pendin
                   <Link2 className="h-4 w-4 shrink-0 text-amber-400/70" />
                   <span className="text-sm text-foreground/70">
                     <span className="font-medium text-foreground">@{handle.replace('@', '')}</span>
-                    {' '}isn&apos;t on iAM yet — share their invite
+                    {' '}isn&apos;t on Smart Search yet — share their invite
                   </span>
                 </div>
                 <button

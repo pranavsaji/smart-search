@@ -25,7 +25,7 @@ async function callEndpoint<T>(
   if (auth.type === 'bearer' && auth.token) {
     headers['Authorization'] = `Bearer ${auth.token}`
   } else if (auth.type === 'hmac' && auth.secret) {
-    headers['X-iAM-Signature'] = signRequest(body, auth.secret)
+    headers['X-Smart Search-Signature'] = signRequest(body, auth.secret)
   }
 
   const res = await fetch(url, {

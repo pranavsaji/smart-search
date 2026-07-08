@@ -4,7 +4,7 @@ import { Wallet } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { WalletClient } from '@/components/wallet/WalletClient'
 
-export const metadata = { title: 'Wallet & Credits · iAM' }
+export const metadata = { title: 'Wallet & Credits · Smart Search' }
 
 export default async function WalletPage() {
   const session = await auth().catch(() => null)

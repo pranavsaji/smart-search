@@ -4,7 +4,7 @@ import { BarChart3 } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { AnalyticsClient } from '@/components/analytics/AnalyticsClient'
 
-export const metadata = { title: 'Vendor Analytics · iAM' }
+export const metadata = { title: 'Vendor Analytics · Smart Search' }
 
 export default async function AnalyticsPage() {
   const session = await auth().catch(() => null)

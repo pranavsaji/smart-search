@@ -168,13 +168,13 @@ describe('GET /api/credits', () => {
   it('returns credit balance, history, and referral code', async () => {
     mockGetCreditBalance.mockResolvedValue(750)
     mockGetCreditHistory.mockResolvedValue([])
-    mockGenerateReferralCode.mockResolvedValue('IAM-TESTCODE')
+    mockGenerateReferralCode.mockResolvedValue('SS-TESTCODE')
 
     const res = await creditsGet(makeReq('GET') as never)
     expect(res.status).toBe(200)
     const body = await res.json() as { balance: number; referralCode: string }
     expect(body.balance).toBe(750)
-    expect(body.referralCode).toBe('IAM-TESTCODE')
+    expect(body.referralCode).toBe('SS-TESTCODE')
   })
 
   it('returns 401 when not authenticated', async () => {
@@ -428,7 +428,7 @@ describe('POST /api/subscriptions', () => {
   })
 
   it('returns 503 when price ID not configured', async () => {
-    mockCreateProSubscription.mockRejectedValue(new Error('IAM_PRO_PRICE_ID not configured'))
+    mockCreateProSubscription.mockRejectedValue(new Error('SMARTSEARCH_PRO_PRICE_ID not configured'))
     const res = await subsPost(makeReq('POST', {
       stripeCustomerId: 'cus_1', paymentMethodId: 'pm_1',
     }) as never)

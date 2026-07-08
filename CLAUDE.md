@@ -1,4 +1,4 @@
-# iAM — CLAUDE.md
+# Smart Search — CLAUDE.md
 
 **North-star invariant:** Payment can shift position within qualified results. It cannot create relevance. `gate.ts` takes no bid parameter — enforced architecturally.
 
@@ -39,7 +39,7 @@ New integration never touches assembler, SSE, checkout, or ranking:
 
 ### Checkout & Payments
 - `lib/checkout/split.ts` — idempotency via MongoDB unique index on `processedSplits.paymentIntentId`; DuplicateKeyError (11000) = safe 200; cancels PaymentIntent if all live bookings fail
-- Duffel: iAM pays from Duffel balance — Stripe Connect is **not** used for Duffel items
+- Duffel: Smart Search pays from Duffel balance — Stripe Connect is **not** used for Duffel items
 - Gift SCA: SetupIntent `usage: 'off_session'`; EU users need 3DS handling at redemption
 - Stripe: both `payment_intent.payment_failed` and `payment_intent.canceled` mark order failed
 
@@ -105,7 +105,7 @@ Phase A (Groq 8B / Claude Haiku): service identification → Phase B (Groq 70B /
 
 ## Ecosystem SDK (Phase 8)
 
-- API keys: `iam_` prefix + 32 random bytes; SHA-256 hash stored only — raw key returned once at creation
+- API keys: `ss_` prefix + 32 random bytes; SHA-256 hash stored only — raw key returned once at creation
 - OAuth tokens: SHA-256 hashes only in DB; PKCE S256 constant-time verification before token issuance
 - Webhook secrets: shown once at creation, never re-returned
 - Enterprise tier bypasses Redis rate limit check
@@ -160,7 +160,7 @@ All adapters fall back to mock data when their key is absent.
 - Wallet: `lib/wallet/wallet.ts` — stored-value per user; top-up via Stripe PaymentIntent; atomic `$inc $gte` debit (INSUFFICIENT_BALANCE); idempotent credit via Redis key on webhook
 - Credits: `lib/wallet/credits.ts` — 1% cashback on orders; redeem capped at balance; referral bonuses (both parties); vendor-sponsored credits; idempotency via `referenceId+type` unique check
 - Split Payments: `lib/wallet/splitPayments.ts` — arbitrary ratio splits; ratios must sum to 100; 48h TTL expiry; wallet debit or card; partial/completed status computed from participant statuses
-- Subscriptions: `lib/wallet/subscriptions.ts` — iAM Pro (£9.99/mo, `IAM_PRO_PRICE_ID`); vendor tiers basic/growth/enterprise (10%/3%/1% fee); Stripe webhook handlers for subscription lifecycle
+- Subscriptions: `lib/wallet/subscriptions.ts` — Smart Search Pro (£9.99/mo, `SMARTSEARCH_PRO_PRICE_ID`); vendor tiers basic/growth/enterprise (10%/3%/1% fee); Stripe webhook handlers for subscription lifecycle
 
 **Key invariants:**
 - Wallet top-up is two-phase: PaymentIntent → webhook credits balance. Redis key prevents double-credit on replay.
@@ -170,7 +170,7 @@ All adapters fall back to mock data when their key is absent.
 
 **New Redis keys:** `wallet:balance:{userId}` (5min), `credits:balance:{userId}` (5min), `subscription:user:{userId}` (1h), `subscription:vendor:{vendorId}` (1h), `referral:{code}` (7d), `wallet:topup:{piId}` (idempotency)
 
-**New env vars:** `IAM_PRO_PRICE_ID`, `VENDOR_GROWTH_PRICE_ID`, `VENDOR_ENTERPRISE_PRICE_ID`
+**New env vars:** `SMARTSEARCH_PRO_PRICE_ID`, `VENDOR_GROWTH_PRICE_ID`, `VENDOR_ENTERPRISE_PRICE_ID`
 
 **New API routes:** `GET/POST /api/wallet`, `POST /api/wallet/topup`, `GET /api/credits`, `POST /api/credits/redeem`, `GET/POST /api/splits`, `GET/PATCH /api/splits/[splitId]`, `GET/POST /api/subscriptions`, `GET/POST /api/subscriptions/vendor`
 

@@ -42,7 +42,7 @@ export const POST = withApiHandler(async (req: NextRequest) => {
   const userId = session?.user?.id
 
   if (!userId && !body.sessionToken) {
-    throw new BadRequestError('Authentication required — please sign in to iAM')
+    throw new BadRequestError('Authentication required — please sign in to Smart Search')
   }
 
   const result = await processCapturedPage(body, userId)

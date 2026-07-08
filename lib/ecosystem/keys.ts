@@ -2,13 +2,13 @@ import crypto from 'crypto'
 import { nanoid } from 'nanoid'
 import type { DeveloperTier } from './types'
 
-const KEY_PREFIX = 'iam_'
+const KEY_PREFIX = 'ss_'
 
 export function generateApiKey(): { raw: string; hash: string; prefix: string } {
   const random = crypto.randomBytes(32).toString('base64url')
   const raw = `${KEY_PREFIX}${random}`
   const hash = hashKey(raw)
-  const prefix = raw.slice(0, 12)  // 'iam_' + 8 chars
+  const prefix = raw.slice(0, 12)  // 'ss_' + 9 chars
   return { raw, hash, prefix }
 }
 

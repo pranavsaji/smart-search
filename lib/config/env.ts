@@ -23,7 +23,7 @@ export const env = {
   GROQ_MODEL:       () => process.env.GROQ_MODEL ?? 'meta-llama/llama-4-maverick-17b-128e-instruct',
   GROQ_MODEL_LIGHT: () => process.env.GROQ_MODEL_LIGHT ?? 'meta-llama/llama-4-scout-17b-16e-instruct',
   // Phase 10 — Financial Layer (Stripe Billing price IDs)
-  IAM_PRO_PRICE_ID:            () => process.env.IAM_PRO_PRICE_ID ?? '',
+  SMARTSEARCH_PRO_PRICE_ID:            () => process.env.SMARTSEARCH_PRO_PRICE_ID ?? '',
   VENDOR_GROWTH_PRICE_ID:      () => process.env.VENDOR_GROWTH_PRICE_ID ?? '',
   VENDOR_ENTERPRISE_PRICE_ID:  () => process.env.VENDOR_ENTERPRISE_PRICE_ID ?? '',
 }

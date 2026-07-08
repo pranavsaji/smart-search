@@ -97,8 +97,8 @@ export const VENDOR_TIER_FEE: Record<VendorTier, number> = {
   enterprise: 1,
 }
 
-// iAM Pro monthly price in pence
-export const IAM_PRO_PRICE_CENTS = 999  // £9.99
+// Smart Search Pro monthly price in pence
+export const SMARTSEARCH_PRO_PRICE_CENTS = 999  // £9.99
 
 // Cashback rate: 1% of every transaction
 export const CASHBACK_RATE_PERCENT = 1

@@ -148,7 +148,7 @@ export default function GeniePage() {
       <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r border-border bg-card">
         <div className="p-4 border-b border-border flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-4 w-4" /> Back to iAM
+            <ArrowLeft className="h-4 w-4" /> Back to Smart Search
           </Link>
           <button
             onClick={() => setMessages([{

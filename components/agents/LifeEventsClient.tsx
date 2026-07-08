@@ -80,7 +80,7 @@ export function LifeEventsClient({ userId }: { userId: string }) {
             <ShieldCheck className="mt-0.5 h-5 w-5 text-primary" />
             <div>
               <p className="text-sm font-semibold">Life-event detection</p>
-              <p className="text-xs text-muted-foreground">Off by default. Opt in and iAM will spot moments like a move or a new job from your activity — privately.</p>
+              <p className="text-xs text-muted-foreground">Off by default. Opt in and Smart Search will spot moments like a move or a new job from your activity — privately.</p>
             </div>
           </div>
           <button
@@ -121,7 +121,7 @@ export function LifeEventsClient({ userId }: { userId: string }) {
       {!prefs?.enabled ? null : !events ? (
         <div className="h-24 animate-pulse rounded-xl bg-secondary/50" />
       ) : events.length === 0 ? (
-        <EmptyState icon={Sparkle} title="No life events detected yet" hint="Keep using iAM — we'll surface relevant moments here." />
+        <EmptyState icon={Sparkle} title="No life events detected yet" hint="Keep using Smart Search — we'll surface relevant moments here." />
       ) : (
         <div className="space-y-3">
           {events.map(e => (

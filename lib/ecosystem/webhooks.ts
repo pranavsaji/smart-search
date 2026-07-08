@@ -74,8 +74,8 @@ async function deliverWithRetry(sub: WebhookSubscription, body: string, attempt 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-iAM-Signature': sig,
-        'X-iAM-Event': body,
+        'X-Smart Search-Signature': sig,
+        'X-Smart Search-Event': body,
       },
       body,
       signal: AbortSignal.timeout(10_000),

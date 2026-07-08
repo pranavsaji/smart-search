@@ -11,6 +11,6 @@ export function getPinecone(): Pinecone {
   return _client
 }
 
-export const INDEX_NAME = process.env.PINECONE_INDEX ?? 'iam-user-memory'
+export const INDEX_NAME = process.env.PINECONE_INDEX ?? 'smartsearch-user-memory'
 export const EMBED_MODEL = 'multilingual-e5-large'
 export const EMBED_DIMS = 1024

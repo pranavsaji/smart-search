@@ -44,7 +44,7 @@ interface IntentInputProps {
 }
 
 interface ClarificationState {
-  question: string       // what iAM is asking
+  question: string       // what Smart Search is asking
   previousPrompt: string // the user's original message
 }
 
@@ -331,7 +331,7 @@ export function IntentInput({ userId, handle, className, examples }: IntentInput
             <Sparkles className="h-3 w-3 text-primary" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-medium text-primary mb-0.5">iAM needs one more thing</p>
+            <p className="text-xs font-medium text-primary mb-0.5">Smart Search needs one more thing</p>
             <p className="text-sm text-foreground/90">{clarification.question}</p>
           </div>
           <button

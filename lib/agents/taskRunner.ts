@@ -250,7 +250,7 @@ async function notifyTerminal(
   await Promise.allSettled([
     notifyAgentTaskUpdate(task.userId, { taskId: task.taskId, status, message, result }),
     sendPushToUser(task.userId, {
-      title: 'iAM Agent',
+      title: 'Smart Search Agent',
       body: failureReason ? `${message} — ${failureReason}` : message,
       data: { type: 'agent_task', taskId: task.taskId, status },
     }),

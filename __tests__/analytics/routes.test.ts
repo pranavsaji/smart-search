@@ -70,7 +70,7 @@ const p = <T>(v: T) => Promise.resolve(v)
 beforeEach(() => {
   jest.clearAllMocks()
   mockRequireUserId.mockResolvedValue('user-1')
-  mockAuth.mockResolvedValue({ user: { id: 'user-1', email: 'admin@iam.app' } })
+  mockAuth.mockResolvedValue({ user: { id: 'user-1', email: 'admin@smartsearch.app' } })
 })
 
 // ─── /api/analytics ────────────────────────────────────────────────────────────
@@ -154,7 +154,7 @@ describe('/api/experiments', () => {
   })
 
   it('POST creates for an admin', async () => {
-    process.env.ADMIN_EMAILS = 'admin@iam.app'
+    process.env.ADMIN_EMAILS = 'admin@smartsearch.app'
     mockCreateExperiment.mockResolvedValue({ key: 'e1' })
     const res = await expPOST(req('http://x/api/experiments', 'POST', {
       key: 'e1', name: 'Exp', variants: [{ name: 'a', allocation: 0.5 }, { name: 'b', allocation: 0.5 }],

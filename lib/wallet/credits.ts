@@ -102,7 +102,7 @@ export async function generateReferralCode(userId: string): Promise<string> {
   const existing = await db.collection(COLLECTIONS.referralCodes).findOne({ userId })
   if (existing) return existing.code as string
 
-  const code = `IAM-${nanoid(8).toUpperCase()}`
+  const code = `SS-${nanoid(8).toUpperCase()}`
   await db.collection(COLLECTIONS.referralCodes).insertOne({
     _id: new ObjectId(),
     code,

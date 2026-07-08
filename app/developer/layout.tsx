@@ -19,7 +19,7 @@ export default async function DeveloperLayout({ children }: { children: React.Re
       <header className="border-b border-border px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">← iAM</Link>
+            <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">← Smart Search</Link>
             <span className="text-muted-foreground">/</span>
             <span className="font-semibold">Developer Platform</span>
           </div>

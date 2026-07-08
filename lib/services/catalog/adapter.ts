@@ -16,7 +16,7 @@ import type { CatalogBookingPayload, Product } from './types'
 export class CatalogAdapter extends AbstractServiceAdapter {
   readonly id = 'catalog_products'
   readonly type = 'products' as const
-  readonly displayName = 'iAM Marketplace'
+  readonly displayName = 'Smart Search Marketplace'
   readonly iconName = 'Store'
   readonly cacheTTL = CACHE_TTL.CATALOG
 
@@ -138,7 +138,7 @@ function productToCard(p: Product): ServiceCard {
       displayText: formatPrice(p.price, p.currency),
     },
     metadata: {
-      retailer: 'iAM Marketplace',
+      retailer: 'Smart Search Marketplace',
       rating: 0,
       reviewCount: 0,
       inStock: p.stock > 0,
@@ -231,7 +231,7 @@ function mockCatalogCards(ctx: SearchContext): ServiceCard[] {
         displayText: isPremium ? '£249.99' : isBudget ? '£39.99' : '£99.99',
       },
       metadata: {
-        retailer: 'iAM Marketplace',
+        retailer: 'Smart Search Marketplace',
         rating: 4.7,
         reviewCount: 234,
         inStock: true,
@@ -267,7 +267,7 @@ function mockCatalogCards(ctx: SearchContext): ServiceCard[] {
         displayText: isPremium ? '£349' : isBudget ? '£49' : '£149',
       },
       metadata: {
-        retailer: 'iAM Marketplace',
+        retailer: 'Smart Search Marketplace',
         rating: 4.5,
         reviewCount: 89,
         inStock: true,

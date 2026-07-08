@@ -1,15 +1,15 @@
-# iAM — Phase Plan: The Intent Operating System
+# Smart Search — Phase Plan: The Intent Operating System
 
-**Vision:** iAM is the layer that replaces the internet as the default interface for commerce, services, and information. You never open a browser, a marketplace, or an app. You express intent — iAM does everything else.
+**Vision:** Smart Search is the layer that replaces the internet as the default interface for commerce, services, and information. You never open a browser, a marketplace, or an app. You express intent — Smart Search does everything else.
 
 **Document date:** 2026-05-26  
-**Foundation:** Phases 0–6 complete (Smart Search → iAM transformation, two-phase intent pipeline, brand stage, @mentions, Genie RAG chatbot, vendor bids, gift system, provider directory, Genie autonomous booking)
+**Foundation:** Phases 0–6 complete (Smart Search → Smart Search transformation, two-phase intent pipeline, brand stage, @mentions, Genie RAG chatbot, vendor bids, gift system, provider directory, Genie autonomous booking)
 
 ---
 
 ## North Star
 
-> **One sentence of natural language replaces every app, browser tab, and marketplace. iAM routes your intent to the world and brings the world back to you — personalised, ranked, and ready to transact.**
+> **One sentence of natural language replaces every app, browser tab, and marketplace. Smart Search routes your intent to the world and brings the world back to you — personalised, ranked, and ready to transact.**
 
 ---
 
@@ -21,13 +21,13 @@
 | 3 | Shopping (Rainforest/Amazon), Namecheap domains, provider directory (home/health/digital), seed script |
 | 4 | Genie autonomous booking agent: real adapter dispatch, fuzzy slot matching, genieCapable flag, post-booking email |
 | 5 | Platform & revenue: Duffel webhooks, vendor bid ingestion (Redis, 0–1 normalized), offer expiry cron |
-| 6 | iAM transformation: two-phase intent pipeline (Groq + Claude), brand stage (20 brands), @mention resolution, chat history, style profile, UCP, slash commands, IntentDebugger, ThemeToggle |
+| 6 | Smart Search transformation: two-phase intent pipeline (Groq + Claude), brand stage (20 brands), @mention resolution, chat history, style profile, UCP, slash commands, IntentDebugger, ThemeToggle |
 | 6.5 | Genie RAG chatbot: Pinecone vector store, chunk indexing from IntentGraph, semantic retrieval per message, standalone chat UI |
 
 ---
 
 ## Phase 7 — Direct Commerce & Native Marketplace
-**Goal:** Vendors sell directly inside iAM. No deeplinks out. Users buy and track orders without leaving.
+**Goal:** Vendors sell directly inside Smart Search. No deeplinks out. Users buy and track orders without leaving.
 
 ### 7.1 Vendor Onboarding Portal
 - `/vendor` dashboard: sign up, list products/services, set pricing, upload images
@@ -66,12 +66,12 @@
 ---
 
 ## Phase 8 — Ecosystem SDK & Developer Platform
-**Goal:** Third parties build iAM Adapters. iAM becomes a platform, not just a product.
+**Goal:** Third parties build Smart Search Adapters. Smart Search becomes a platform, not just a product.
 
 ### 8.1 Public Adapter API
 - REST API that mirrors `ServiceAdapter` interface: `search()`, `createOrder()`, `checkAvailability()`
 - Adapter registration: POST `/api/ecosystem/register` with manifest JSON (name, category, endpoints, auth)
-- iAM dynamically loads registered adapters at runtime via `DynamicAdapterProxy`
+- Smart Search dynamically loads registered adapters at runtime via `DynamicAdapterProxy`
 - Sandboxed execution: all external adapter calls go through `lib/ecosystem/proxy.ts` with timeout + error boundary
 
 ### 8.2 Developer Portal
@@ -83,17 +83,17 @@
 ### 8.3 Adapter Marketplace
 - `/marketplace` page: browse community adapters by category
 - Ratings, installs, revenue share visibility
-- Featured adapters curated by iAM team
+- Featured adapters curated by Smart Search team
 - One-click enable/disable per user in settings
 
 ### 8.4 Revenue Share
-- iAM takes configurable % of transactions routed through platform adapters (default 5–15%)
+- Smart Search takes configurable % of transactions routed through platform adapters (default 5–15%)
 - `platformFee` field on `orders` records
 - Monthly payout reports to developers via Stripe Connect
 - `lib/ecosystem/fees.ts`: fee calculation logic (category-based tiers)
 
-### 8.5 iAM Identity as SSO
-- "Sign in with iAM" OAuth provider for third-party apps
+### 8.5 Smart Search Identity as SSO
+- "Sign in with Smart Search" OAuth provider for third-party apps
 - IntentGraph shared (with consent) to authorised apps — personalisation without re-onboarding
 - Scopes: `profile.read`, `preferences.read`, `bookings.read`, `checkout.write`
 - `lib/ecosystem/oauth.ts`: PKCE flow, consent screen, token issuance
@@ -104,24 +104,24 @@
 
 ---
 
-## Phase 9 — Replace the Internet: iAM as Interface Layer
-**Goal:** iAM becomes the default way users interact with the web. No URL bar needed.
+## Phase 9 — Replace the Internet: Smart Search as Interface Layer
+**Goal:** Smart Search becomes the default way users interact with the web. No URL bar needed.
 
 ### 9.1 Universal Intent Gateway
 - Any query — however phrased — routes to the right combination of adapters
 - `lib/intent/router.ts`: beyond the 12 current service types, open-ended routing via LLM classification
-- Fallback: if no adapter matches, iAM performs a structured web search and synthesises results into cards
+- Fallback: if no adapter matches, Smart Search performs a structured web search and synthesises results into cards
 - "Did you mean a service?" prompts when query is ambiguous
 
 ### 9.2 Browser Extension
 - Chrome/Firefox extension: intercepts purchase buttons, booking forms, and search bars on any website
-- "Open in iAM" button injected into product pages, hotel pages, flight search pages
-- Captures page context (price, product name, availability) → sends to `/api/capture` → opens iAM Stage
+- "Open in Smart Search" button injected into product pages, hotel pages, flight search pages
+- Captures page context (price, product name, availability) → sends to `/api/capture` → opens Smart Search Stage
 - Local IntentGraph sync: extension reads session cookie, personalises on-page suggestions
 
 ### 9.3 Mobile App (React Native / Expo)
-- iOS + Android app wrapping the iAM web experience
-- Native share sheet: share any link → opens in iAM with parsed intent
+- iOS + Android app wrapping the Smart Search web experience
+- Native share sheet: share any link → opens in Smart Search with parsed intent
 - Push notifications for: order updates, price drops on locked items, gift redemptions, Genie confirmations
 - Offline IntentGraph cache: preferences available without network
 
@@ -138,7 +138,7 @@
 - `lib/genie/proactive.ts`: cron job scans upcoming bookings, generates suggestions, sends push/email
 - User controls: notification preferences, opt-out per category
 
-### 9.6 iAM for Business (B2B)
+### 9.6 Smart Search for Business (B2B)
 - Company accounts: shared Stage for team travel/procurement
 - Approval workflows: purchases over £X require manager sign-off
 - Budget controls per department
@@ -151,29 +151,29 @@
 
 ---
 
-## Phase 10 — Financial Layer & iAM Wallet
-**Goal:** iAM holds value, not just routes payments. Users keep a balance, earn rewards, send money.
+## Phase 10 — Financial Layer & Smart Search Wallet
+**Goal:** Smart Search holds value, not just routes payments. Users keep a balance, earn rewards, send money.
 
-### 10.1 iAM Wallet
+### 10.1 Smart Search Wallet
 - Stored-value wallet per user (Stripe Issuing or custom ledger)
 - Top up via card, bank transfer, or crypto (optional)
 - One-tap checkout from wallet balance (no card re-entry)
 - `wallets` collection: `userId`, `balanceCents`, `currency`, `transactions[]`
 
-### 10.2 iAM Credits & Rewards
+### 10.2 Smart Search Credits & Rewards
 - Earn credits on every transaction (configurable % cashback)
-- Credits redeemable on any purchase inside iAM
+- Credits redeemable on any purchase inside Smart Search
 - Referral program: invite friends → both earn credits on their first booking
 - Vendor-sponsored credits: vendors fund bonus credits to drive discovery
 
 ### 10.3 Split Payments Between Users
 - Friends can split any Stage cost in arbitrary ratios (not just equal)
-- "Request money" flow: iAM sends payment request to @handle
+- "Request money" flow: Smart Search sends payment request to @handle
 - Settled via wallet balance or Stripe PaymentRequest
 - `splitRequests` collection with expiry
 
 ### 10.4 Subscriptions
-- iAM Pro: unlimited Genie queries, priority booking, exclusive vendor deals — £9.99/mo
+- Smart Search Pro: unlimited Genie queries, priority booking, exclusive vendor deals — £9.99/mo
 - Vendor subscription tiers: Basic (free, 5% fee) / Growth (£49/mo, 3% fee) / Enterprise (custom)
 - Managed via Stripe Billing + `subscriptions` collection
 
@@ -183,7 +183,7 @@
 ---
 
 ## Phase 11 — AI Agents & Autonomous Operations
-**Goal:** iAM operates autonomously on your behalf. You set goals; iAM executes them over time.
+**Goal:** Smart Search operates autonomously on your behalf. You set goals; Smart Search executes them over time.
 
 ### 11.1 Long-Running Agent Tasks
 - Users can assign multi-step tasks: "Book the cheapest flight to Tokyo in August, notify me when found"
@@ -215,7 +215,7 @@
 ---
 
 ## Phase 12 — Data & Intelligence Layer
-**Goal:** iAM's aggregated (anonymised) data becomes a product. Vendors get intent signals. Users get better results.
+**Goal:** Smart Search's aggregated (anonymised) data becomes a product. Vendors get intent signals. Users get better results.
 
 ### 12.1 Intent Analytics for Vendors
 - Vendors see: search volume for their category, conversion rates, where users drop off
@@ -230,13 +230,13 @@
 - A/B testing framework for ranking experiments
 
 ### 12.3 Knowledge Graph
-- iAM builds a graph of entities: destinations, vendors, products, services, users (anonymised)
+- Smart Search builds a graph of entities: destinations, vendors, products, services, users (anonymised)
 - Edges: "frequently booked together", "mentioned in same intent", "co-visited"
 - Powers: "complete the trip" suggestions, bundle deals, cross-sell
 - Neo4j or MongoDB graph queries
 
 ### 12.4 Insight Cards
-- Weekly "Your iAM Insights" email: spending summary, travel stats, Genie interactions, savings vs market rate
+- Weekly "Your Smart Search Insights" email: spending summary, travel stats, Genie interactions, savings vs market rate
 - In-app insights panel: visualised spend, top destinations, style evolution
 - `lib/insights/generate.ts`: LLM-generated narrative over user's data
 
@@ -251,7 +251,7 @@
 | 7 | Direct Commerce | Vendor portal, native catalog, direct checkout, order tracking | 3 weeks |
 | 8 | Ecosystem SDK | Public adapter API, developer portal, marketplace, revenue share, SSO | 4 weeks |
 | 9 | Replace the Internet | Universal intent gateway, browser extension, mobile app, voice, proactive Genie, B2B | 8 weeks |
-| 10 | Financial Layer | iAM Wallet, credits/rewards, split payments, subscriptions | 4 weeks |
+| 10 | Financial Layer | Smart Search Wallet, credits/rewards, split payments, subscriptions | 4 weeks |
 | 11 | AI Agents | Long-running tasks, negotiation agent, price alerts, life events | 5 weeks |
 | 12 | Data & Intelligence | Intent analytics, ML ranking, knowledge graph, insight cards | 6 weeks |
 

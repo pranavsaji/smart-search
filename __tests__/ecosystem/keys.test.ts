@@ -21,9 +21,9 @@ describe('generateApiKey()', () => {
     expect(key).toHaveProperty('prefix')
   })
 
-  it('raw key starts with "iam_"', () => {
+  it('raw key starts with "ss_"', () => {
     const { raw } = generateApiKey()
-    expect(raw).toMatch(/^iam_/)
+    expect(raw).toMatch(/^ss_/)
   })
 
   it('prefix is the first 12 chars of raw', () => {
@@ -54,16 +54,16 @@ describe('generateApiKey()', () => {
 
 describe('hashKey()', () => {
   it('is deterministic — same input produces same output', () => {
-    const raw = 'iam_some-test-key-value'
+    const raw = 'ss_some-test-key-value'
     expect(hashKey(raw)).toBe(hashKey(raw))
   })
 
   it('produces a 64-char hex string (SHA-256)', () => {
-    expect(hashKey('iam_test')).toMatch(/^[a-f0-9]{64}$/)
+    expect(hashKey('ss_test')).toMatch(/^[a-f0-9]{64}$/)
   })
 
   it('different inputs produce different hashes', () => {
-    expect(hashKey('iam_keyA')).not.toBe(hashKey('iam_keyB'))
+    expect(hashKey('ss_keyA')).not.toBe(hashKey('ss_keyB'))
   })
 
   it('hash of generated key matches the hash field', () => {

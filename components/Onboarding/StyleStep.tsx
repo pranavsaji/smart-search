@@ -47,7 +47,7 @@ export function StyleStep({ onComplete, onSkip }: StyleStepProps) {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold mb-1">Your Style Profile</h3>
-        <p className="text-sm text-muted-foreground">Helps iAM personalise product and shopping recommendations.</p>
+        <p className="text-sm text-muted-foreground">Helps Smart Search personalise product and shopping recommendations.</p>
       </div>
 
       <div className="space-y-4">

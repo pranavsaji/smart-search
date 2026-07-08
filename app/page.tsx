@@ -171,7 +171,7 @@ export default async function HomePage() {
             Type what you want.
           </span>
           <span className="block text-6xl font-extrabold text-foreground/90 sm:text-7xl lg:text-[88px] xl:text-[104px]">
-            iAM does everything else.
+            Smart Search does everything else.
           </span>
         </h1>
 
@@ -287,7 +287,7 @@ export default async function HomePage() {
         <div className="mb-14 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground/60 mb-3">Built different</p>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Why <span className="gradient-text-brand">iAM</span>
+            Why <span className="gradient-text-brand">Smart Search</span>
           </h2>
         </div>
 
@@ -351,7 +351,7 @@ export default async function HomePage() {
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/20 to-sky-400/15 ring-1 ring-blue-200">
               <Sparkles className="h-3 w-3 text-blue-500" />
             </div>
-            <span className="gradient-text-brand text-sm font-bold">iAM</span>
+            <span className="gradient-text-brand text-sm font-bold">Smart Search</span>
             <span className="text-xs text-muted-foreground/60">· Intent Operating System</span>
           </div>
           <p className="text-xs text-muted-foreground/50">

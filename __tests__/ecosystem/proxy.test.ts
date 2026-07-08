@@ -143,7 +143,7 @@ describe('DynamicAdapterProxy — search()', () => {
     expect(headers['Authorization']).toBe('Bearer my-token')
   })
 
-  it('sets X-iAM-Signature header for hmac auth', async () => {
+  it('sets X-Smart Search-Signature header for hmac auth', async () => {
     mockFetch.mockResolvedValue({
       ok: true,
       json: async () => ({ serviceType: 'stays', cards: [], isAvailable: true, fetchedAt: new Date() }),
@@ -152,7 +152,7 @@ describe('DynamicAdapterProxy — search()', () => {
     const proxy = new DynamicAdapterProxy(makeManifest({ auth: { type: 'hmac', secret: 'hmac-secret' } }), 'stays')
     await proxy.search(makeSearchContext())
     const headers = mockFetch.mock.calls[0][1].headers
-    expect(headers['X-iAM-Signature']).toMatch(/^sha256=[a-f0-9]{64}$/)
+    expect(headers['X-Smart Search-Signature']).toMatch(/^sha256=[a-f0-9]{64}$/)
   })
 
   it('returns errorResult when fetch throws (network error)', async () => {

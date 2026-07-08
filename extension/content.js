@@ -1,11 +1,11 @@
-// iAM Browser Extension — Content Script (Manifest V3)
-// Injects "Open in iAM" button on product, hotel, and flight pages.
+// Smart Search Browser Extension — Content Script (Manifest V3)
+// Injects "Open in Smart Search" button on product, hotel, and flight pages.
 // Extracts structured data from OG/schema.org meta tags + DOM.
 
-const IAM_HOST = 'https://iam.app'  // updated per deployment
+const SMARTSEARCH_HOST = 'https://smartsearch.app'  // updated per deployment
 
 ;(function () {
-  if (document.getElementById('iam-open-button')) return  // already injected
+  if (document.getElementById('smartsearch-open-button')) return  // already injected
 
   const context = extractPageContext()
   if (!hasUsefulData(context)) return
@@ -113,8 +113,8 @@ function hasUsefulData(context) {
 
 function injectButton(context) {
   const btn = document.createElement('button')
-  btn.id = 'iam-open-button'
-  btn.textContent = '⚡ Open in iAM'
+  btn.id = 'smartsearch-open-button'
+  btn.textContent = '⚡ Open in Smart Search'
   btn.style.cssText = [
     'position:fixed', 'bottom:24px', 'right:24px', 'z-index:2147483647',
     'background:#6366f1', 'color:#fff', 'border:none', 'border-radius:24px',
@@ -124,19 +124,19 @@ function injectButton(context) {
 
   btn.addEventListener('mouseenter', () => { btn.style.transform = 'scale(1.05)' })
   btn.addEventListener('mouseleave', () => { btn.style.transform = '' })
-  btn.addEventListener('click', () => openInIAM(context))
+  btn.addEventListener('click', () => openInSmartSearch(context))
   document.body.appendChild(btn)
 }
 
-async function openInIAM(context) {
+async function openInSmartSearch(context) {
   // Post to extension background script to handle the capture API call
   chrome.runtime.sendMessage({ type: 'CAPTURE_PAGE', payload: context }, (response) => {
     if (response?.stageUrl) {
-      window.open(`${IAM_HOST}${response.stageUrl}`, '_blank')
+      window.open(`${SMARTSEARCH_HOST}${response.stageUrl}`, '_blank')
     } else {
-      // Fallback: open iAM with intent pre-filled
+      // Fallback: open Smart Search with intent pre-filled
       const intent = encodeURIComponent(context.pageTitle)
-      window.open(`${IAM_HOST}/?intent=${intent}`, '_blank')
+      window.open(`${SMARTSEARCH_HOST}/?intent=${intent}`, '_blank')
     }
   })
 }

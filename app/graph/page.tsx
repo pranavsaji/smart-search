@@ -4,7 +4,7 @@ import { Network } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { GraphClient } from '@/components/graph/GraphClient'
 
-export const metadata = { title: 'Knowledge Graph · iAM' }
+export const metadata = { title: 'Knowledge Graph · Smart Search' }
 
 export default async function GraphPage() {
   const session = await auth().catch(() => null)

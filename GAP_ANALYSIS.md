@@ -1,4 +1,4 @@
-# iAM — Gap Analysis & Implementation Plan
+# Smart Search — Gap Analysis & Implementation Plan
 **Principal Engineer Reference · 2026-05-23**
 
 This document audits every roadmap item against the current codebase, states what is done, what is not, why each gap matters, and gives a concrete implementation path. Organised into 5 phases matching the 24-month roadmap. Each phase is sequenced so later phases have stable foundations.
@@ -95,7 +95,7 @@ Step 5 suggestion generation: after graph is seeded, call `/api/intent` with a s
 
 **Current state:** Intent graph is a structured MongoDB document (`intentGraphs` collection). No vector layer. Profile Q&A uses the structured document directly. RAG is not implemented.
 
-**Gap:** The entire vector personalisation layer is missing. This is the technical foundation of "iAM feels like it knows you."
+**Gap:** The entire vector personalisation layer is missing. This is the technical foundation of "Smart Search feels like it knows you."
 
 **Why it matters:** Without embeddings, the ranking signal is static preferences that never improve from interaction. With embeddings, every Stage visit, card lock, and booking trains the system.
 
@@ -418,7 +418,7 @@ lib/events/kafka.ts
 
 ### 2.4 Full-Text Search — Typesense
 
-**Current state:** No search across products, profiles, or content. Users find things via Stage assembly (intent → API calls). There's no "search iAM" capability.
+**Current state:** No search across products, profiles, or content. Users find things via Stage assembly (intent → API calls). There's no "search Smart Search" capability.
 
 **Gap:** No cross-vertical discovery. Brand profiles not searchable. Public Stages (Phase 3) will need search.
 
@@ -472,11 +472,11 @@ app/api/search/route.ts
 
 ## Phase 3 — Super-App Core
 **Target: Month 8–18 · 500,000+ MAU · $50M GMV**
-**Principal priority: iAM Wallet, Messaging, Social layer. This is the pivot from tool to environment.**
+**Principal priority: Smart Search Wallet, Messaging, Social layer. This is the pivot from tool to environment.**
 
 This phase requires additional engineers (3–4 backend, 1–2 platform/DevOps). The work below assumes a team.
 
-### 3.1 iAM Wallet
+### 3.1 Smart Search Wallet
 
 **Current state:** Stripe hosted checkout. PaymentIntent created at checkout, charged immediately. No stored balance.
 
@@ -509,13 +509,13 @@ components/Wallet/
 
 **Stripe webhook change:** `app/api/webhooks/stripe/route.ts` — handle `metadata.type === 'wallet_topup'` branch.
 
-**Regulatory note:** In all UI copy, do not use "wallet" in regulated markets until FCA EMI licence. Use "iAM Balance" or "Credit Balance" until then.
+**Regulatory note:** In all UI copy, do not use "wallet" in regulated markets until FCA EMI licence. Use "Smart Search Balance" or "Credit Balance" until then.
 
 **Effort:** 8–10 days.
 
 ---
 
-### 3.2 iAM Messaging
+### 3.2 Smart Search Messaging
 
 **Current state:** No messaging. Users collaborate via shared Stage only. Communication happens off-platform (WhatsApp, email).
 
@@ -634,7 +634,7 @@ app/api/discover/route.ts
 
 **Current state:** No external SDK. No developer portal. No Shopify integration.
 
-**Gap:** The platform layer that makes iAM extensible to brands and developers.
+**Gap:** The platform layer that makes Smart Search extensible to brands and developers.
 
 **Implementation (launch sequence):**
 
@@ -651,17 +651,17 @@ Auth: `Authorization: Bearer BRAND_API_KEY`. Generate brand API keys on brand da
 **B. npm packages** — 2–3 weeks each
 ```
 packages/
-  @iam/inventory-sdk/      ← npm publish. CRUD on brand catalogue. Webhook sync.
-  @iam/scheduling-sdk/     ← Read/write availability. Calendly/Cal.com adapters.
-  @iam/content-sdk/        ← RSS + API connection. Content indexed into brand Intent Graph.
+  @smartsearch/inventory-sdk/      ← npm publish. CRUD on brand catalogue. Webhook sync.
+  @smartsearch/scheduling-sdk/     ← Read/write availability. Calendly/Cal.com adapters.
+  @smartsearch/content-sdk/        ← RSS + API connection. Content indexed into brand Intent Graph.
 ```
 These are TypeScript packages in a monorepo (`pnpm workspaces`). Published to npm.
 
 **C. Shopify Plugin** — 3–4 weeks
-Shopify app (separate app in Shopify Partner dashboard). OAuth flow → imports catalogue via Shopify Storefront API → syncs to iAM via `@iam/inventory-sdk`. Shopify webhooks (`products/update`, `inventory_levels/update`) → iAM inventory sync.
+Shopify app (separate app in Shopify Partner dashboard). OAuth flow → imports catalogue via Shopify Storefront API → syncs to Smart Search via `@smartsearch/inventory-sdk`. Shopify webhooks (`products/update`, `inventory_levels/update`) → Smart Search inventory sync.
 
 **D. Developer Portal** — 1–2 weeks (content + infra)
-`docs.iam.app` — Docusaurus or Mintlify. OpenAPI spec generated from routes. Sandbox environment with mock data.
+`docs.smartsearch.app` — Docusaurus or Mintlify. OpenAPI spec generated from routes. Sandbox environment with mock data.
 
 **Effort:** 8–12 weeks (team of 3 SDK developers).
 
@@ -702,15 +702,15 @@ Use Terraform or Pulumi. Do not use raw CloudFormation (too verbose).
 
 | Item | Status | Effort | Priority |
 |---|---|---|---|
-| iAM Wallet (Stripe pass-through) | ❌ Not done | 8–10d | P0 |
+| Smart Search Wallet (Stripe pass-through) | ❌ Not done | 8–10d | P0 |
 | Activity feed (fan-out on write) | ❌ Not done | 1 week | P0 |
 | Public Stages | ❌ Not done | 3d | P0 |
 | Daily Status posts | ❌ Not done | 1 week | P1 |
 | Profile highlights | ❌ Not done | 2d | P1 |
-| iAM Messaging (WebSocket service) | ❌ Not done | 4–6 weeks | P0 |
+| Smart Search Messaging (WebSocket service) | ❌ Not done | 4–6 weeks | P0 |
 | @genie in chat | ❌ Not done | 3d (after messaging) | P1 |
 | Brand Profile API | ❌ Not done | 2 weeks | P0 |
-| @iam/inventory-sdk (npm) | ❌ Not done | 2–3 weeks | P1 |
+| @smartsearch/inventory-sdk (npm) | ❌ Not done | 2–3 weeks | P1 |
 | Shopify plugin | ❌ Not done | 3–4 weeks | P1 |
 | Developer portal | ❌ Not done | 1–2 weeks | P1 |
 | Microservices migration start | ❌ Not done | 2–3 weeks | P1 |
@@ -729,7 +729,7 @@ Use Terraform or Pulumi. Do not use raw CloudFormation (too verbose).
 
 ### 4.1 Non-Commerce Website Models
 
-**Current state:** iAM covers transactional verticals (travel, shopping, services). Non-transactional website models (blogs, news, streaming, jobs, real estate, government) are not covered.
+**Current state:** Smart Search covers transactional verticals (travel, shopping, services). Non-transactional website models (blogs, news, streaming, jobs, real estate, government) are not covered.
 
 **Gap matrix:**
 
@@ -741,7 +741,7 @@ Use Terraform or Pulumi. Do not use raw CloudFormation (too verbose).
 | Podcasts | RSS (Podcast Index) | Podcast row | Deep link / audio player | ❌ |
 | SaaS Products | Brand document seeding | Product Q&A row | Trial signup via brand API | ❌ |
 | Events / Ticketing | Eventbrite API, Ticketmaster | Events row | Purchase ticket | ❌ |
-| Jobs / Recruitment | LinkedIn Jobs, Greenhouse | Jobs row | Apply via iAM profile | ❌ |
+| Jobs / Recruitment | LinkedIn Jobs, Greenhouse | Jobs row | Apply via Smart Search profile | ❌ |
 | Real Estate | Rightmove API (UK), Zillow (US) | Property row | Book viewing | ❌ |
 | Government Services | GOV.UK API | Services row | Book appointment, eligibility check | ❌ |
 | Finance / Banking | Open Banking (PSD2) | Products row | Application routing | ❌ |
@@ -1004,4 +1004,4 @@ Every phase above builds on the existing architecture. The gate invariant (`gate
 
 ---
 
-*Last updated: 2026-05-23 · iAM Engineering · Confidential*
+*Last updated: 2026-05-23 · Smart Search Engineering · Confidential*

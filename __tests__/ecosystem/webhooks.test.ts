@@ -162,7 +162,7 @@ describe('dispatchWebhookEvent()', () => {
     )
   })
 
-  it('sets X-iAM-Signature header (HMAC-SHA256)', async () => {
+  it('sets X-Smart Search-Signature header (HMAC-SHA256)', async () => {
     mockFind.mockReturnValue(makeCursor([makeSub()]))
     mockFetch.mockResolvedValue({ ok: true })
     mockUpdateOne.mockResolvedValue({})
@@ -170,7 +170,7 @@ describe('dispatchWebhookEvent()', () => {
     await dispatchWebhookEvent('booking.confirmed', { orderId: 'ORD-1' })
     const fetchCall = mockFetch.mock.calls[0]
     const headers = fetchCall[1].headers
-    expect(headers['X-iAM-Signature']).toMatch(/^sha256=[a-f0-9]{64}$/)
+    expect(headers['X-Smart Search-Signature']).toMatch(/^sha256=[a-f0-9]{64}$/)
   })
 
   it('skips inactive subscriptions', async () => {
@@ -228,7 +228,7 @@ describe('dispatchWebhookEvent()', () => {
     mockUpdateOne.mockResolvedValue({})
 
     await dispatchWebhookEvent('order.shipped', { orderId: 'ORD-2' })
-    const sig = mockFetch.mock.calls[0][1].headers['X-iAM-Signature']
+    const sig = mockFetch.mock.calls[0][1].headers['X-Smart Search-Signature']
     expect(sig.startsWith('sha256=')).toBe(true)
     const hexPart = sig.slice(7)
     expect(hexPart).toMatch(/^[a-f0-9]{64}$/)

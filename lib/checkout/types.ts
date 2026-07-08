@@ -13,7 +13,7 @@ export type VendorType =
   | 'home_service'
   | 'health_provider'
   | 'calendly'
-  | 'catalog_product'  // Phase 7 — native iAM marketplace (isBookable: true)
+  | 'catalog_product'  // Phase 7 — native Smart Search marketplace (isBookable: true)
 
 export type CartStatus = 'building' | 'ready' | 'processing' | 'confirmed' | 'failed'
 

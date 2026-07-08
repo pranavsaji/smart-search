@@ -222,7 +222,7 @@ function ClarifyInner() {
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600">
           <Sparkles className="h-4 w-4 text-white" />
         </div>
-        <span className="text-lg font-bold text-slate-800">iAM</span>
+        <span className="text-lg font-bold text-slate-800">Smart Search</span>
         <div className="mx-4 h-5 w-px bg-slate-200" />
         <p className="text-sm text-slate-500 truncate max-w-xl">"{originalPrompt}"</p>
         {(displayServices.length > 0 || previewLoading) && (

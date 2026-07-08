@@ -208,16 +208,16 @@ describe('generateReferralCode', () => {
   it('creates new referral code for new user', async () => {
     mockFindOne2.mockResolvedValue(null)
     const code = await generateReferralCode('user-new')
-    expect(code).toMatch(/^IAM-/)
+    expect(code).toMatch(/^SS-/)
     expect(mockInsertOne).toHaveBeenCalledWith(
       expect.objectContaining({ userId: 'user-new', timesUsed: 0 })
     )
   })
 
   it('returns existing code idempotently', async () => {
-    mockFindOne2.mockResolvedValue({ code: 'IAM-EXISTING', userId: 'user-1' })
+    mockFindOne2.mockResolvedValue({ code: 'SS-EXISTING', userId: 'user-1' })
     const code = await generateReferralCode('user-1')
-    expect(code).toBe('IAM-EXISTING')
+    expect(code).toBe('SS-EXISTING')
     expect(mockInsertOne).not.toHaveBeenCalled()
   })
 
@@ -233,27 +233,27 @@ describe('generateReferralCode', () => {
 describe('resolveReferralCode', () => {
   it('returns userId from Redis cache', async () => {
     mockRedisGet.mockResolvedValue('user-owner')
-    expect(await resolveReferralCode('IAM-CACHED')).toBe('user-owner')
+    expect(await resolveReferralCode('SS-CACHED')).toBe('user-owner')
     expect(mockFindOne2).not.toHaveBeenCalled()
   })
 
   it('fetches from DB on cache miss', async () => {
     mockRedisGet.mockResolvedValue(null)
-    mockFindOne2.mockResolvedValue({ code: 'IAM-DB', userId: 'user-db' })
-    expect(await resolveReferralCode('IAM-DB')).toBe('user-db')
+    mockFindOne2.mockResolvedValue({ code: 'SS-DB', userId: 'user-db' })
+    expect(await resolveReferralCode('SS-DB')).toBe('user-db')
   })
 
   it('re-populates cache on DB hit', async () => {
     mockRedisGet.mockResolvedValue(null)
-    mockFindOne2.mockResolvedValue({ code: 'IAM-DB', userId: 'user-db' })
-    await resolveReferralCode('IAM-DB')
-    expect(mockRedisSet).toHaveBeenCalledWith('referral:IAM-DB', 'user-db', { ex: 604800 })
+    mockFindOne2.mockResolvedValue({ code: 'SS-DB', userId: 'user-db' })
+    await resolveReferralCode('SS-DB')
+    expect(mockRedisSet).toHaveBeenCalledWith('referral:SS-DB', 'user-db', { ex: 604800 })
   })
 
   it('returns null for unknown code', async () => {
     mockRedisGet.mockResolvedValue(null)
     mockFindOne2.mockResolvedValue(null)
-    expect(await resolveReferralCode('IAM-UNKNOWN')).toBeNull()
+    expect(await resolveReferralCode('SS-UNKNOWN')).toBeNull()
   })
 })
 
@@ -266,7 +266,7 @@ describe('processReferralBonus', () => {
 
   it('issues bonuses to both referrer and referee', async () => {
     mockFindOne.mockResolvedValue(null)  // no duplicate
-    await processReferralBonus('referrer-1', 'newuser-1', 'IAM-TESTCODE')
+    await processReferralBonus('referrer-1', 'newuser-1', 'SS-TESTCODE')
     // Two insertOne calls: one per user
     expect(mockInsertOne).toHaveBeenCalledTimes(2)
     const calls = mockInsertOne.mock.calls.map((c: unknown[]) => c[0] as { type: string; amountCents: number })
@@ -276,16 +276,16 @@ describe('processReferralBonus', () => {
 
   it('increments referral code usage counter', async () => {
     mockFindOne.mockResolvedValue(null)
-    await processReferralBonus('referrer-1', 'newuser-1', 'IAM-TESTCODE')
+    await processReferralBonus('referrer-1', 'newuser-1', 'SS-TESTCODE')
     expect(mockUpdateOne).toHaveBeenCalledWith(
-      { code: 'IAM-TESTCODE' },
+      { code: 'SS-TESTCODE' },
       { $inc: { timesUsed: 1 } }
     )
   })
 
   it('skips if bonus already processed for this new user', async () => {
     mockFindOne.mockResolvedValue({ entryId: 'already-processed' })
-    await processReferralBonus('referrer-1', 'newuser-dup', 'IAM-TESTCODE')
+    await processReferralBonus('referrer-1', 'newuser-dup', 'SS-TESTCODE')
     expect(mockInsertOne).not.toHaveBeenCalled()
   })
 })

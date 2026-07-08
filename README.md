@@ -1,8 +1,8 @@
-# iAM — Intent Operating System
+# Smart Search — Intent Operating System
 
-A single natural-language prompt triggers a fully orchestrated, multi-service experience. Type what you want. iAM does everything else.
+A single natural-language prompt triggers a fully orchestrated, multi-service experience. Type what you want. Smart Search does everything else.
 
-Type *"@nike show me running shoes for my Dubai trip next Friday, flying from London, 3 nights"* and iAM:
+Type *"@nike show me running shoes for my Dubai trip next Friday, flying from London, 3 nights"* and Smart Search:
 1. Detects `@nike` → enters Nike Brand Stage (themed UI, branded context injected into the LLM)
 2. Runs **Phase A** (Groq 8B, ~200ms) to identify services: `flights`, `stays`, `weather`, `products`
 3. Runs **Phase B** (Groq 70B, ~600ms) to map params: origin=London, destination=Dubai, dates, query=running shoes
@@ -156,7 +156,7 @@ Every prompt is scanned for `@handles` before intent parsing:
   → brand found    → inject contextPrompt, enter brand stage
   → user + friend  → add as collaborator participant
   → user + stranger → show FriendRequestCard inline
-  → not found      → "not on iAM yet" message
+  → not found      → "not on Smart Search yet" message
 ```
 
 ### Ranking (North Star Enforcement)

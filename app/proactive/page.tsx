@@ -4,7 +4,7 @@ import { Bell } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { ProactiveClient } from '@/components/proactive/ProactiveClient'
 
-export const metadata = { title: 'Suggestions · iAM' }
+export const metadata = { title: 'Suggestions · Smart Search' }
 
 export default async function ProactivePage() {
   const session = await auth().catch(() => null)
@@ -12,7 +12,7 @@ export default async function ProactivePage() {
   const user = session.user as { id?: string; handle?: string; name?: string }
 
   return (
-    <AppShell user={user} title="Proactive Genie" subtitle="Suggestions iAM surfaces before you ask" icon={Bell}>
+    <AppShell user={user} title="Proactive Genie" subtitle="Suggestions Smart Search surfaces before you ask" icon={Bell}>
       <ProactiveClient />
     </AppShell>
   )

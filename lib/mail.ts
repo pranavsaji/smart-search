@@ -161,7 +161,7 @@ export async function sendGiftNotification(opts: {
   })
 }
 
-// Phase 12.4 — weekly "Your iAM Insights" digest.
+// Phase 12.4 — weekly "Your Smart Search Insights" digest.
 export async function sendWeeklyInsights(opts: {
   to: string
   recipientName: string
@@ -183,7 +183,7 @@ export async function sendWeeklyInsights(opts: {
   await resend.emails.send({
     from: 'Smart Search Insights <insights@smartsearch.travel>',
     to: opts.to,
-    subject: `Your iAM Insights — ${opts.periodLabel}`,
+    subject: `Your Smart Search Insights — ${opts.periodLabel}`,
     html: `
 <!DOCTYPE html>
 <html>
@@ -191,7 +191,7 @@ export async function sendWeeklyInsights(opts: {
 <body style="background:#020817;font-family:system-ui,sans-serif;color:#f1f5f9;margin:0;padding:20px;">
   <div style="max-width:600px;margin:0 auto;background:#0f172a;border-radius:12px;border:1px solid #1e293b;overflow:hidden;">
     <div style="background:linear-gradient(135deg,#0e7490 0%,#0f172a 100%);padding:32px;text-align:center;">
-      <h1 style="margin:0;font-size:24px;color:#f1f5f9;">Your iAM Insights</h1>
+      <h1 style="margin:0;font-size:24px;color:#f1f5f9;">Your Smart Search Insights</h1>
       <p style="margin:8px 0 0;color:#94a3b8;">Hi ${opts.recipientName} — ${opts.periodLabel}</p>
     </div>
     <div style="padding:32px;">

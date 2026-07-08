@@ -16,7 +16,7 @@ export type { UserSubscription, VendorSubscription }
 
 const SUB_CACHE_TTL = 3600  // 1 hour
 
-// ─── iAM Pro (User Subscriptions) ─────────────────────────────────────────────
+// ─── Smart Search Pro (User Subscriptions) ─────────────────────────────────────────────
 
 export async function getUserSubscription(userId: string): Promise<UserSubscription | null> {
   const cached = await redis.get(RedisKeys.userSubscription(userId))
@@ -46,8 +46,8 @@ export interface CreateUserSubscriptionInput {
 export async function createProSubscription(
   input: CreateUserSubscriptionInput
 ): Promise<UserSubscription> {
-  const priceId = env.IAM_PRO_PRICE_ID()
-  if (!priceId) throw new Error('IAM_PRO_PRICE_ID not configured')
+  const priceId = env.SMARTSEARCH_PRO_PRICE_ID()
+  if (!priceId) throw new Error('SMARTSEARCH_PRO_PRICE_ID not configured')
 
   const stripe = getStripe()
   await stripe.paymentMethods.attach(input.paymentMethodId, { customer: input.stripeCustomerId })
@@ -79,7 +79,7 @@ export async function createProSubscription(
   await db.collection(COLLECTIONS.userSubscriptions).insertOne({ _id: new ObjectId(), ...sub })
   await redis.del(RedisKeys.userSubscription(input.userId))
 
-  logger.info('[subscriptions] iAM Pro created', { userId: input.userId, stripeSubId: stripeSub.id })
+  logger.info('[subscriptions] Smart Search Pro created', { userId: input.userId, stripeSubId: stripeSub.id })
   return sub
 }
 

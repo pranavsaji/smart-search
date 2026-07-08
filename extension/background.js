@@ -1,12 +1,12 @@
-// iAM Browser Extension — Service Worker (Manifest V3)
+// Smart Search Browser Extension — Service Worker (Manifest V3)
 // Handles API calls to /api/capture from the content script.
 
-const IAM_HOST = 'https://iam.app'
+const SMARTSEARCH_HOST = 'https://smartsearch.app'
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === 'CAPTURE_PAGE') {
     handleCapture(message.payload).then(sendResponse).catch(err => {
-      console.error('[iAM extension] capture failed', err)
+      console.error('[Smart Search extension] capture failed', err)
       sendResponse({ error: err.message })
     })
     return true  // keep message channel open for async response
@@ -15,10 +15,10 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 async function handleCapture(payload) {
   // Get the session cookie to authenticate the request
-  const cookies = await chrome.cookies.getAll({ domain: new URL(IAM_HOST).hostname })
+  const cookies = await chrome.cookies.getAll({ domain: new URL(SMARTSEARCH_HOST).hostname })
   const sessionCookie = cookies.find(c => c.name === '__Secure-next-auth.session-token' || c.name === 'next-auth.session-token')
 
-  const res = await fetch(`${IAM_HOST}/api/capture`, {
+  const res = await fetch(`${SMARTSEARCH_HOST}/api/capture`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

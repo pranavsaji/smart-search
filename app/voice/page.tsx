@@ -4,7 +4,7 @@ import { Mic } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { VoiceClient } from '@/components/voice/VoiceClient'
 
-export const metadata = { title: 'Voice · iAM' }
+export const metadata = { title: 'Voice · Smart Search' }
 
 export default async function VoicePage() {
   const session = await auth().catch(() => null)
@@ -12,7 +12,7 @@ export default async function VoicePage() {
   const user = session.user as { id?: string; handle?: string; name?: string }
 
   return (
-    <AppShell user={user} title="Voice" subtitle="Speak your intent — iAM does the rest" icon={Mic}>
+    <AppShell user={user} title="Voice" subtitle="Speak your intent — Smart Search does the rest" icon={Mic}>
       <VoiceClient />
     </AppShell>
   )

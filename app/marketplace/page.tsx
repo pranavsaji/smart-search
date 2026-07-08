@@ -61,7 +61,7 @@ export default function MarketplacePage() {
       <header className="border-b border-border px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">← iAM</Link>
+            <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">← Smart Search</Link>
             <span className="text-muted-foreground">/</span>
             <span className="font-semibold">Adapter Marketplace</span>
           </div>
@@ -74,7 +74,7 @@ export default function MarketplacePage() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Adapter Marketplace</h1>
-          <p className="text-muted-foreground mt-2">Community-built adapters that extend iAM with new services and integrations.</p>
+          <p className="text-muted-foreground mt-2">Community-built adapters that extend Smart Search with new services and integrations.</p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-8">

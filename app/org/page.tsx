@@ -4,7 +4,7 @@ import { Building2 } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { OrgClient } from '@/components/org/OrgClient'
 
-export const metadata = { title: 'Teams · iAM' }
+export const metadata = { title: 'Teams · Smart Search' }
 
 export default async function OrgPage() {
   const session = await auth().catch(() => null)

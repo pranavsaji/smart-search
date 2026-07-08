@@ -60,7 +60,7 @@ export function WalletClient({ handle, userId }: { handle: string; userId: strin
           { id: 'transactions', label: 'Transactions' },
           { id: 'credits', label: 'Credits' },
           { id: 'splits', label: 'Splits' },
-          { id: 'pro', label: 'iAM Pro' },
+          { id: 'pro', label: 'Smart Search Pro' },
         ]}
         active={tab}
         onChange={setTab}
@@ -140,7 +140,7 @@ function Overview({ refresh = 0 }: { refresh?: number }) {
               <WalletIcon className="h-6 w-6" />
             </div>
           </div>
-          {isPro && <Badge variant="locked" className="mt-3 gap-1"><Crown className="h-3 w-3" /> iAM Pro</Badge>}
+          {isPro && <Badge variant="locked" className="mt-3 gap-1"><Crown className="h-3 w-3" /> Smart Search Pro</Badge>}
         </div>
         <div className="grid grid-cols-2 divide-x divide-border border-t border-border">
           <div className="p-4">
@@ -445,7 +445,7 @@ function Pro() {
     <Card className="overflow-hidden">
       <div className="bg-gradient-to-br from-amber-500/15 to-yellow-400/5 p-6 text-center">
         <Crown className="mx-auto h-7 w-7 text-amber-500" />
-        <p className="mt-2 text-xl font-bold">iAM Pro</p>
+        <p className="mt-2 text-xl font-bold">Smart Search Pro</p>
         <p className="text-sm text-muted-foreground">£9.99 / month</p>
         {isPro && <Badge variant="success" className="mt-2">Active</Badge>}
       </div>

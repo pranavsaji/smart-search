@@ -1,13 +1,13 @@
 ---
 name: project-phase9
-description: Phase 9 iAM implementation — Replace the Internet (universal gateway, voice, proactive Genie, B2B orgs, browser extension)
+description: Phase 9 Smart Search implementation — Replace the Internet (universal gateway, voice, proactive Genie, B2B orgs, browser extension)
 metadata:
   type: project
 ---
 
 Phase 9 implemented 2026-05-28. All 6 sub-features complete, 536/536 tests pass.
 
-**Why:** Phase 9 is the "replace the internet" phase — iAM handles any query including ones beyond the 12 known service types, captures pages from the browser, books via voice, and serves B2B teams.
+**Why:** Phase 9 is the "replace the internet" phase — Smart Search handles any query including ones beyond the 12 known service types, captures pages from the browser, books via voice, and serves B2B teams.
 
 **Sub-features shipped:**
 - 9.1 `lib/intent/router.ts` — universal LLM-based intent gateway with web_search fallback
@@ -23,5 +23,5 @@ Phase 9 implemented 2026-05-28. All 6 sub-features complete, 536/536 tests pass.
 
 **How to apply:** When working on Phase 10+ features, build on the org/approval pattern for team-based workflows. Voice interface is extensible via the `TTSOptions` interface (swap ElevenLabs in by replacing `synthesizeSpeech`).
 
-[[project_iam_context]]
+[[project_ss_context]]
 [[project_phase8.md]]

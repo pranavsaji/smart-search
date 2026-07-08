@@ -101,7 +101,7 @@ async function classifyOpenEnded(
 
   const anthropic = new Anthropic({ apiKey })
 
-  const system = `You classify user queries for iAM — an intent operating system.
+  const system = `You classify user queries for Smart Search — an intent operating system.
 
 Known service categories: flights, stays, cars, experiences, restaurants, weather, maps, products, digital_services, home_services, health_services, appointments
 

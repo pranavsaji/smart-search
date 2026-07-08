@@ -23,7 +23,7 @@ function buildSystemPrompt(
     graph.styleProfile?.budget ? `Shopping budget: ${graph.styleProfile.budget}` : null,
   ].filter(Boolean).join(' · ') : null
 
-  return `You are Genie, an advanced personal AI concierge inside iAM — an intent-to-action platform that books travel, appointments, services, and more.
+  return `You are Genie, an advanced personal AI concierge inside Smart Search — an intent-to-action platform that books travel, appointments, services, and more.
 
 You are talking to **${userName}**.
 ${staticSummary ? `\nProfile snapshot: ${staticSummary}` : ''}

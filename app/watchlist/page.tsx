@@ -4,7 +4,7 @@ import { Eye } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { WatchlistClient } from '@/components/agents/WatchlistClient'
 
-export const metadata = { title: 'Watchlist · iAM' }
+export const metadata = { title: 'Watchlist · Smart Search' }
 
 export default async function WatchlistPage() {
   const session = await auth().catch(() => null)

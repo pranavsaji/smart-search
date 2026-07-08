@@ -84,7 +84,7 @@ export default function WebhooksPage() {
               type="url"
               value={url}
               onChange={e => setUrl(e.target.value)}
-              placeholder="https://your-app.com/webhooks/iam"
+              placeholder="https://your-app.com/webhooks/smartsearch"
               className="w-full border border-border rounded-md px-3 py-2 bg-background text-sm"
               required
             />
@@ -109,7 +109,7 @@ export default function WebhooksPage() {
             <div className="p-3 bg-muted rounded-lg">
               <p className="text-sm font-medium mb-1">Signing Secret (shown once)</p>
               <code className="text-xs font-mono break-all">{newSecret}</code>
-              <p className="text-xs text-muted-foreground mt-1">Use this to verify X-iAM-Signature headers on incoming webhooks.</p>
+              <p className="text-xs text-muted-foreground mt-1">Use this to verify X-Smart Search-Signature headers on incoming webhooks.</p>
             </div>
           )}
           <button

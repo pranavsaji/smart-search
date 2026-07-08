@@ -102,7 +102,7 @@ export function VoiceClient() {
             className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm"
           />
           <Button className="mt-3 w-full" onClick={() => router.push(`/?prompt=${encodeURIComponent(transcript)}`)}>
-            Send to iAM <ArrowRight className="h-4 w-4" />
+            Send to Smart Search <ArrowRight className="h-4 w-4" />
           </Button>
         </Card>
       )}

@@ -18,7 +18,7 @@ export type OAuthScope =
 
 export interface DeveloperAccount {
   developerId: string          // stable nanoid
-  userId: string               // iAM user who owns this account
+  userId: string               // Smart Search user who owns this account
   name: string                 // display name
   email: string
   tier: DeveloperTier
@@ -34,13 +34,13 @@ export interface AdapterManifest {
   description: string
   category: string             // 'travel' | 'experiences' | 'products' | 'services'
   iconUrl?: string
-  // The three endpoints iAM will call
+  // The three endpoints Smart Search will call
   endpoints: {
     search: string             // POST — receives SearchContext, returns ServiceResult
     createOrder: string        // POST — receives CartItem, returns OrderConfirmation
     checkAvailability?: string // POST — receives CartItem, returns {available: boolean}
   }
-  // Auth iAM uses when calling the adapter endpoints
+  // Auth Smart Search uses when calling the adapter endpoints
   auth: {
     type: 'bearer' | 'hmac'
     token?: string             // bearer token (stored encrypted)
@@ -50,7 +50,7 @@ export interface AdapterManifest {
   rating: number               // 0-5 average
   ratingCount: number
   installCount: number
-  featured: boolean            // curated by iAM team
+  featured: boolean            // curated by Smart Search team
   revenueSharePercent: number  // platform takes this % (default 10)
   createdAt: Date
   updatedAt: Date
@@ -61,7 +61,7 @@ export interface DeveloperKey {
   developerId: string
   name: string                 // human label e.g. 'Production'
   keyHash: string              // SHA-256 of the raw key — never store raw
-  prefix: string               // first 8 chars for display e.g. 'iam_abc1'
+  prefix: string               // first 8 chars for display e.g. 'ss_abc1'
   tier: DeveloperTier
   monthlyLimit: number         // API calls per month
   isActive: boolean

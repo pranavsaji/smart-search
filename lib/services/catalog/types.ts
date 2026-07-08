@@ -18,7 +18,7 @@ export interface Vendor {
   logoUrl?: string
   description?: string
   status: VendorStatus
-  platformFeePercent: number // default 10 — percentage iAM takes on each sale
+  platformFeePercent: number // default 10 — percentage Smart Search takes on each sale
   createdAt: Date
   updatedAt: Date
 }

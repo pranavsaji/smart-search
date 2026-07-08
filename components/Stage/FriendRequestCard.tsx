@@ -37,7 +37,7 @@ export function FriendRequestCard({ mention }: FriendRequestCardProps) {
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium truncate">{user.displayName ?? `@${user.handle}`}</div>
-        <div className="text-xs text-muted-foreground">@{user.handle} is on iAM but not a friend yet</div>
+        <div className="text-xs text-muted-foreground">@{user.handle} is on Smart Search but not a friend yet</div>
       </div>
       <button
         onClick={sendRequest}

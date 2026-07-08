@@ -229,7 +229,7 @@ async function resolveDriver(userId: string): Promise<DuffelDriver> {
       // DOB and phone not collected at signup — MVP placeholders.
       // Real flow: collect at checkout (same constraint as StaysAdapter born_on).
       date_of_birth: '1990-01-01',
-      email: (user?.email as string | undefined) ?? 'guest@iam.co',
+      email: (user?.email as string | undefined) ?? 'guest@smartsearch.app',
       phone_number: '+10000000000',
     }
   } catch {
@@ -237,7 +237,7 @@ async function resolveDriver(userId: string): Promise<DuffelDriver> {
       given_name: 'Guest',
       family_name: 'User',
       date_of_birth: '1990-01-01',
-      email: 'guest@iam.co',
+      email: 'guest@smartsearch.app',
       phone_number: '+10000000000',
     }
   }

@@ -1,6 +1,6 @@
-# Smart Search → iAM: Full Transformation Plan
+# Smart Search: Full Transformation Plan
 
-**Goal:** Rebuild Smart Search so it is functionally and conceptually identical to iAM — same product identity, same UX, same feature set — while keeping Smart Search's superior engineering foundation (adapters, Zod, tests, ranking, Genie, SSE replay, idempotency).
+**Goal:** Rebuild Smart Search into the full intent-operating-system product — same product identity, same UX, same feature set as the original vision — while keeping Smart Search's superior engineering foundation (adapters, Zod, tests, ranking, Genie, SSE replay, idempotency).
 
 **Document date:** 2026-05-21  
 **Estimated total effort:** ~6–8 weeks solo, ~3–4 weeks with 2 engineers
@@ -9,17 +9,17 @@
 
 ## North Star
 
-iAM's core identity is:
+Smart Search's core identity is:
 
-> **A single natural-language prompt triggers a fully orchestrated, multi-service experience. Type what you want. iAM does everything else.**
+> **A single natural-language prompt triggers a fully orchestrated, multi-service experience. Type what you want. Smart Search does everything else.**
 
 Everything in this plan serves that sentence. Every feature below either makes the prompt smarter, the results richer, or the experience more personal and branded.
 
 ---
 
-## What We Are Adding (From iAM)
+## What We Are Adding (From Smart Search)
 
-| Feature | iAM Has | Smart Search Has | Action |
+| Feature | Smart Search Has | Smart Search Has | Action |
 |---|---|---|---|
 | Two-Phase LLM Pipeline (Phase A cheap router + Phase B quality mapper) | ✅ | ❌ Single-phase | Build |
 | AI Provider Switching (Groq + Claude) | ✅ | ❌ Claude only | Build |
@@ -70,7 +70,7 @@ Everything in this plan serves that sentence. Every feature below either makes t
 
 | Phase | Name | Duration | Outcome |
 |---|---|---|---|
-| 0 | Foundation & Naming | 2 days | App identity matches iAM |
+| 0 | Foundation & Naming | 2 days | App identity matches Smart Search |
 | 1 | Two-Phase Intent Pipeline | 5 days | Phase A + Phase B with Groq/Claude |
 | 2 | Brand Stage System | 6 days | @nike enters Nike-branded mode |
 | 3 | @Mention Resolution | 4 days | Person / brand / destination mentions |
@@ -78,7 +78,7 @@ Everything in this plan serves that sentence. Every feature below either makes t
 | 5 | Style Profile System | 5 days | 5-dimension taste model |
 | 6 | Universal Cart & UCP | 4 days | Mixed-type cart + UCP merchant protocol |
 | 7 | In-App Commands + Dev Mode | 2 days | \reset, \exit, APP_MODE=dev |
-| 8 | UI Polish (theme, layout, debugger) | 4 days | iAM-identical look and feel |
+| 8 | UI Polish (theme, layout, debugger) | 4 days | Smart Search-identical look and feel |
 | 9 | Tests + Cleanup | 3 days | All new paths tested |
 
 ---
@@ -90,14 +90,14 @@ Everything in this plan serves that sentence. Every feature below either makes t
 **`app/layout.tsx`** — update metadata:
 ```tsx
 export const metadata: Metadata = {
-  title: "iAM — Intent Operating System",
+  title: "Smart Search — Intent Operating System",
   description: "One-prompt orchestration. Travel, shopping, dining, and more.",
 }
 ```
 
-**`app/icon.tsx`** — replace icon with iAM's "i" logo block (black square, bold white "i").
+**`app/icon.tsx`** — replace icon with Smart Search's "i" logo block (black square, bold white "i").
 
-**`app/globals.css`** — adopt iAM color palette: near-black background (`#050505`), purple/blue ambient glow decorations, `--font-inter` as primary font.
+**`app/globals.css`** — adopt Smart Search color palette: near-black background (`#050505`), purple/blue ambient glow decorations, `--font-inter` as primary font.
 
 ### 0.2 Environment variables
 
@@ -149,7 +149,7 @@ export const COLLECTIONS = {
 
 ## Phase 1 — Two-Phase Intent Pipeline (5 days)
 
-This is the most impactful change. Replace the single Claude call in `lib/intent/parser.ts` with iAM's Phase A → Phase B split, while wiring the result into Smart Search's existing assembler, ranking, and intent graph.
+This is the most impactful change. Replace the single Claude call in `lib/intent/parser.ts` with Smart Search's Phase A → Phase B split, while wiring the result into Smart Search's existing assembler, ranking, and intent graph.
 
 ### 1.1 Create the schema registry
 
@@ -173,7 +173,7 @@ This is the most impactful change. Replace the single Claude call in `lib/intent
 }
 ```
 
-**New directory: `lib/intent/schemas/`** — create one `.json` file per service mirroring the schema in iAM (e.g., `flights.json`, `stays.json`, `restaurants.json`, etc.). Each file defines the service's parameters, required/optional flags, and descriptions.
+**New directory: `lib/intent/schemas/`** — create one `.json` file per service mirroring the schema in Smart Search (e.g., `flights.json`, `stays.json`, `restaurants.json`, etc.). Each file defines the service's parameters, required/optional flags, and descriptions.
 
 **New file: `lib/intent/schemaRegistry.ts`**
 
@@ -268,7 +268,7 @@ export interface ParsedIntent {
   rawPrompt: string
   participants: string[]
   
-  // NEW iAM-style additions
+  // NEW Smart Search-style additions
   summary: string              // short label: "Flight to Tokyo"
   originCity: string | null
   companions: string[]
@@ -398,7 +398,7 @@ npm install groq-sdk
 
 ## Phase 2 — Brand Stage System (6 days)
 
-iAM's most distinctive feature. Typing `@nike` transforms the entire UI into a Nike-branded experience.
+Smart Search's most distinctive feature. Typing `@nike` transforms the entire UI into a Nike-branded experience.
 
 ### 2.1 Brand document type
 
@@ -449,7 +449,7 @@ export async function GET(req, { params }) {
 
 ### 2.3 Seed 20+ brands
 
-**New file: `scripts/seed-brands.ts`** — insert the full brand catalog from iAM's seed:
+**New file: `scripts/seed-brands.ts`** — insert the full brand catalog from Smart Search's seed:
 
 Nike, Adidas, Qatar Airways, Emirates, Gucci, Zara, H&M, Uniqlo, Prada, Apple, Samsung, Sony, Amazon, Netflix, Spotify, Hilton, Marriott, Airbnb, Booking.com, Uber, Lyft, Lufthansa, Louis Vuitton, Vogue.
 
@@ -478,7 +478,7 @@ interface StageStore {
 3. Add assistant welcome message: `"Welcome to [Brand]. [Tagline]. What are you looking for?"`
 4. Pass `config.contextPrompt` as `resolverContext` on all subsequent intent calls
 
-**Brand entry guard** (same logic as iAM):
+**Brand entry guard** (same logic as Smart Search):
 - Typing `@handle` alone on empty stage → check if brand → enter brand stage
 - Already in brand session + type different `@brand` → block with instructions
 - Already in generic session + type `@brand` → block, suggest `\exit` first
@@ -532,7 +532,7 @@ When loading a past session that has `brandId`, call `enterBrandStage(brandId, s
 
 ## Phase 3 — @Mention Resolution System (4 days)
 
-Smart Search has `resolveParticipants()` which is participant-focused. iAM's resolver handles three types: person, brand, destination. We extend Smart Search's system.
+Smart Search has `resolveParticipants()` which is participant-focused. Smart Search's resolver handles three types: person, brand, destination. We extend Smart Search's system.
 
 ### 3.1 Mention types and statuses
 
@@ -617,7 +617,7 @@ submitPrompt: async (prompt) => {
   // Show FriendRequestCard for not_a_friend mentions
   for (const m of mentions) {
     if (m.status === 'not_a_friend') addMessage({ role: 'assistant', component: 'FriendRequest', props: m })
-    if (m.status === 'unknown_person') addMessage({ role: 'assistant', content: `@${m.handle} isn't on iAM yet.` })
+    if (m.status === 'unknown_person') addMessage({ role: 'assistant', content: `@${m.handle} isn't on Smart Search yet.` })
     if (m.status === 'unknown_brand') addMessage({ role: 'assistant', content: `@${m.handle} coming soon!` })
   }
   
@@ -631,7 +631,7 @@ submitPrompt: async (prompt) => {
 
 ## Phase 4 — Chat History Sidebar (4 days)
 
-Smart Search shows a flat list of recent searches. iAM has a full conversation sidebar with resumable sessions.
+Smart Search shows a flat list of recent searches. Smart Search has a full conversation sidebar with resumable sessions.
 
 ### 4.1 Chat session schema
 
@@ -823,7 +823,7 @@ Smart Search's cart already handles mixed items. We extend it with UCP for shopp
 
 ### 6.1 UCP Client
 
-**New file: `lib/integrations/ucp.ts`** — copy iAM's `UCPClient` class:
+**New file: `lib/integrations/ucp.ts`** — copy Smart Search's `UCPClient` class:
 
 ```typescript
 export class UCPClient {
@@ -877,7 +877,7 @@ const groups = groupBy(cartItems, i => typeToGroup(i.activityType))
 
 **New component: `components/Cart/UniversalCartDrawer.tsx`**
 
-Slide-in drawer (right side) showing all cart items across all service types, subtotal, payment mode selector (one pays all / split equally / pay your own), and checkout button. Mirrors iAM's UniversalCart but wires into Smart Search's `cartStore`.
+Slide-in drawer (right side) showing all cart items across all service types, subtotal, payment mode selector (one pays all / split equally / pay your own), and checkout button. Mirrors Smart Search's UniversalCart but wires into Smart Search's `cartStore`.
 
 Add cart icon to the navbar with item count badge. Open drawer on click.
 
@@ -931,9 +931,9 @@ In `dev` mode, every adapter's `search()` returns its mock data without calling 
 
 ## Phase 8 — UI Polish (4 days)
 
-### 8.1 Landing page → iAM style
+### 8.1 Landing page → Smart Search style
 
-**`app/page.tsx`** — replace the "Smart Search" hero with iAM identity:
+**`app/page.tsx`** — replace the "Smart Search" hero with Smart Search identity:
 
 ```tsx
 <main className="h-screen flex flex-col bg-[#050505] text-white selection:bg-purple-500/30">
@@ -949,7 +949,7 @@ In `dev` mode, every adapter's `search()` returns its mock data without calling 
 </main>
 ```
 
-Key visual rules from iAM:
+Key visual rules from Smart Search:
 - Background: `#050505` (near black)
 - Cards: `bg-white/5` with `border-white/10` — glassmorphism at low opacity
 - Accent: purple-500 for selection, focus rings
@@ -1245,7 +1245,7 @@ The app:
 8. The full conversation is auto-saved to chat sessions — resumable from the sidebar later
 9. User can type `\save-session` or `\exit` — commands work inline
 
-The experience is **iAM's product** running on **Smart Search's engineering**.
+The experience is **Smart Search's product** running on **Smart Search's engineering**.
 
 ---
 

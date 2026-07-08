@@ -75,7 +75,7 @@ export const BID = {
 
 // ─── Phase 7 — Direct Commerce ───────────────────────────────────────────────
 export const CATALOG = {
-  DEFAULT_PLATFORM_FEE_PERCENT: 10,  // iAM takes 10% of every catalog sale
+  DEFAULT_PLATFORM_FEE_PERCENT: 10,  // Smart Search takes 10% of every catalog sale
   OFFER_WINDOW_MINS: 30,             // catalog offers are valid for 30 minutes
   MAX_STOCK_DECREMENT_QTY: 100,      // safety cap per order
 } as const
@@ -84,7 +84,7 @@ export const RETURN_WINDOW_DAYS = 14  // statutory minimum in UK — enforced in
 
 // ─── Phase 8 — Ecosystem SDK ─────────────────────────────────────────────────
 export const ECOSYSTEM = {
-  API_KEY_PREFIX: 'iam_',
+  API_KEY_PREFIX: 'ss_',
   PROXY_TIMEOUT_MS: 5_000,
   WEBHOOK_MAX_RETRIES: 3,
   WEBHOOK_MAX_FAILURES: 10,

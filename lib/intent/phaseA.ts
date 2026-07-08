@@ -3,7 +3,7 @@ import type { PhaseAResult } from './types'
 
 export function getPhaseAPrompt(): string {
   const catalog = formatCatalogForPrompt()
-  return `You are Phase A of a two-phase intent parsing pipeline for iAM — an intent operating system.
+  return `You are Phase A of a two-phase intent parsing pipeline for Smart Search — an intent operating system.
 
 Your job: given a user's message, identify WHICH services are needed and extract top-level entities.
 Return ONLY valid JSON, no prose.
@@ -38,7 +38,7 @@ Output JSON shape:
 
 export function getPhaseAUpdatePrompt(activeServiceIds: string[]): string {
   const catalog = formatCatalogForPrompt()
-  return `You are Phase A of a two-phase intent parsing pipeline for iAM.
+  return `You are Phase A of a two-phase intent parsing pipeline for Smart Search.
 
 The user is refining an existing request. Currently active services: ${activeServiceIds.join(', ')}
 

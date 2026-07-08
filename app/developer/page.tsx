@@ -129,7 +129,7 @@ export default function DeveloperPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold">iAM Developer Platform</h1>
+        <h1 className="text-2xl font-bold">Smart Search Developer Platform</h1>
         <p className="text-muted-foreground mt-1">
           Welcome back, <span className="font-medium text-foreground">{account.name}</span>
           {' · '}

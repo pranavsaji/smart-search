@@ -94,7 +94,7 @@ export default function VendorDashboard() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-semibold">Vendor Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Manage your products and orders on iAM Marketplace</p>
+          <p className="text-muted-foreground mt-1">Manage your products and orders on Smart Search Marketplace</p>
         </div>
 
         {!vendor ? (
@@ -295,7 +295,7 @@ function VendorRegistrationForm({ onSuccess }: { onSuccess: (v: VendorData) => v
         </button>
       </form>
       <p className="mt-3 text-xs text-muted-foreground">
-        Applications are reviewed within 2 business days. iAM takes a 10% platform fee on all sales.
+        Applications are reviewed within 2 business days. Smart Search takes a 10% platform fee on all sales.
       </p>
     </div>
   )

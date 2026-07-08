@@ -4,7 +4,7 @@ import { FlaskConical } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { ExperimentsClient } from '@/components/experiments/ExperimentsClient'
 
-export const metadata = { title: 'Experiments · iAM' }
+export const metadata = { title: 'Experiments · Smart Search' }
 
 export default async function ExperimentsPage() {
   const session = await auth().catch(() => null)

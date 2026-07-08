@@ -93,7 +93,7 @@ export function Navbar({ user }: NavbarProps) {
           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/20 to-sky-400/15 ring-1 ring-blue-200">
             <Sparkles className="h-3.5 w-3.5 text-blue-500" />
           </div>
-          <span className="gradient-text-brand text-[15px] font-bold tracking-tight">iAM</span>
+          <span className="gradient-text-brand text-[15px] font-bold tracking-tight">Smart Search</span>
         </Link>
 
         {/* Nav actions */}

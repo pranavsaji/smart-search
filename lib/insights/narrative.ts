@@ -26,7 +26,7 @@ export function mockNarrative(stats: InsightStats): Narrative {
     ? ` You explored ${stats.topDestinations.slice(0, 3).join(', ')}.`
     : ''
   const saveBit = stats.savingsVsMarketCents > 0
-    ? ` iAM saved you ${formatMoney(stats.savingsVsMarketCents, stats.currency)} vs market rates.`
+    ? ` Smart Search saved you ${formatMoney(stats.savingsVsMarketCents, stats.currency)} vs market rates.`
     : ''
   const genieBit = stats.genieInteractions > 0
     ? ` Genie handled ${stats.genieInteractions} task${stats.genieInteractions === 1 ? '' : 's'} for you.`
@@ -34,12 +34,12 @@ export function mockNarrative(stats: InsightStats): Narrative {
 
   const headline =
     stats.orderCount === 0
-      ? 'A quiet week on iAM'
+      ? 'A quiet week on Smart Search'
       : `You made ${stats.orderCount} booking${stats.orderCount === 1 ? '' : 's'} this period`
 
   const narrative =
     stats.orderCount === 0
-      ? "No bookings this period — when you're ready, just tell iAM what you need."
+      ? "No bookings this period — when you're ready, just tell Smart Search what you need."
       : `You spent ${spent} across ${stats.orderCount} order${stats.orderCount === 1 ? '' : 's'}.${catBit}${destBit}${saveBit}${genieBit}`.trim()
 
   return { headline, narrative }
