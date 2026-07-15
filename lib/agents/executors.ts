@@ -93,7 +93,7 @@ function targetFromTask(task: AgentTask): WatchTarget {
       end: c.latestDate,
       ...(c.query ?? {}),
     },
-    currency: c.currency ?? 'GBP',
+    currency: c.currency ?? 'USD',
   }
 }
 

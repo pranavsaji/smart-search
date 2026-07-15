@@ -26,7 +26,7 @@ const TOPUP_INTENT_TTL = 86400 // 24h — window for Stripe to deliver webhook
 
 export async function getOrCreateWallet(
   userId: string,
-  currency: WalletCurrency = 'GBP'
+  currency: WalletCurrency = 'USD'
 ): Promise<Wallet> {
   const db = await getDb()
   const existing = await db.collection(COLLECTIONS.wallets).findOne({ userId })
@@ -62,7 +62,7 @@ export interface TopUpResult {
 export async function createTopUpIntent(
   userId: string,
   amountCents: number,
-  currency: WalletCurrency = 'GBP'
+  currency: WalletCurrency = 'USD'
 ): Promise<TopUpResult> {
   if (amountCents < 100) throw new Error('TOPUP_MINIMUM_100')
   if (amountCents > 1_000_000) throw new Error('TOPUP_MAXIMUM_EXCEEDED')

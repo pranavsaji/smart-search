@@ -20,7 +20,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     ])
     return NextResponse.json({ subscription, platformFeePercent })
   } catch (err: unknown) {
-    if (err instanceof Error && err.message === 'UNAUTHORIZED') {
+    if (err instanceof Error && (err as { code?: string }).code === 'UNAUTHORIZED') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(sub, { status: 201 })
   } catch (err: unknown) {
     if (err instanceof Error) {
-      if (err.message === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      if ((err as { code?: string }).code === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
       if (err.message.includes('not configured')) return NextResponse.json({ error: 'Subscription tier not configured' }, { status: 503 })
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

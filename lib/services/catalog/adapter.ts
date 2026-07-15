@@ -227,8 +227,8 @@ function mockCatalogCards(ctx: SearchContext): ServiceCard[] {
       imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
       price: {
         amount: isPremium ? 24999 : isBudget ? 3999 : 9999,
-        currency: 'GBP',
-        displayText: isPremium ? '£249.99' : isBudget ? '£39.99' : '£99.99',
+        currency: 'USD',
+        displayText: isPremium ? '$249.99' : isBudget ? '$39.99' : '$99.99',
       },
       metadata: {
         retailer: 'Smart Search Marketplace',
@@ -263,8 +263,8 @@ function mockCatalogCards(ctx: SearchContext): ServiceCard[] {
       imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
       price: {
         amount: isPremium ? 34900 : isBudget ? 4900 : 14900,
-        currency: 'GBP',
-        displayText: isPremium ? '£349' : isBudget ? '£49' : '£149',
+        currency: 'USD',
+        displayText: isPremium ? '$349' : isBudget ? '$49' : '$149',
       },
       metadata: {
         retailer: 'Smart Search Marketplace',

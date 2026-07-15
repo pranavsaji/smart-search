@@ -69,7 +69,13 @@ export function computeIntentFit(ctx: RankingContext): number {
     const words = text.toLowerCase().split(/[\s,.\-/·→]+/)
     return words.some(w => destAliases.has(w))
   }
-  const destMatch = matchesField(card.displayName) || matchesField(card.description)
+  // Adapters that search by destination stamp it on metadata.destinationCity —
+  // card text alone can't tie "SJC → MAD" back to "Madrid" for arbitrary cities.
+  const metaDest = (card.metadata as { destinationCity?: unknown } | undefined)?.destinationCity
+  const destMatch =
+    matchesField(card.displayName) ||
+    matchesField(card.description) ||
+    (typeof metaDest === 'string' && matchesField(metaDest))
 
   // When budget signal is explicit, price fit dominates — destination match cannot rescue a
   // card that is outside the user's stated budget/premium tier.

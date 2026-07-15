@@ -6,6 +6,9 @@ export interface FlightCardMetadata {
   departing_at: string
   arriving_at: string
   carrier: string
+  /** City the search was for — cards show IATA codes ("SJC → MAD") which the
+   *  ranking gate can't tie back to the user's destination without this. */
+  destinationCity?: string
 }
 
 export interface StayCardMetadata {

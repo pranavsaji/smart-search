@@ -10,7 +10,7 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { handle } = await params
+  const handle = decodeURIComponent((await params).handle).replace(/^@/, '')
   return {
     title: `@${handle} · Smart Search`,
     description: `View ${handle}'s travel profile on Smart Search`,
@@ -18,7 +18,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function HandlePage({ params }: Props) {
-  const { handle } = await params
+  // App Router params arrive percent-encoded — "/@test" yields "%40test".
+  const handle = decodeURIComponent((await params).handle)
 
   // Special paths caught by dynamic route — bail out early
   if (handle === 'favicon.ico' || handle.startsWith('_next') || handle.startsWith('api')) notFound()

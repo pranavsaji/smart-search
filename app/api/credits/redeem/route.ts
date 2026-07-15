@@ -15,7 +15,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(result)
   } catch (err: unknown) {
     if (err instanceof Error) {
-      if (err.message === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      if ((err as { code?: string }).code === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
       if (err.message === 'NO_CREDITS') return NextResponse.json({ error: 'No credits available' }, { status: 402 })
       if (err.message === 'REDEMPTION_TOO_SMALL') return NextResponse.json({ error: 'Redemption amount too small' }, { status: 400 })
       if (err.message === 'CREDIT_ALREADY_APPLIED') return NextResponse.json({ error: 'Credits already applied to this order' }, { status: 409 })

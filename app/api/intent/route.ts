@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { auth } from '@/lib/auth'
 import { parseIntent, parseIntentFromMessages } from '@/lib/intent/parser'
 import { resolveParticipants } from '@/lib/intent/participants'
 import { assembleStage } from '@/lib/stage/assembler'
@@ -24,7 +25,15 @@ const schema = z.object({
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { prompt, messages, userId, handle, previousIntent, resolverContext } = schema.parse(body)
+    const parsed = schema.parse(body)
+    const { prompt, messages, previousIntent, resolverContext } = parsed
+
+    // Identity comes from the session when present — callers like /clarify don't
+    // (and shouldn't need to) thread userId/handle through the client.
+    const session = await auth().catch(() => null)
+    const sessionUser = session?.user as { id?: string; handle?: string } | undefined
+    const userId = sessionUser?.id ?? parsed.userId
+    const handle = sessionUser?.handle ?? parsed.handle
 
     // Build messages array from either `messages` or `prompt`
     const chatMessages = messages && messages.length > 0

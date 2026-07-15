@@ -30,7 +30,7 @@ export async function createPendingOrder(
   }, new Date(Date.now() + 30 * 60 * 1000))
 
   const totalAmount = cart.items.reduce((sum, item) => sum + item.amount, 0)
-  const currency = cart.items[0]?.currency ?? 'GBP'
+  const currency = cart.items[0]?.currency ?? 'USD'
 
   const order: PendingOrder = {
     id: nanoid(),

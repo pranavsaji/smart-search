@@ -23,7 +23,7 @@ export async function GET(
 
     return NextResponse.json(split)
   } catch (err: unknown) {
-    if (err instanceof Error && err.message === 'UNAUTHORIZED') {
+    if (err instanceof Error && (err as { code?: string }).code === 'UNAUTHORIZED') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
@@ -57,7 +57,7 @@ export async function PATCH(
     return NextResponse.json({ error: 'Invalid action. Use approve, decline, or cancel' }, { status: 400 })
   } catch (err: unknown) {
     if (err instanceof Error) {
-      if (err.message === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      if ((err as { code?: string }).code === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
       if (err.message === 'SPLIT_NOT_FOUND') return NextResponse.json({ error: 'Not found' }, { status: 404 })
       if (err.message === 'SPLIT_NOT_FOUND_OR_NOT_OWNER') return NextResponse.json({ error: 'Not found or not owner' }, { status: 404 })
       if (err.message === 'NOT_A_PARTICIPANT') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })

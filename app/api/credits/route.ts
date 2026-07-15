@@ -12,7 +12,7 @@ export async function GET(_req: NextRequest): Promise<NextResponse> {
     ])
     return NextResponse.json({ balance, history, referralCode })
   } catch (err: unknown) {
-    if (err instanceof Error && err.message === 'UNAUTHORIZED') {
+    if (err instanceof Error && (err as { code?: string }).code === 'UNAUTHORIZED') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

@@ -18,6 +18,12 @@ export async function resolveParticipants(intent: ParsedIntent): Promise<Partici
   return Promise.all(
     intent.participants.map(async (p): Promise<Participant> => {
       const handle = p.handle.replace('@', '')
+
+      // Reserved placeholder for logged-out initiators — never a real invitee.
+      if (handle === 'anonymous') {
+        return { handle: p.handle, userId: null, intentGraph: null }
+      }
+
       const user = await users.findOne({ handle })
 
       if (user) {

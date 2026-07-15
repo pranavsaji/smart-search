@@ -30,7 +30,7 @@ interface Negotiation {
   status: string; offers: Offer[]; agreedPriceCents?: number; createdAt: string
 }
 
-const money = (c: number, cur = 'GBP') => new Intl.NumberFormat('en-GB', { style: 'currency', currency: cur }).format(c / 100)
+const money = (c: number, cur = 'USD') => new Intl.NumberFormat('en-GB', { style: 'currency', currency: cur }).format(c / 100)
 
 const TASK_STATUS: Record<string, 'secondary' | 'success' | 'warning' | 'destructive'> = {
   pending: 'secondary', running: 'warning', awaiting_user: 'warning',
@@ -188,7 +188,7 @@ function TaskCreate({ onCreated }: { onCreated: () => void }) {
           aria-label="Destination"
           className="flex-1" />
         <div className="relative w-32">
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">£</span>
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
           <Input type="number" value={maxPrice} onChange={e => setMaxPrice(e.target.value)} placeholder="Max"
             aria-label="Maximum price in pounds"
             className="pl-7" />
@@ -287,13 +287,13 @@ function NegCreate({ onCreated }: { onCreated: () => void }) {
         aria-label="Vendor ID" />
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">£</span>
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
           <Input type="number" value={list} onChange={e => setList(e.target.value)} placeholder="List price"
             aria-label="List price in pounds"
             className="pl-7" />
         </div>
         <div className="relative flex-1">
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">£</span>
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
           <Input type="number" value={budget} onChange={e => setBudget(e.target.value)} placeholder="Max budget"
             aria-label="Maximum budget in pounds"
             className="pl-7" />

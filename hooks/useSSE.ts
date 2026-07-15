@@ -40,6 +40,20 @@ export function useSSE({ stageId, stageContext, onConfirmation, onGenieUpdate }:
   const { addItem, removeItem, items: cartItems } = useCartStore()
   const { addParticipant } = useParticipantStore()
 
+  // Volatile values live in refs so `connect` stays referentially stable.
+  // If these were deps, every row_update would re-render, rebuild `connect`,
+  // and tear down the EventSource mid-replay — losing the remaining events.
+  const stageContextRef = useRef(stageContext)
+  const cartItemsRef = useRef(cartItems)
+  const onConfirmationRef = useRef(onConfirmation)
+  const onGenieUpdateRef = useRef(onGenieUpdate)
+  useEffect(() => {
+    stageContextRef.current = stageContext
+    cartItemsRef.current = cartItems
+    onConfirmationRef.current = onConfirmation
+    onGenieUpdateRef.current = onGenieUpdate
+  })
+
   const connect = useCallback(() => {
     if (!mountedRef.current) return
 
@@ -56,7 +70,8 @@ export function useSSE({ stageId, stageContext, onConfirmation, onGenieUpdate }:
 
     es.addEventListener('row_update', (e: MessageEvent) => {
       const { serviceType, result } = JSON.parse(e.data) as { serviceType: string; result: ServiceResult }
-      const ranked = stageContext ? rankCards(result.cards, stageContext) : result.cards.map(c => ({ ...c, scores: { intentFit: 0.5, userFit: 0.5, outcomeHistory: 0.5, bid: 0, final: 0.5 }, passedGate: true })) as ScoredCard[]
+      const ctx = stageContextRef.current
+      const ranked = ctx ? rankCards(result.cards, ctx) : result.cards.map(c => ({ ...c, scores: { intentFit: 0.5, userFit: 0.5, outcomeHistory: 0.5, bid: 0, final: 0.5 }, passedGate: true })) as ScoredCard[]
       setRowResult(serviceType as ActivityType, result, ranked)
       if (e.lastEventId) lastEventIdRef.current = e.lastEventId
     })
@@ -68,7 +83,8 @@ export function useSSE({ stageId, stageContext, onConfirmation, onGenieUpdate }:
         if (data?.results && typeof data.results === 'object') {
           Object.entries(data.results).forEach(([type, result]) => {
             const r = result as ServiceResult
-            const ranked = stageContext ? rankCards(r.cards, stageContext) : r.cards.map(c => ({ ...c, scores: { intentFit: 0.5, userFit: 0.5, outcomeHistory: 0.5, bid: 0, final: 0.5 }, passedGate: true })) as ScoredCard[]
+            const ctx = stageContextRef.current
+            const ranked = ctx ? rankCards(r.cards, ctx) : r.cards.map(c => ({ ...c, scores: { intentFit: 0.5, userFit: 0.5, outcomeHistory: 0.5, bid: 0, final: 0.5 }, passedGate: true })) as ScoredCard[]
             setRowResult(type as ActivityType, r, ranked)
           })
         }
@@ -87,18 +103,18 @@ export function useSSE({ stageId, stageContext, onConfirmation, onGenieUpdate }:
     })
 
     es.addEventListener('confirmation', (e: MessageEvent) => {
-      onConfirmation?.(JSON.parse(e.data))
+      onConfirmationRef.current?.(JSON.parse(e.data))
     })
 
     es.addEventListener('offer_expired', (e: MessageEvent) => {
       const { cardId } = JSON.parse(e.data) as { cardId: string }
       // Find the cartItem whose service card matches the expired cardId and evict it.
-      const expired = cartItems.find(i => i.cardId === cardId)
+      const expired = cartItemsRef.current.find(i => i.cardId === cardId)
       if (expired) removeItem(expired.id)
     })
 
     es.addEventListener('genie_update', (e: MessageEvent) => {
-      onGenieUpdate?.(JSON.parse(e.data) as GenieUpdate)
+      onGenieUpdateRef.current?.(JSON.parse(e.data) as GenieUpdate)
     })
 
     es.onerror = () => {
@@ -108,7 +124,7 @@ export function useSSE({ stageId, stageContext, onConfirmation, onGenieUpdate }:
       retryRef.current++
       setTimeout(connect, delay)
     }
-  }, [stageId, stageContext, setRowResult, addItem, removeItem, cartItems, addParticipant, setReady, onConfirmation, onGenieUpdate])
+  }, [stageId, setRowResult, addItem, removeItem, addParticipant, setReady])
 
   useEffect(() => {
     mountedRef.current = true

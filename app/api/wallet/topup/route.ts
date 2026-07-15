@@ -16,9 +16,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(result, { status: 201 })
   } catch (err: unknown) {
     if (err instanceof Error) {
-      if (err.message === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-      if (err.message === 'TOPUP_MINIMUM_100') return NextResponse.json({ error: 'Minimum top-up is £1' }, { status: 400 })
-      if (err.message === 'TOPUP_MAXIMUM_EXCEEDED') return NextResponse.json({ error: 'Maximum top-up is £10,000' }, { status: 400 })
+      if ((err as { code?: string }).code === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      if (err.message === 'TOPUP_MINIMUM_100') return NextResponse.json({ error: 'Minimum top-up is $1' }, { status: 400 })
+      if (err.message === 'TOPUP_MAXIMUM_EXCEEDED') return NextResponse.json({ error: 'Maximum top-up is $10,000' }, { status: 400 })
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

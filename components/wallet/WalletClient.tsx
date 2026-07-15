@@ -23,7 +23,7 @@ interface CreditEntry { entryId: string; type: string; amountCents: number; desc
 interface SplitParticipant { handle: string; ratioPercent: number; amountCents: number; status: string }
 interface Split { splitId: string; description: string; totalAmountCents: number; currency: string; status: string; participants: SplitParticipant[]; createdAt: string }
 
-const money = (cents: number, currency = 'GBP') =>
+const money = (cents: number, currency = 'USD') =>
   new Intl.NumberFormat('en-GB', { style: 'currency', currency }).format(cents / 100)
 
 async function getJSON<T>(url: string): Promise<T> {
@@ -78,7 +78,7 @@ export function WalletClient({ handle, userId }: { handle: string; userId: strin
 
 function Overview({ refresh = 0 }: { refresh?: number }) {
   const [balance, setBalance] = useState<number | null>(null)
-  const [currency, setCurrency] = useState('GBP')
+  const [currency, setCurrency] = useState('USD')
   const [credits, setCredits] = useState<number | null>(null)
   const [isPro, setIsPro] = useState(false)
   const [amount, setAmount] = useState('25')
@@ -94,7 +94,7 @@ function Overview({ refresh = 0 }: { refresh?: number }) {
         getJSON<{ isPro: boolean }>('/api/subscriptions'),
       ])
       setBalance(w.wallet.balanceCents)
-      setCurrency(w.wallet.currency ?? 'GBP')
+      setCurrency(w.wallet.currency ?? 'USD')
       setCredits(c.balance)
       setIsPro(s.isPro)
     } catch (e) {
@@ -106,7 +106,7 @@ function Overview({ refresh = 0 }: { refresh?: number }) {
 
   async function topUp() {
     const cents = Math.round(parseFloat(amount) * 100)
-    if (!cents || cents < 100) { setErr('Minimum top-up is £1'); return }
+    if (!cents || cents < 100) { setErr('Minimum top-up is $1'); return }
     setBusy(true); setErr(''); setMsg('')
     try {
       const res = await fetch('/api/wallet/topup', {
@@ -158,7 +158,7 @@ function Overview({ refresh = 0 }: { refresh?: number }) {
         <p className="mb-3 flex items-center gap-2 text-sm font-semibold"><Plus className="h-4 w-4" /> Top up</p>
         <div className="flex gap-2">
           <div className="relative flex-1">
-            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">£</span>
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
             <Input
               type="number" min="1" step="1" value={amount}
               onChange={e => setAmount(e.target.value)}
@@ -174,7 +174,7 @@ function Overview({ refresh = 0 }: { refresh?: number }) {
           {[10, 25, 50, 100].map(v => (
             <button key={v} onClick={() => setAmount(String(v))}
               className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted-foreground hover:bg-secondary">
-              £{v}
+              ${v}
             </button>
           ))}
         </div>
@@ -381,7 +381,7 @@ function SplitCreate({ handle, onCreated }: { handle: string; onCreated: () => v
       <Input value={desc} onChange={e => setDesc(e.target.value)} placeholder="What's it for?"
         aria-label="Split description" />
       <div className="relative">
-        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">£</span>
+        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
         <Input type="number" value={total} onChange={e => setTotal(e.target.value)}
           aria-label="Total amount in pounds"
           className="pl-7" />
@@ -446,7 +446,7 @@ function Pro() {
       <div className="bg-gradient-to-br from-amber-500/15 to-yellow-400/5 p-6 text-center">
         <Crown className="mx-auto h-7 w-7 text-amber-500" />
         <p className="mt-2 text-xl font-bold">Smart Search Pro</p>
-        <p className="text-sm text-muted-foreground">£9.99 / month</p>
+        <p className="text-sm text-muted-foreground">$9.99 / month</p>
         {isPro && <Badge variant="success" className="mt-2">Active</Badge>}
       </div>
       <div className="p-6">

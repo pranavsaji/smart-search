@@ -28,12 +28,13 @@ export function scoreCard(ctx: RankingContext, weights: ScorerWeights = DEFAULT_
   const mergedGraph = ctx.stageContext.mergedGraph as unknown as Record<string, unknown>
   const styleProfile = mergedGraph?.styleProfile as { budget?: string } | undefined
   if (styleProfile && ctx.card.serviceType === 'products' && ctx.card.price) {
-    const styleBudget = styleProfile.budget
+    // Normalise legacy profiles saved with £ labels before the USD switch
+    const styleBudget = styleProfile.budget?.replace(/£/g, '$')
     const cardPrice = ctx.card.price.amount / 100 // minor units → major units (pence → pounds)
-    if (styleBudget === 'Under £50' && cardPrice < 50) styleBoost = 0.05
-    else if (styleBudget === '£50–200' && cardPrice >= 50 && cardPrice <= 200) styleBoost = 0.05
-    else if (styleBudget === '£200–500' && cardPrice >= 200 && cardPrice <= 500) styleBoost = 0.05
-    else if (styleBudget === '£500+' && cardPrice >= 500) styleBoost = 0.05
+    if (styleBudget === 'Under $50' && cardPrice < 50) styleBoost = 0.05
+    else if (styleBudget === '$50–200' && cardPrice >= 50 && cardPrice <= 200) styleBoost = 0.05
+    else if (styleBudget === '$200–500' && cardPrice >= 200 && cardPrice <= 500) styleBoost = 0.05
+    else if (styleBudget === '$500+' && cardPrice >= 500) styleBoost = 0.05
   }
 
   const final = base + styleBoost * 0.1

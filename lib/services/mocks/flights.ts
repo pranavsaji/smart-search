@@ -130,7 +130,7 @@ function makeCard(
   arriving_at: string,
   destinationCity: string,
 ): ServiceCard {
-  const meta: FlightCardMetadata = { departing_at, arriving_at, carrier: code }
+  const meta: FlightCardMetadata = { departing_at, arriving_at, carrier: code, destinationCity }
   return {
     id,
     serviceType: 'flights',
@@ -162,7 +162,7 @@ export function getMockFlights(ctx: SearchContext): ServiceCard[] {
   const depHours = [6, 11, 16]
 
   return carriers.slice(0, 3).map((carrier, i) => {
-    const basePence = 15000 + i * 8000 // £150, £230, £310
+    const basePence = 15000 + i * 8000 // $150, $230, $310
     const amount = scalePriceFromGBP(basePence, currency)
 
     const depDate = new Date(`${intent.dates.start}T${String(depHours[i]).padStart(2, '0')}:00:00`)

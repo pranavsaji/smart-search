@@ -73,7 +73,7 @@ function makeWallet(overrides = {}) {
     walletId: 'WAL-TESTID0001',
     userId: 'user-1',
     balanceCents: 5000,
-    currency: 'GBP',
+    currency: 'USD',
     createdAt: new Date('2026-01-01'),
     updatedAt: new Date('2026-01-01'),
     ...overrides,
@@ -110,7 +110,7 @@ describe('getOrCreateWallet', () => {
     const result = await getOrCreateWallet('user-new')
     expect(result.userId).toBe('user-new')
     expect(result.balanceCents).toBe(0)
-    expect(result.currency).toBe('GBP')
+    expect(result.currency).toBe('USD')
     expect(mockInsertOne).toHaveBeenCalledTimes(1)
   })
 
@@ -159,7 +159,7 @@ describe('createTopUpIntent', () => {
     const result = await createTopUpIntent('user-1', 1000)
     expect(mockPaymentIntentsCreate).toHaveBeenCalledWith(expect.objectContaining({
       amount: 1000,
-      currency: 'gbp',
+      currency: 'usd',
       metadata: { userId: 'user-1', purpose: 'wallet_topup' },
     }))
     expect(result.paymentIntentId).toBe('pi_test_123')
@@ -199,9 +199,9 @@ describe('createTopUpIntent', () => {
     expect(result.amountCents).toBe(1_000_000)
   })
 
-  it('defaults to GBP when currency not specified', async () => {
+  it('defaults to USD when currency not specified', async () => {
     await createTopUpIntent('user-1', 500)
-    expect(mockPaymentIntentsCreate).toHaveBeenCalledWith(expect.objectContaining({ currency: 'gbp' }))
+    expect(mockPaymentIntentsCreate).toHaveBeenCalledWith(expect.objectContaining({ currency: 'usd' }))
   })
 
   it('respects EUR currency', async () => {

@@ -132,7 +132,7 @@ function gpCards(location: string, _startDate: string, isUS: boolean): ServiceCa
       displayName: 'GP Appointment — Babylon Health',
       description: `${location} · Video or in-person · Same-day available · NHS & private`,
       imageUrl: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400',
-      price: { amount: 4900, currency: 'GBP', displayText: '£49 / consultation' },
+      price: { amount: 4900, currency: 'USD', displayText: '$49 / consultation' },
       metadata: { specialty: 'GP', platform: 'Babylon Health', rating: 4.7, reviewCount: 42000, availability: SLOT_TIMES.slice(0, 4), acceptsInsurance: true, teleconsult: true },
       bookingPayload: { specialty: 'GP', platform: 'babylon', providerId: 'health-gp-1', schedulingUrl: 'https://www.babylonhealth.com' },
       isBookable: false, deepLinkUrl: 'https://www.babylonhealth.com', ctaLabel: 'Book Appointment', supportsGenie: true,
@@ -142,7 +142,7 @@ function gpCards(location: string, _startDate: string, isUS: boolean): ServiceCa
       displayName: 'Private GP — Doctorlink',
       description: `${location} · Walk-in or scheduled · Prescriptions · Referrals · Full health checks`,
       imageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
-      price: { amount: 7500, currency: 'GBP', displayText: '£75 / consultation' },
+      price: { amount: 7500, currency: 'USD', displayText: '$75 / consultation' },
       metadata: { specialty: 'GP', platform: 'Doctorlink', rating: 4.8, reviewCount: 12000, availability: SLOT_TIMES.slice(1, 5), acceptsInsurance: true, teleconsult: true },
       bookingPayload: { specialty: 'GP', platform: 'doctorlink', providerId: 'health-gp-2', schedulingUrl: zocdocUrl('General Practitioner', location) },
       isBookable: false, deepLinkUrl: zocdocUrl('General Practitioner', location), ctaLabel: 'Book Appointment', supportsGenie: true,
@@ -152,7 +152,7 @@ function gpCards(location: string, _startDate: string, isUS: boolean): ServiceCa
       displayName: 'Online GP — Push Doctor',
       description: 'Video GP in minutes · 24/7 availability · Prescriptions sent to your pharmacy',
       imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400',
-      price: { amount: 3900, currency: 'GBP', displayText: '£39 / consultation' },
+      price: { amount: 3900, currency: 'USD', displayText: '$39 / consultation' },
       metadata: { specialty: 'GP', platform: 'Push Doctor', rating: 4.6, reviewCount: 28000, availability: ['Available now', 'In 15 mins', 'In 30 mins'], acceptsInsurance: false, teleconsult: true },
       bookingPayload: { specialty: 'GP', platform: 'push_doctor', providerId: 'health-gp-3', schedulingUrl: 'https://www.pushdoctor.co.uk' },
       isBookable: false, deepLinkUrl: 'https://www.pushdoctor.co.uk', ctaLabel: 'See Doctor Now', supportsGenie: true,
@@ -203,7 +203,7 @@ function dentistCards(location: string, _startDate: string, isUS: boolean): Serv
       displayName: 'NHS Dentist — Dental Directory',
       description: `${location} · NHS Band 1, 2 & 3 · Check-up, hygienist, fillings · Accepting new patients`,
       imageUrl: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=400',
-      price: { amount: 2570, currency: 'GBP', displayText: 'From £25.70 (NHS Band 1)' },
+      price: { amount: 2570, currency: 'USD', displayText: 'From $25.70 (NHS Band 1)' },
       metadata: { specialty: 'Dentist', platform: 'Dental Directory', rating: 4.6, reviewCount: 3400, availability: SLOT_TIMES.slice(2, 6), acceptsInsurance: true, teleconsult: false },
       bookingPayload: { specialty: 'dentist', platform: 'dental_directory', providerId: 'health-dent-1', schedulingUrl: zocdocUrl('Dentist', location) },
       isBookable: false, deepLinkUrl: zocdocUrl('Dentist', location), ctaLabel: 'Book Dentist', supportsGenie: true,
@@ -213,7 +213,7 @@ function dentistCards(location: string, _startDate: string, isUS: boolean): Serv
       displayName: 'Private Dentist — mydentist',
       description: `${location} · Cosmetic, implants, Invisalign · Same-week emergencies · 0% finance`,
       imageUrl: 'https://images.unsplash.com/photo-1588776814546-1ffedbe7abb5?w=400',
-      price: { amount: 12000, currency: 'GBP', displayText: 'From £120 (private)' },
+      price: { amount: 12000, currency: 'USD', displayText: 'From $120 (private)' },
       metadata: { specialty: 'Dentist', platform: 'mydentist', rating: 4.8, reviewCount: 8900, availability: SLOT_TIMES.slice(0, 4), acceptsInsurance: true, teleconsult: false },
       bookingPayload: { specialty: 'dentist', platform: 'mydentist', providerId: 'health-dent-2', schedulingUrl: 'https://www.mydentist.co.uk/find-a-dentist' },
       isBookable: false, deepLinkUrl: 'https://www.mydentist.co.uk/find-a-dentist', ctaLabel: 'Book Dentist', supportsGenie: true,
@@ -222,8 +222,8 @@ function dentistCards(location: string, _startDate: string, isUS: boolean): Serv
 }
 
 function therapistCards(location: string, _startDate: string, isUS: boolean): ServiceCard[] {
-  const currency = isUS ? 'USD' : 'GBP'
-  const sym = isUS ? '$' : '£'
+  const currency = isUS ? 'USD' : 'USD'
+  const sym = isUS ? '$' : '$'
   return [
     {
       id: 'health-ther-1', serviceType: 'health_services', vendorId: 'health-ther-1', vendorType: 'health_provider',
@@ -260,7 +260,7 @@ function physioCards(location: string, _startDate: string, isUS: boolean): Servi
         ? `${location} · Sports injuries, back & neck pain · Insurance accepted · Home visits available`
         : `${location} · MSc Physiotherapy · Sports injuries, back & neck pain · Home visits available`,
       imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400',
-      price: { amount: isUS ? 5000 : 7000, currency: isUS ? 'USD' : 'GBP', displayText: isUS ? '$50 copay · $150 self-pay' : '£70 / session' },
+      price: { amount: isUS ? 5000 : 7000, currency: isUS ? 'USD' : 'USD', displayText: isUS ? '$50 copay · $150 self-pay' : '$70 / session' },
       metadata: { specialty: isUS ? 'Physical Therapist' : 'Physiotherapist', platform: isUS ? 'Zocdoc' : 'Physitrack', rating: 4.9, reviewCount: 780, availability: SLOT_TIMES.slice(1, 5), acceptsInsurance: true, teleconsult: false },
       bookingPayload: { specialty: 'physiotherapy', platform: isUS ? 'zocdoc' : 'physitrack', providerId: 'health-physio-1', schedulingUrl: zdUrl },
       isBookable: false, deepLinkUrl: zdUrl, ctaLabel: isUS ? 'Find PT' : 'Book Physio', supportsGenie: true,

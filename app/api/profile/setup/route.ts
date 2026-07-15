@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { ObjectId } from 'mongodb'
 import { auth } from '@/lib/auth'
 import { getDb, COLLECTIONS } from '@/lib/db/mongo'
 
@@ -19,8 +20,10 @@ export async function POST(req: NextRequest) {
     const body = schema.parse(await req.json())
     const db = await getDb()
 
+    // No upsert: the session user always exists. Upserting with a mistyped _id
+    // used to create shadow docs keyed by the raw string id.
     await db.collection(COLLECTIONS.users).updateOne(
-      { _id: session.user.id as unknown as import('mongodb').ObjectId },
+      { _id: new ObjectId(session.user.id) },
       {
         $set: {
           'intentGraph.spendingSignal': body.budgetSignal,
@@ -29,8 +32,7 @@ export async function POST(req: NextRequest) {
           'intentGraph.updatedAt': new Date(),
           onboardingComplete: true,
         },
-      },
-      { upsert: true }
+      }
     )
 
     // Mirror to intentGraphs collection for ranking lookups

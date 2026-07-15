@@ -6,7 +6,7 @@ import {
   Users, Wallet, ArrowRight, Loader2, Check, ChevronLeft,
   Wrench, Stethoscope, ShoppingBag, Code2, CalendarClock, Clock, UserPlus,
 } from 'lucide-react'
-import { format, addDays, getDay } from 'date-fns'
+import { format, addDays, getDay, parseISO } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { classifyDestination } from '@/lib/geo/destinations'
@@ -79,6 +79,13 @@ function extractFromPrompt(prompt: string) {
     departureDate = format(addDays(today, daysUntil), 'yyyy-MM-dd')
   }
 
+  // Trip length — "for 5 nights", "3 nights", "for a week"
+  let nights: number | null = null
+  const nightsMatch = lower.match(/(\d+)\s*(?:nights?|days?)\b/)
+  if (nightsMatch) nights = Math.min(parseInt(nightsMatch[1], 10), 90)
+  else if (/\ba week\b/.test(lower)) nights = 7
+  else if (/\ba fortnight\b|two weeks\b/.test(lower)) nights = 14
+
   // Service detection
   const services: string[] = []
   if (/\bfl(y|ight|ights)\b/.test(lower))                          services.push('flights')
@@ -90,7 +97,7 @@ function extractFromPrompt(prompt: string) {
   if (/\b(plumber|electrician|cleaner|handyman|repair)\b/.test(lower)) services.push('home_services')
   if (/\b(buy|shop|order|purchase|product)\b/.test(lower))          services.push('products')
 
-  return { destination, origin, departureDate, services }
+  return { destination, origin, departureDate, nights, services }
 }
 
 // Derive which form sections to show based on detected services
@@ -128,7 +135,9 @@ function ClarifyInner() {
   const [destination, setDestination] = useState(clientExtracted.destination ?? '')
   const [origin, setOrigin] = useState(clientExtracted.origin ?? '')
   const [departureDate, setDepartureDate] = useState(defaultStart)
-  const [returnDate, setReturnDate] = useState(format(addDays(new Date(defaultStart), 3), 'yyyy-MM-dd'))
+  // parseISO, not new Date(): date-only strings parse as UTC midnight and shift
+  // a day backwards in western timezones.
+  const [returnDate, setReturnDate] = useState(format(addDays(parseISO(defaultStart), clientExtracted.nights ?? 3), 'yyyy-MM-dd'))
   const [groupSize, setGroupSize] = useState(1)
   const [travelerNames, setTravelerNames] = useState<string[]>([])
   const [budget, setBudget] = useState('mid-range')
@@ -162,7 +171,7 @@ function ClarifyInner() {
         if (data.extracted?.origin && !clientExtracted.origin) setOrigin(data.extracted.origin)
         if (data.extracted?.departureDate && !clientExtracted.departureDate) {
           setDepartureDate(data.extracted.departureDate)
-          setReturnDate(format(addDays(new Date(data.extracted.departureDate), 3), 'yyyy-MM-dd'))
+          setReturnDate(format(addDays(parseISO(data.extracted.departureDate), clientExtracted.nights ?? 3), 'yyyy-MM-dd'))
         }
       })
       .catch(() => {})

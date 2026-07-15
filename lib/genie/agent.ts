@@ -144,7 +144,7 @@ export function buildCartItem(card: ScoredCard, userId: string, selectedSlot: st
     vendorType: card.vendorType as VendorType,
     activityType: card.serviceType,
     amount: card.price?.amount ?? 0,
-    currency: card.price?.currency ?? 'GBP',
+    currency: card.price?.currency ?? 'USD',
     lockedBy: userId,
     isShared: false,
     // Merge original payload + genie-specific fields so adapters (e.g. Calendly)

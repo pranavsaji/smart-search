@@ -20,7 +20,7 @@ function makeScoredCard(overrides: Partial<ScoredCard> = {}): ScoredCard {
     vendorType: 'calendly',
     displayName: 'Executive Coach — 60 min',
     description: '60-min coaching session via Calendly',
-    price: { amount: 15000, currency: 'GBP', displayText: '£150' },
+    price: { amount: 15000, currency: 'USD', displayText: '$150' },
     metadata: {
       type: 'coaching',
       platform: 'Calendly',
@@ -62,7 +62,7 @@ describe('buildCartItem', () => {
     expect(item.vendorId).toBe('vendor-1')
     expect(item.activityType).toBe('appointments')
     expect(item.amount).toBe(15000)
-    expect(item.currency).toBe('GBP')
+    expect(item.currency).toBe('USD')
     expect(item.lockedBy).toBe('user-1')
     expect(item.isBookable).toBe(true)
   })
@@ -84,7 +84,7 @@ describe('buildCartItem', () => {
     const item = buildCartItem(card, 'user-1', 'flexible')
 
     expect(item.amount).toBe(0)
-    expect(item.currency).toBe('GBP')
+    expect(item.currency).toBe('USD')
   })
 
   it('sets offerExpiresAt ~15 minutes from now', () => {

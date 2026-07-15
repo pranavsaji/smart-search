@@ -13,7 +13,7 @@ interface BudgetLimit { department?: string; periodType: string; limitCents: num
 interface Approval { requestId: string; requesterId: string; amountCents: number; currency: string; description?: string; status: string; createdAt: string }
 interface Org { orgId: string; name: string; domain?: string; ownerId: string; members: Member[]; budgetLimits: BudgetLimit[] }
 
-const money = (c: number, cur = 'GBP') => new Intl.NumberFormat('en-GB', { style: 'currency', currency: cur }).format(c / 100)
+const money = (c: number, cur = 'USD') => new Intl.NumberFormat('en-GB', { style: 'currency', currency: cur }).format(c / 100)
 
 export function OrgClient({ currentUserId }: { currentUserId: string }) {
   const [orgs, setOrgs] = useState<Org[] | null>(null)
@@ -197,7 +197,7 @@ function Budgets({ org, canManage, onChange }: { org: Org; canManage: boolean; o
     try {
       await fetch(`/api/org/${org.orgId}/budget`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ department: dept || undefined, periodType: period, limitCents: cents, currency: 'GBP', alertThresholdPercent: 80 }),
+        body: JSON.stringify({ department: dept || undefined, periodType: period, limitCents: cents, currency: 'USD', alertThresholdPercent: 80 }),
       })
       setAdding(false); setDept(''); setLimit('')
       load(); onChange()
@@ -230,7 +230,7 @@ function Budgets({ org, canManage, onChange }: { org: Org; canManage: boolean; o
               <option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="annual">Annual</option>
             </select>
             <div className="relative w-32">
-              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">£</span>
+              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
               <input type="number" value={limit} onChange={e => setLimit(e.target.value)} placeholder="Limit" className="w-full rounded-lg border border-border bg-background py-2 pl-7 pr-3 text-sm" />
             </div>
           </div>

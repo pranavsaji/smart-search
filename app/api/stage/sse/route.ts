@@ -16,7 +16,10 @@ const reassemblyInFlight = new Set<string>()
 
 export async function GET(req: NextRequest) {
   const stageId = req.nextUrl.searchParams.get('stageId')
-  const lastEventId = req.headers.get('Last-Event-ID')
+  // Browsers only send the Last-Event-ID header on automatic EventSource reconnects.
+  // Manual reconnects (new EventSource from useSSE) carry it as a query param instead.
+  const lastEventId =
+    req.headers.get('Last-Event-ID') ?? req.nextUrl.searchParams.get('lastEventId')
 
   if (!stageId) {
     return new Response('Missing stageId', { status: 400 })
@@ -30,6 +33,17 @@ export async function GET(req: NextRequest) {
         try { controller.enqueue(encoder.encode(formatSSE(event))) } catch { /* client disconnected */ }
       }
 
+      // Deliver each event at most once — events can arrive via both the
+      // in-process emitter and the Redis poll below.
+      const seenIds = new Set<string>()
+      let lastTs = 0
+      const deliver = (event: SSEEvent) => {
+        if (seenIds.has(event.id)) return
+        seenIds.add(event.id)
+        if (event.timestamp > lastTs) lastTs = event.timestamp
+        enqueue(event)
+      }
+
       const sendComment = (text: string) => {
         try { controller.enqueue(encoder.encode(`: ${text}\n\n`)) } catch { /* client disconnected */ }
       }
@@ -40,14 +54,18 @@ export async function GET(req: NextRequest) {
 
       // 1. Subscribe to in-process emitter FIRST — before replaying history — so we
       //    don't miss events that fire between the replay read and the subscription.
-      const unsubscribe = onStageEvent(stageId, enqueue)
+      //    The emitter only reaches connections in the same module graph (in dev,
+      //    each route compiles separately), so the Redis poll below is the
+      //    delivery guarantee; the emitter is just a zero-latency fast path.
+      const unsubscribe = onStageEvent(stageId, deliver)
 
       // 2. Replay historical events from Redis (best-effort — quota errors return [])
       const replaySince = lastEventId ? parseInt(lastEventId.split('-')[0], 10) : 0
+      lastTs = replaySince
       let hadHistory = false
       try {
         const historicalEvents = await getEventsSince(stageId, replaySince)
-        for (const e of historicalEvents) enqueue(e)
+        for (const e of historicalEvents) deliver(e)
         hadHistory = historicalEvents.length > 0
       } catch { /* already handled inside getEventsSince, but belt-and-suspenders */ }
 
@@ -98,11 +116,26 @@ export async function GET(req: NextRequest) {
           .finally(() => reassemblyInFlight.delete(stageId))
       }
 
-      // 6. Keepalive comment every 25s — prevents proxy/browser timeouts
+      // 6. Poll Redis for new events — the cross-process/cross-bundle delivery
+      //    path (Upstash HTTP has no pub/sub here). `lastTs - 1` re-fetches the
+      //    last-seen millisecond so same-ms events aren't skipped; dedupe above.
+      let polling = false
+      const poll = setInterval(async () => {
+        if (polling) return
+        polling = true
+        try {
+          const events = await getEventsSince(stageId, Math.max(0, lastTs - 1))
+          for (const e of events) deliver(e)
+        } catch { /* Redis unavailable — emitter fast path still works */ }
+        finally { polling = false }
+      }, 500)
+
+      // 7. Keepalive comment every 25s — prevents proxy/browser timeouts
       const keepAlive = setInterval(() => sendComment('keepalive'), 25000)
 
       req.signal.addEventListener('abort', () => {
         clearInterval(keepAlive)
+        clearInterval(poll)
         unsubscribe()
         try { controller.close() } catch { /* already closed */ }
       })

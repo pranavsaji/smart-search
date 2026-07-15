@@ -24,7 +24,7 @@ export interface StyleProfile {
 const STYLE_OPTIONS = ['Streetwear', 'Minimalist', 'Classic', 'Bohemian', 'Formal']
 const TASTE_OPTIONS = ['Luxury', 'Sustainable', 'Fast-fashion', 'Vintage']
 const VIBES_OPTIONS = ['Laid-back', 'Edgy', 'Preppy', 'Avant-garde']
-const BUDGET_OPTIONS = ['Under £50', '£50–200', '£200–500', '£500+']
+const BUDGET_OPTIONS = ['Under $50', '$50–200', '$200–500', '$500+']
 
 export function StyleStep({ onComplete, onSkip }: StyleStepProps) {
   const [style, setStyle] = useState('')

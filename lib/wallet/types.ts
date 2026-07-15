@@ -98,13 +98,13 @@ export const VENDOR_TIER_FEE: Record<VendorTier, number> = {
 }
 
 // Smart Search Pro monthly price in pence
-export const SMARTSEARCH_PRO_PRICE_CENTS = 999  // £9.99
+export const SMARTSEARCH_PRO_PRICE_CENTS = 999  // $9.99
 
 // Cashback rate: 1% of every transaction
 export const CASHBACK_RATE_PERCENT = 1
 
 // Referral bonus per user (both referrer and referee)
-export const REFERRAL_BONUS_CENTS = 500  // £5.00
+export const REFERRAL_BONUS_CENTS = 500  // $5.00
 
 // Split request TTL in hours
 export const SPLIT_EXPIRY_HOURS = 48

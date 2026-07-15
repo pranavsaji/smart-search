@@ -65,12 +65,18 @@ export function StageShell({ stageId, parsedIntent, stageContext, userId, pendin
 
   useSSE({ stageId, stageContext, onConfirmation: setConfirmedData, onGenieUpdate: handleGenieUpdate })
 
+  // Keyed on stageId only — parsedIntent gets a fresh object identity on every
+  // RSC re-render, and re-running this mid-assembly would reset the cart while
+  // the (still-open) SSE connection never re-delivers already-sent row events.
   useEffect(() => {
     setStageId(stageId)
     setCartStageId(stageId)
     resetCart()
+  }, [stageId, setStageId, setCartStageId, resetCart])
+
+  useEffect(() => {
     setParticipants(parsedIntent.participants)
-  }, [stageId, parsedIntent.participants, setStageId, setCartStageId, resetCart, setParticipants])
+  }, [parsedIntent.participants, setParticipants])
 
   const handleGenie = (card: ScoredCard) => {
     setGenieCard(card)

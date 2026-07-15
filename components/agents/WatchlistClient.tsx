@@ -21,7 +21,7 @@ const ITEM_TYPES = [
   'digital_services', 'home_services', 'health_services', 'appointments',
 ] as const
 
-const money = (c: number, cur = 'GBP') => new Intl.NumberFormat('en-GB', { style: 'currency', currency: cur }).format(c / 100)
+const money = (c: number, cur = 'USD') => new Intl.NumberFormat('en-GB', { style: 'currency', currency: cur }).format(c / 100)
 
 export function WatchlistClient({ userId }: { userId: string }) {
   const [items, setItems] = useState<WatchItem[] | null>(null)
@@ -117,7 +117,7 @@ function WatchCreate({ onCreated }: { onCreated: () => void }) {
     try {
       const res = await fetch('/api/watchlist', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ target: { itemType, label, query: {}, currency: 'GBP' }, targetPriceCents: cents }),
+        body: JSON.stringify({ target: { itemType, label, query: {}, currency: 'USD' }, targetPriceCents: cents }),
       })
       if (!res.ok) throw new Error((await res.json()).error ?? 'Failed')
       setOpen(false); setLabel(''); setTarget('')
@@ -138,7 +138,7 @@ function WatchCreate({ onCreated }: { onCreated: () => void }) {
           {ITEM_TYPES.map(t => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
         </select>
         <div className="relative w-36">
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">£</span>
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
           <input type="number" value={target} onChange={e => setTarget(e.target.value)} placeholder="Target"
             className="w-full rounded-lg border border-border bg-background py-2 pl-7 pr-3 text-sm" />
         </div>

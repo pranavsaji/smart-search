@@ -105,7 +105,7 @@ beforeEach(() => {
 
 describe('GET /api/wallet', () => {
   it('returns wallet and transactions for authenticated user', async () => {
-    const wallet = { walletId: 'WAL-1', userId: 'user-1', balanceCents: 1000, currency: 'GBP' }
+    const wallet = { walletId: 'WAL-1', userId: 'user-1', balanceCents: 1000, currency: 'USD' }
     mockGetOrCreateWallet.mockResolvedValue(wallet)
     mockGetWalletBalance.mockResolvedValue(1000)
     mockGetWalletTransactions.mockResolvedValue([])
@@ -117,7 +117,7 @@ describe('GET /api/wallet', () => {
   })
 
   it('returns 401 when not authenticated', async () => {
-    mockRequireUserId.mockRejectedValue(new Error('UNAUTHORIZED'))
+    mockRequireUserId.mockRejectedValue(Object.assign(new Error('Unauthorized'), { code: 'UNAUTHORIZED' }))
     const res = await walletGet(makeReq('GET') as never)
     expect(res.status).toBe(401)
   })
@@ -128,7 +128,7 @@ describe('GET /api/wallet', () => {
 describe('POST /api/wallet/topup', () => {
   it('creates top-up PaymentIntent', async () => {
     mockCreateTopUpIntent.mockResolvedValue({
-      paymentIntentId: 'pi_test', clientSecret: 'pi_test_secret', amountCents: 5000, currency: 'GBP',
+      paymentIntentId: 'pi_test', clientSecret: 'pi_test_secret', amountCents: 5000, currency: 'USD',
     })
     const res = await topupPost(makeReq('POST', { amountCents: 5000 }) as never)
     expect(res.status).toBe(201)
@@ -146,7 +146,7 @@ describe('POST /api/wallet/topup', () => {
     const res = await topupPost(makeReq('POST', { amountCents: 50 }) as never)
     expect(res.status).toBe(400)
     const body = await res.json() as { error: string }
-    expect(body.error).toContain('£1')
+    expect(body.error).toContain('$1')
   })
 
   it('returns 400 for TOPUP_MAXIMUM_EXCEEDED', async () => {
@@ -156,7 +156,7 @@ describe('POST /api/wallet/topup', () => {
   })
 
   it('returns 401 when not authenticated', async () => {
-    mockRequireUserId.mockRejectedValue(new Error('UNAUTHORIZED'))
+    mockRequireUserId.mockRejectedValue(Object.assign(new Error('Unauthorized'), { code: 'UNAUTHORIZED' }))
     const res = await topupPost(makeReq('POST', { amountCents: 500 }) as never)
     expect(res.status).toBe(401)
   })
@@ -178,7 +178,7 @@ describe('GET /api/credits', () => {
   })
 
   it('returns 401 when not authenticated', async () => {
-    mockRequireUserId.mockRejectedValue(new Error('UNAUTHORIZED'))
+    mockRequireUserId.mockRejectedValue(Object.assign(new Error('Unauthorized'), { code: 'UNAUTHORIZED' }))
     const res = await creditsGet(makeReq('GET') as never)
     expect(res.status).toBe(401)
   })
@@ -225,7 +225,7 @@ describe('GET /api/splits', () => {
   })
 
   it('returns 401 when not authenticated', async () => {
-    mockRequireUserId.mockRejectedValue(new Error('UNAUTHORIZED'))
+    mockRequireUserId.mockRejectedValue(Object.assign(new Error('Unauthorized'), { code: 'UNAUTHORIZED' }))
     const res = await splitsGet(makeReq('GET') as never)
     expect(res.status).toBe(401)
   })
@@ -238,7 +238,7 @@ describe('POST /api/splits', () => {
     stageId: 'stage-1',
     requesterHandle: '@alice',
     totalAmountCents: 10000,
-    currency: 'GBP',
+    currency: 'USD',
     description: 'Paris trip',
     participants: [
       { userId: 'alice', handle: '@alice', ratioPercent: 60 },
@@ -390,7 +390,7 @@ describe('GET /api/subscriptions', () => {
   })
 
   it('returns 401 when not authenticated', async () => {
-    mockRequireUserId.mockRejectedValue(new Error('UNAUTHORIZED'))
+    mockRequireUserId.mockRejectedValue(Object.assign(new Error('Unauthorized'), { code: 'UNAUTHORIZED' }))
     const res = await subsGet(makeReq('GET') as never)
     expect(res.status).toBe(401)
   })
@@ -436,7 +436,7 @@ describe('POST /api/subscriptions', () => {
   })
 
   it('returns 401 when not authenticated', async () => {
-    mockRequireUserId.mockRejectedValue(new Error('UNAUTHORIZED'))
+    mockRequireUserId.mockRejectedValue(Object.assign(new Error('Unauthorized'), { code: 'UNAUTHORIZED' }))
     const res = await subsPost(makeReq('POST', {}) as never)
     expect(res.status).toBe(401)
   })

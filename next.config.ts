@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'maps.googleapis.com' },
       { protocol: 'https', hostname: '**.unsplash.com' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      // Rainforest (Amazon) product imagery
+      { protocol: 'https', hostname: 'm.media-amazon.com' },
+      { protocol: 'https', hostname: '**.ssl-images-amazon.com' },
     ],
   },
   experimental: {

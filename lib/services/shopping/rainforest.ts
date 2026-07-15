@@ -26,9 +26,16 @@ interface RainforestSearchResponse {
 // Derives a concise product search term from raw intent text.
 // Strips trip-planning language so Amazon gets a focused query.
 export function extractSearchTerm(rawPrompt: string): string {
-  const stripped = rawPrompt
-    .replace(/plan|trip|visit|book|find|get|need|want|looking for|help|me|a|an|the/gi, ' ')
-    .replace(/@\w+/g, '')
+  // Drop clarify-appended metadata ("destination: Madrid (MAD), departing: …") —
+  // trip context only dilutes the product query.
+  const withoutMeta = rawPrompt.split(/,\s*(?:destination|from|departing|returning|travelers|preferred time):/i)[0]
+  const stripped = withoutMeta
+    .replace(/["'“”‘’]/g, ' ') // users paste quoted prompts — quotes poison Amazon phrase matching
+    .replace(/@(\w+)/g, '$1') // "@adidas" → "adidas" — the brand is the strongest search signal
+    .replace(/\b(?:next|this)\s+(?:mon|tues|wednes|thurs|fri|satur|sun)day\b/gi, ' ')
+    .replace(/\b\d+\s*(?:nights?|days?|people)\b/gi, ' ')
+    .replace(/\b(?:plan|trip|visit|book|find|get|need|want|help|show|looking|for|me|my|a|an|the|flying|from|to)\b/gi, ' ')
+    .replace(/[.,]+/g, ' ')
     .replace(/\s{2,}/g, ' ')
     .trim()
   return stripped.slice(0, 100) // Rainforest caps query length
@@ -36,7 +43,7 @@ export function extractSearchTerm(rawPrompt: string): string {
 
 export async function searchAmazon(
   searchTerm: string,
-  domain = 'amazon.co.uk'
+  domain = 'amazon.com'
 ): Promise<RainforestProduct[]> {
   const params = new URLSearchParams({
     api_key: process.env.RAINFOREST_API_KEY!,

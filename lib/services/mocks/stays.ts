@@ -77,7 +77,7 @@ export function getMockStays(ctx: SearchContext): ServiceCard[] {
     : 1.0
 
   return hotels.map((hotel, i) => {
-    const basePence = Math.round((8000 + i * 4000) * budgetMultiplier) // £80–£160 base/night
+    const basePence = Math.round((8000 + i * 4000) * budgetMultiplier) // $80–$160 base/night
     const nightlyAmount = scalePriceFromGBP(basePence, currency)
     const meta: StayCardMetadata = { accommodationId: `mock-stay-${i}` }
 

@@ -16,7 +16,7 @@ export async function GET(_req: NextRequest): Promise<NextResponse> {
     ])
     return NextResponse.json({ subscription, isPro: pro })
   } catch (err: unknown) {
-    if (err instanceof Error && err.message === 'UNAUTHORIZED') {
+    if (err instanceof Error && (err as { code?: string }).code === 'UNAUTHORIZED') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(sub, { status: 201 })
   } catch (err: unknown) {
     if (err instanceof Error) {
-      if (err.message === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      if ((err as { code?: string }).code === 'UNAUTHORIZED') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
       if (err.message === 'NO_ACTIVE_SUBSCRIPTION') return NextResponse.json({ error: 'No active subscription' }, { status: 404 })
       if (err.message.includes('not configured')) return NextResponse.json({ error: 'Subscription not configured on this server' }, { status: 503 })
     }

@@ -21,7 +21,7 @@ export interface ServiceProvider {
   reviewCount: number
   priceAmount: number              // minor units (pence)
   priceCurrency: string
-  priceDisplay: string             // e.g. "£75 / hr"
+  priceDisplay: string             // e.g. "$75 / hr"
   schedulingUrl?: string           // Calendly or platform booking URL
   deepLinkUrl?: string             // direct link to provider profile
   metadata: Record<string, unknown>

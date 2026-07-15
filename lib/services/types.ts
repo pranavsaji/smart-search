@@ -14,7 +14,7 @@ export * from './metadata'
 export interface Price {
   amount: number      // minor units (pence, cents, paisa, etc.)
   currency: string    // ISO 4217
-  displayText: string // pre-formatted, e.g. "£240 / night"
+  displayText: string // pre-formatted, e.g. "$240 / night"
 }
 
 export interface ServiceCard {

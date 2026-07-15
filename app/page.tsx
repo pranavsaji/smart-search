@@ -4,13 +4,14 @@ import {
 } from 'lucide-react'
 import { IntentInput } from '@/components/IntentInput'
 import { Navbar } from '@/components/layout/Navbar'
+import { PlatformTour } from '@/components/Onboarding/PlatformTour'
 import { auth } from '@/lib/auth'
 
 const EXAMPLE_PROMPTS = [
   'Plan a 3-day Paris trip with @alex — flights from London, mid-range',
   'I need a plumber for a leak in Manchester, today if possible',
   'Find me a good therapist in London, video sessions preferred',
-  'Buy me noise-cancelling headphones under £200',
+  'Buy me noise-cancelling headphones under $200',
   'I need a React developer to build a landing page — budget flexible',
   'Book a dentist appointment in Edinburgh this week',
 ]
@@ -134,6 +135,9 @@ export default async function HomePage() {
 
       {/* Floating navbar */}
       <Navbar user={user} />
+
+      {/* First-run guided tour (auto-opens once; “?” button reopens) */}
+      <PlatformTour />
 
       {/* ── Hero ── */}
       <section className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-32 pb-20 text-center">

@@ -60,7 +60,7 @@ export async function buildUserInsightStats(
 
   let totalSpentCents = 0
   let savingsVsMarketCents = 0
-  let currency = 'GBP'
+  let currency = 'USD'
   const catMap = new Map<string, CategorySpend>()
 
   for (const raw of orders) {

@@ -22,7 +22,7 @@ const DIMENSIONS = [
   { key: 'style', label: 'Style Vibe', options: ['Streetwear', 'Minimalist', 'Classic', 'Bohemian', 'Formal'] },
   { key: 'taste', label: 'Fashion Philosophy', options: ['Luxury', 'Sustainable', 'Fast-fashion', 'Vintage'] },
   { key: 'vibes', label: 'Aesthetic', options: ['Laid-back', 'Edgy', 'Preppy', 'Avant-garde'] },
-  { key: 'budget', label: 'Budget Per Item', options: ['Under £50', '£50–200', '£200–500', '£500+'] },
+  { key: 'budget', label: 'Budget Per Item', options: ['Under $50', '$50–200', '$200–500', '$500+'] },
 ] as const
 
 export function StyleProfileSettings() {

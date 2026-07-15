@@ -96,7 +96,7 @@ export class FlightsAdapter extends AbstractServiceAdapter {
         })
 
         const offers = await duffelRequest<DuffelOffer[]>(`air/offers?offer_request_id=${offerRequest.id}&limit=10`)
-        const mapped = offers.map(offerToCard)
+        const mapped = offers.map(o => offerToCard(o, intent.destination))
         // Honor "cheapest / lowest price" requests — sort ascending
         return wantsCheapest ? mapped.sort((a, b) => (a.price?.amount ?? 0) - (b.price?.amount ?? 0)) : mapped
       })
@@ -149,7 +149,7 @@ async function resolveIATA(cityName: string): Promise<string | null> {
   } catch { return null }
 }
 
-function offerToCard(offer: DuffelOffer): ServiceCard {
+function offerToCard(offer: DuffelOffer, destinationCity: string): ServiceCard {
   const slice = offer.slices[0]
   const seg = slice.segments[0]
   const amount = Math.round(parseFloat(offer.total_amount) * 100)
@@ -157,6 +157,7 @@ function offerToCard(offer: DuffelOffer): ServiceCard {
     departing_at: seg.departing_at,
     arriving_at: seg.arriving_at,
     carrier: seg.marketing_carrier.iata_code,
+    destinationCity,
   }
   return {
     id: offer.id,
