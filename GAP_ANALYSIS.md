@@ -4,10 +4,19 @@
 This document audits every roadmap item against the current codebase, states what is done, what is not, why each gap matters, and gives a concrete implementation path. Organised into 5 phases matching the 24-month roadmap. Each phase is sequenced so later phases have stable foundations.
 
 
+> **PHASE 1 IS COMPLETE (2026-08-25).** §1.1 OTP auth, §1.2 onboarding funnel + graph seeding,
+> §1.3 Pinecone RAG (already shipped), §1.4 background-job durability, §1.5 rate limiting +
+> Sentry + PostHog + cost tracking, §1.6 CI/CD — all built. Two deliberate deviations, both
+> documented in the commits: §1.4 uses an in-process retry + dead-letter runner instead of
+> Inngest, and §1.2's email/@handle steps are covered at signup by the new OTP flow.
+> **Phase 2 is the next open work.** Everything from Phase 2 down is still unbuilt except the
+> items called out below as shipped.
+>
 > **Status note (2026-08-25):** This is the only remaining forward-looking plan doc.
 > `PHASEPLAN.md` (Phases 7–12) and `TRANSFORMATION_PLAN.md` (Phases 0–9 rebrand/pipeline)
 > were deleted because their scope shipped — see `CLAUDE.md` for what was built.
 > Sections below that overlap with shipped work are **already done**:
+> Phase 1.3 Pinecone/RAG → shipped (`lib/rag/*`, wired into `/api/genie/*`);
 > Phase 3.1 Wallet → shipped as Phase 10 (`lib/wallet/*`);
 > Phase 3.4 SDK Ecosystem → shipped as Phase 8 (`lib/ecosystem/*`, `/developer`, `/marketplace`);
 > Phase 2.2 Genie Proactive → shipped as Phase 9 (`/proactive` + cron).
@@ -302,19 +311,18 @@ Vercel already handles production deploys on merge to main. GitHub Actions just 
 
 | Item | Status | Effort | Priority |
 |---|---|---|---|
-| OTP auth | ❌ Not done | 3–4d | P0 |
-| Onboarding funnel (all 5 steps) | ⚠️ Partial | 4–5d | P0 |
-| Pinecone + RAG (Intent Graph v2) | ❌ Not done | 7–10d | P1 |
-| Inngest background jobs | ❌ Not done | 3–4d | P1 |
-| Rate limiting (Upstash) | ❌ Not done | 1d | P0 |
-| Sentry error tracking | ❌ Not done | 2d | P0 |
-| PostHog analytics | ❌ Not done | 2d | P1 |
-| API cost monitoring | ❌ Not done | 1d | P2 |
-| GitHub Actions CI | ❌ Not done | 1d | P1 |
-| Mobile app (React Native) | ❌ Not done | 6–8 weeks | P2 |
+| OTP auth | ✅ Done | 3–4d | P0 |
+| Onboarding funnel (all 5 steps) | ✅ Done | 4–5d | P0 |
+| Pinecone + RAG (Intent Graph v2) | ✅ Done | 7–10d | P1 |
+| Background job durability | ✅ Done (not via Inngest) | 3–4d | P1 |
+| Rate limiting | ✅ Done (native Redis, not @upstash/ratelimit) | 1d | P0 |
+| Sentry error tracking | ✅ Done | 2d | P0 |
+| PostHog analytics | ✅ Done | 2d | P1 |
+| API cost monitoring | ✅ Done | 1d | P2 |
+| GitHub Actions CI | ✅ Done | 1d | P1 |
+| Mobile app (React Native) | ❌ Not done — see §5.5 | 6–8 weeks | P2 |
 
-**Phase 1 estimated total (excluding mobile): ~4–5 weeks for 1 engineer.**
-**Mobile app: separate 6–8 week track requiring a dedicated mobile engineer.**
+**Phase 1 is complete except the mobile app**, which remains a separate 6–8 week track needing a dedicated mobile engineer (tracked in §5.5).
 
 ---
 
