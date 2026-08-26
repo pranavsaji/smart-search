@@ -88,6 +88,8 @@ export const COLLECTIONS = {
   insightReports:       'insight_reports',
   // Observability (GAP_ANALYSIS 1.5) — LLM/vendor API spend
   apiCosts:             'api_costs',
+  // Durable side effects (GAP_ANALYSIS 1.4) — dead-lettered jobs
+  failedJobs:           'failed_jobs',
 } as const
 
 export async function ensureIndexes(): Promise<void> {

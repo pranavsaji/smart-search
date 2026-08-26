@@ -6,6 +6,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { serviceRegistry } from '@/lib/services/registry'
 import { broadcastToStage } from '@/lib/sse/broadcast'
 import { sendGenieConfirmation } from '@/lib/mail'
+import { runJobDetached } from '@/lib/jobs/runner'
 import { logger } from '@/lib/logger'
 import type { CartItem, VendorType } from '@/lib/checkout/types'
 import type { ScoredCard } from '@/lib/ranking/types'
@@ -288,15 +289,17 @@ export async function genieBook(input: GenieBookInput): Promise<GenieResult> {
         : `Booked. Confirmation: ${confirmationCode}`,
     })
 
-    // Fire-and-forget email; don't let email failure block the SSE confirmation
-    sendGenieConfirmation({
+    // Off the response path so email failure can't block the SSE confirmation,
+    // but retried and dead-lettered rather than lost: this email is the user's
+    // only record of a booking Genie made on their behalf.
+    runJobDetached('email.genieConfirmation', {
       to: userEmail,
       recipientName: userName,
       serviceName: card.displayName,
       slot: finalSlot,
       confirmationCode: confirmationCode ?? deepLinkUrl ?? 'pending',
       deepLinkUrl,
-    }).catch(err => logger.error('[Genie] Email send failed', err, { userId, cardId: card.id }))
+    }, sendGenieConfirmation)
 
     return { confirmed: true, confirmationCode, deepLinkUrl, slot: finalSlot }
   }
