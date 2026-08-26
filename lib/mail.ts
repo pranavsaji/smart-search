@@ -161,6 +161,40 @@ export async function sendGiftNotification(opts: {
   })
 }
 
+// GAP_ANALYSIS 1.1 — email one-time-passcode login.
+export async function sendOtpEmail(opts: {
+  to: string
+  code: string
+  expiresInMinutes: number
+}): Promise<void> {
+  await resend.emails.send({
+    from: 'Smart Search <login@smartsearch.travel>',
+    to: opts.to,
+    subject: `${opts.code} is your Smart Search sign-in code`,
+    html: `
+<!DOCTYPE html>
+<html>
+<body style="background: #020817; font-family: system-ui, sans-serif; color: #f1f5f9; margin: 0; padding: 20px;">
+  <div style="max-width: 600px; margin: 0 auto; background: #0f172a; border-radius: 12px; border: 1px solid #1e293b; overflow: hidden;">
+    <div style="padding: 32px; text-align: center;">
+      <h2 style="margin: 0 0 8px; color: #f1f5f9;">Sign in to Smart Search</h2>
+      <p style="margin: 0 0 24px; color: #94a3b8; font-size: 14px;">Enter this code to finish signing in.</p>
+      <div style="display: inline-block; background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 16px 28px;">
+        <span style="font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #f1f5f9; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;">${opts.code}</span>
+      </div>
+      <p style="margin: 24px 0 0; color: #64748b; font-size: 12px;">
+        This code expires in ${opts.expiresInMinutes} minutes and can be used once.
+      </p>
+      <p style="margin: 8px 0 0; color: #64748b; font-size: 12px;">
+        If you did not request it, you can safely ignore this email — nobody can sign in without the code.
+      </p>
+    </div>
+  </div>
+</body>
+</html>`,
+  })
+}
+
 // Phase 12.4 — weekly "Your Smart Search Insights" digest.
 export async function sendWeeklyInsights(opts: {
   to: string

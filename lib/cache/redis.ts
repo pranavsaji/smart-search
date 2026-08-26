@@ -86,4 +86,7 @@ export const RedisKeys = {
   // User-facing API rate limiting — TTL = the rule's window
   apiRateLimit:       (scope: string, identifier: string, windowStart: number) =>
                         `ratelimit:${scope}:${identifier}:${windowStart}`,
+  // Email OTP login — code is bcrypt-hashed; attempts drives the lockout
+  otpCode:            (email: string) => `otp:code:${email}`,        // 10min TTL
+  otpAttempts:        (email: string) => `otp:attempts:${email}`,    // 15min lockout window
 } as const

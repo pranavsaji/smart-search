@@ -43,6 +43,18 @@ New integration never touches assembler, SSE, checkout, or ranking:
 - Gift SCA: SetupIntent `usage: 'off_session'`; EU users need 3DS handling at redemption
 - Stripe: both `payment_intent.payment_failed` and `payment_intent.canceled` mark order failed
 
+### Auth — Email OTP
+`lib/auth/otp.ts` + `POST /api/auth/otp` (request) + the `otp` NextAuth credentials provider (verify).
+
+- Codes are **bcrypt-hashed in Redis** (`RedisKeys.otpCode`), 6 digits from `crypto.randomInt`, 10-min TTL.
+- **Single-use** — a correct code is deleted on verify, so it cannot be replayed inside its TTL.
+- 5 wrong guesses locks the address for 15 min (`RedisKeys.otpAttempts`) and discards the live code.
+- `/api/auth/otp` returns the **same response whether or not the account exists** — including on mail
+  delivery failure. Changing that turns it into an account-enumeration oracle.
+- Two rate-limit axes: per-IP (one host spraying addresses) and per-email (many hosts mailbombing one).
+- New signups are **passwordless** (`passwordHash` omitted, not null). The `credentials` provider
+  rejects any account without a non-empty hash string, so it stays available only to legacy accounts.
+
 ### Rate Limiting
 `lib/ratelimit.ts` — fixed-window (Redis INCR + EXPIRE) on the routes that cost money:
 `/api/intent`, `/api/genie/chat`, `/api/voice/{transcribe,tts}`, `/api/resolve`, `/api/checkout`,
@@ -294,7 +306,7 @@ All client islands fetch the existing JSON APIs; mock-first so they render witho
 
 ## Last Updated
 
-2026-08-25 (2) — GAP_ANALYSIS Phase 1, part 1. **CI** (§1.6): `.github/workflows/ci.yml` gates push-to-main and PRs on type-check → lint → test → production build (`APP_MODE=dev` + placeholder secrets; no live keys). ESLint had no config, so `next lint` hit its interactive setup prompt and would have hung CI — added `.eslintrc.json` (`next/core-web-vitals`, plugin registered but its ruleset not enabled: `next/typescript` surfaces 51 pre-existing errors, deferred). Fixed the 12 real errors (8 raw `<a>` page nav → `next/link`, 4 unescaped entities). **Rate limiting** (§1.5): new `lib/ratelimit.ts` — 0 of 96 routes were limited, so a looping client could drain the LLM budget. type-check clean, 943/943 tests pass (17 new).
+2026-08-25 (2) — GAP_ANALYSIS Phase 1, part 1. **CI** (§1.6): `.github/workflows/ci.yml` gates push-to-main and PRs on type-check → lint → test → production build (`APP_MODE=dev` + placeholder secrets; no live keys). ESLint had no config, so `next lint` hit its interactive setup prompt and would have hung CI — added `.eslintrc.json` (`next/core-web-vitals`, plugin registered but its ruleset not enabled: `next/typescript` surfaces 51 pre-existing errors, deferred). Fixed the 12 real errors (8 raw `<a>` page nav → `next/link`, 4 unescaped entities). **Rate limiting** (§1.5): new `lib/ratelimit.ts` — 0 of 96 routes were limited, so a looping client could drain the LLM budget. **OTP auth** (§1.1): passwordless email sign-in, password login retained for legacy accounts. type-check clean, lint clean, 963/963 tests pass (37 new).
 
 2026-08-25 — Demo/live data provenance + docs cleanup. Mock fallbacks now carry `isDemoData: true` (`markDemoCards()` in `lib/services/types.ts`, applied across all 12 adapters + mock modules); `stageStore` drops demo cards from a row once a live card arrives, and the `StageShell` header badge is derived per-stage (`live` / `mixed` / `demo`) instead of hardcoding "Demo data". Removed `PHASEPLAN.md` (Phases 7–12 — all shipped) and `TRANSFORMATION_PLAN.md` (Phases 0–9 rebrand/pipeline — all shipped), plus a stray checked-in `memory/` dir whose index pointed at 6 non-existent files. `GAP_ANALYSIS.md` is the only remaining forward-looking doc — it now carries a status banner flagging its three since-shipped sections and a new §5.5 for the unbuilt mobile app (carried over from PHASEPLAN 9.3). type-check clean, 926/926 tests pass.
 

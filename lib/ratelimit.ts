@@ -28,6 +28,11 @@ export const RATE_LIMITS = {
   resolve:  { scope: 'resolve',  limit: 60,  windowSeconds: 60 },
   checkout: { scope: 'checkout', limit: 10,  windowSeconds: 60 },
   register: { scope: 'register', limit: 5,   windowSeconds: 900 },
+  // OTP request is limited on two axes: per-IP stops one host spraying many
+  // addresses, per-email stops many hosts mailbombing one victim.
+  otpRequest:         { scope: 'otp_request',   limit: 10, windowSeconds: 900 },
+  otpRequestPerEmail: { scope: 'otp_email',     limit: 4,  windowSeconds: 900 },
+  otpVerify:          { scope: 'otp_verify',    limit: 20, windowSeconds: 900 },
   capture:  { scope: 'capture',  limit: 60,  windowSeconds: 60 },
 } as const satisfies Record<string, RateLimitRule>
 

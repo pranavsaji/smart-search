@@ -6,10 +6,13 @@ import { signIn } from 'next-auth/react'
 import { Sparkles, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { OtpCodeStep } from '@/components/auth/OtpCodeStep'
 import { toast } from 'sonner'
 
+// GAP_ANALYSIS 1.1 — signup is passwordless: register, then verify by code.
 export default function SignupPage() {
-  const [form, setForm] = useState({ email: '', password: '', handle: '', displayName: '' })
+  const [form, setForm] = useState({ email: '', handle: '', displayName: '' })
+  const [step, setStep] = useState<'details' | 'code'>('details')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
@@ -28,14 +31,34 @@ export default function SignupPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Registration failed')
 
-      // Auto sign-in after registration, then onboard
-      await signIn('credentials', { email: form.email, password: form.password, redirect: false })
-      toast.success('Account created!')
-      router.push(data.redirectTo ?? '/onboarding')
+      // The account exists but has no session yet — the emailed code is what
+      // proves the address is really theirs, so we cannot sign them in here.
+      toast.success('Account created — check your email for a code.')
+      setStep('code')
     } catch (err) {
-      toast.error(String(err))
+      toast.error(err instanceof Error ? err.message : String(err))
+    } finally {
       setLoading(false)
     }
+  }
+
+  const resend = async () => {
+    const res = await fetch('/api/auth/otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: form.email }),
+    })
+    if (res.ok) toast.success('New code sent.')
+    else toast.error('Could not send a code. Try again shortly.')
+  }
+
+  const onVerify = async (code: string) => {
+    const result = await signIn('otp', { email: form.email, code, redirect: false })
+    if (result?.error) {
+      toast.error('That code is not valid or has expired.')
+      return
+    }
+    router.push('/onboarding')
   }
 
   return (
@@ -48,35 +71,46 @@ export default function SignupPage() {
             </div>
             <span className="gradient-text text-xl font-bold">Smart Search</span>
           </Link>
-          <h1 className="text-2xl font-bold">Create account</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Start planning smarter</p>
+          <h1 className="text-2xl font-bold">
+            {step === 'code' ? 'Verify your email' : 'Create account'}
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {step === 'code' ? 'One code and you\u2019re in' : 'Start planning smarter'}
+          </p>
         </div>
 
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Display name</label>
-            <Input placeholder="Alex Johnson" value={form.displayName} onChange={set('displayName')} required />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Handle</label>
-            <div className="relative">
-              <span className="absolute left-3 top-2.5 text-sm text-muted-foreground">@</span>
-              <Input className="pl-7" placeholder="alexj" value={form.handle} onChange={set('handle')} pattern="[a-zA-Z0-9_]+" required />
+        {step === 'code' ? (
+          <OtpCodeStep
+            email={form.email}
+            onSubmit={onVerify}
+            onResend={resend}
+            onBack={() => setStep('details')}
+            submitLabel="Verify & continue"
+          />
+        ) : (
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="displayName" className="text-sm font-medium">Display name</label>
+              <Input id="displayName" autoComplete="name" placeholder="Alex Johnson" value={form.displayName} onChange={set('displayName')} required />
             </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Email</label>
-            <Input type="email" placeholder="you@example.com" value={form.email} onChange={set('email')} required />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Password</label>
-            <Input type="password" placeholder="Min 8 characters" value={form.password} onChange={set('password')} minLength={8} required />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="handle" className="text-sm font-medium">Handle</label>
+              <div className="relative">
+                <span className="absolute left-3 top-2.5 text-sm text-muted-foreground">@</span>
+                <Input id="handle" className="pl-7" placeholder="alexj" value={form.handle} onChange={set('handle')} pattern="[a-zA-Z0-9_]+" required />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-medium">Email</label>
+              <Input id="email" type="email" autoComplete="email" placeholder="you@example.com" value={form.email} onChange={set('email')} required />
+              <p className="text-xs text-muted-foreground">No password to pick — we&rsquo;ll email you a code to sign in.</p>
+            </div>
 
-          <Button type="submit" className="w-full" size="lg" disabled={loading}>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Create account'}
-          </Button>
-        </form>
+            <Button type="submit" className="w-full" size="lg" disabled={loading}>
+              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Create account'}
+            </Button>
+          </form>
+        )}
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Already have an account?{' '}
