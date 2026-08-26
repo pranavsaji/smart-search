@@ -41,6 +41,8 @@ interface IntentInputProps {
   handle?: string
   className?: string
   examples?: string[]
+  /** Pre-fills the box without submitting — see initialPrompt handling below. */
+  initialPrompt?: string
 }
 
 interface ClarificationState {
@@ -48,9 +50,11 @@ interface ClarificationState {
   previousPrompt: string // the user's original message
 }
 
-export function IntentInput({ userId, handle, className, examples }: IntentInputProps) {
+export function IntentInput({ userId, handle, className, examples, initialPrompt }: IntentInputProps) {
   const EXAMPLES = examples ?? DEFAULT_EXAMPLES
-  const [value, setValue] = useState('')
+  // Seeded once as initial state rather than in an effect: an effect would
+  // clobber whatever the user had already started typing.
+  const [value, setValue] = useState(initialPrompt ?? '')
   const [loading, setLoading] = useState(false)
   const [focused, setFocused] = useState(false)
   const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([])

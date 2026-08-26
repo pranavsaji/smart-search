@@ -116,7 +116,15 @@ const STEPS = [
   },
 ]
 
-export default async function HomePage() {
+// searchParams is a Promise in Next.js 15.
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ prompt?: string }>
+}) {
+  // Onboarding hands over a suggested first prompt here. It is pre-filled only —
+  // never auto-submitted, so the user edits it before anything runs.
+  const { prompt: initialPrompt } = await searchParams
   const session = await auth().catch(() => null)
   const user = session?.user as { name?: string; handle?: string; id?: string } | undefined
 
@@ -201,6 +209,7 @@ export default async function HomePage() {
                 userId={user?.id}
                 handle={user?.handle}
                 examples={EXAMPLE_PROMPTS}
+                initialPrompt={initialPrompt}
               />
             </div>
           </div>

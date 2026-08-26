@@ -43,6 +43,19 @@ New integration never touches assembler, SSE, checkout, or ranking:
 - Gift SCA: SetupIntent `usage: 'off_session'`; EU users need 3DS handling at redemption
 - Stripe: both `payment_intent.payment_failed` and `payment_intent.canceled` mark order failed
 
+### Onboarding
+6 steps (`components/Onboarding/OnboardingFlow.tsx`): welcome → budget → travel style → interests →
+destinations → confirm + suggested first prompt. Email and @handle are collected at **signup** (the
+OTP proves the address), so onboarding starts at preferences.
+
+- Destinations seed `intentGraph.destinations` as `WeightedSignal`s at weight **0.5** — above a browse
+  (0.1), below a real booking (1.0): a stated intent is strong but is not evidence they went.
+- Destinations are **optional**; the step can be skipped.
+- The suggested prompt (`lib/onboarding/suggestPrompt.ts`, pure/testable) is passed to `/?prompt=` and
+  **pre-fills only — never auto-submits**.
+- `/api/profile/setup` cannot put `destinations` in both `$set` and `$setOnInsert` — Mongo rejects the
+  same path in both operators.
+
 ### Observability
 All three are **env-gated and no-op without keys** — dev, CI and self-hosted run with none.
 
@@ -319,7 +332,7 @@ All client islands fetch the existing JSON APIs; mock-first so they render witho
 
 ## Last Updated
 
-2026-08-25 (2) — GAP_ANALYSIS Phase 1, part 1. **CI** (§1.6): `.github/workflows/ci.yml` gates push-to-main and PRs on type-check → lint → test → production build (`APP_MODE=dev` + placeholder secrets; no live keys). ESLint had no config, so `next lint` hit its interactive setup prompt and would have hung CI — added `.eslintrc.json` (`next/core-web-vitals`, plugin registered but its ruleset not enabled: `next/typescript` surfaces 51 pre-existing errors, deferred). Fixed the 12 real errors (8 raw `<a>` page nav → `next/link`, 4 unescaped entities). **Rate limiting** (§1.5): new `lib/ratelimit.ts` — 0 of 96 routes were limited, so a looping client could drain the LLM budget. **OTP auth** (§1.1): passwordless email sign-in, password login retained for legacy accounts. **Observability** (§1.5): Sentry (3 runtime configs + `onRequestError`), PostHog, and API cost tracking. New env vars: `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`; new collection `api_costs`. type-check clean, lint clean, 980/980 tests pass (54 new), build green.
+2026-08-25 (2) — GAP_ANALYSIS Phase 1, part 1. **CI** (§1.6): `.github/workflows/ci.yml` gates push-to-main and PRs on type-check → lint → test → production build (`APP_MODE=dev` + placeholder secrets; no live keys). ESLint had no config, so `next lint` hit its interactive setup prompt and would have hung CI — added `.eslintrc.json` (`next/core-web-vitals`, plugin registered but its ruleset not enabled: `next/typescript` surfaces 51 pre-existing errors, deferred). Fixed the 12 real errors (8 raw `<a>` page nav → `next/link`, 4 unescaped entities). **Rate limiting** (§1.5): new `lib/ratelimit.ts` — 0 of 96 routes were limited, so a looping client could drain the LLM budget. **OTP auth** (§1.1): passwordless email sign-in, password login retained for legacy accounts. **Observability** (§1.5): Sentry (3 runtime configs + `onRequestError`), PostHog, and API cost tracking. New env vars: `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`; new collection `api_costs`. **Onboarding** (§1.2): 2 new steps (destinations, confirm+suggest) and the intent graph is now seeded on completion. type-check clean, lint clean, 991/991 tests pass (65 new), build green.
 
 2026-08-25 — Demo/live data provenance + docs cleanup. Mock fallbacks now carry `isDemoData: true` (`markDemoCards()` in `lib/services/types.ts`, applied across all 12 adapters + mock modules); `stageStore` drops demo cards from a row once a live card arrives, and the `StageShell` header badge is derived per-stage (`live` / `mixed` / `demo`) instead of hardcoding "Demo data". Removed `PHASEPLAN.md` (Phases 7–12 — all shipped) and `TRANSFORMATION_PLAN.md` (Phases 0–9 rebrand/pipeline — all shipped), plus a stray checked-in `memory/` dir whose index pointed at 6 non-existent files. `GAP_ANALYSIS.md` is the only remaining forward-looking doc — it now carries a status banner flagging its three since-shipped sections and a new §5.5 for the unbuilt mobile app (carried over from PHASEPLAN 9.3). type-check clean, 926/926 tests pass.
 
