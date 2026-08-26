@@ -4,6 +4,7 @@ import { serviceRegistry } from '@/lib/services/registry'
 import { cancelPaymentIntent } from '@/lib/payments/stripe'
 import { ObjectId } from 'mongodb'
 import { logger } from '@/lib/logger'
+import { reportError } from '@/lib/telemetry/report'
 
 // Idempotency guarantee: MongoDB unique index on paymentIntentId.
 // DuplicateKeyError (11000) on second call = safe 200, no re-execution.
@@ -66,6 +67,13 @@ export async function executeVendorSplit(
       logger.error('[split] All vendor bookings failed — PaymentIntent cancelled', { paymentIntentId, pendingOrderId })
     } catch (err) {
       logger.error('[split] Failed to cancel PaymentIntent after booking failure', err, { paymentIntentId })
+      // Highest-severity state in the app: every booking failed AND the charge
+      // could not be cancelled, so the user is out of pocket with nothing
+      // booked. This one needs a human, not a log line.
+      reportError(err, {
+        scope: 'checkout.split.cancelFailed',
+        extra: { paymentIntentId, pendingOrderId },
+      })
     }
   }
 

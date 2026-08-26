@@ -43,6 +43,19 @@ New integration never touches assembler, SSE, checkout, or ranking:
 - Gift SCA: SetupIntent `usage: 'off_session'`; EU users need 3DS handling at redemption
 - Stripe: both `payment_intent.payment_failed` and `payment_intent.canceled` mark order failed
 
+### Observability
+All three are **env-gated and no-op without keys** — dev, CI and self-hosted run with none.
+
+- `lib/telemetry/report.ts` — `reportError`/`reportMessage` facade over Sentry. Import this, never
+  `@sentry/nextjs` directly. Never throws: every call site is already inside a catch.
+- `lib/analytics.ts` — PostHog server-side, closed `AnalyticsEvent` union (no free-form event names).
+  `components/providers/PostHogProvider.tsx` client-side; App Router soft navigations need the manual
+  `$pageview` (hence `capture_pageview: false`) and a Suspense boundary for `useSearchParams`.
+- `lib/telemetry/costs.ts` — LLM/vendor spend → `api_costs`, read by `GET /api/admin/costs`
+  (admin-gated; empty `ADMIN_EMAILS` **closes** the endpoint). Wired into both intent providers,
+  fire-and-forget. An unknown model bills at a non-zero fallback rate — pricing zero is how spend
+  goes unnoticed after a model rename. Keep `PRICING` current.
+
 ### Auth — Email OTP
 `lib/auth/otp.ts` + `POST /api/auth/otp` (request) + the `otp` NextAuth credentials provider (verify).
 
@@ -306,7 +319,7 @@ All client islands fetch the existing JSON APIs; mock-first so they render witho
 
 ## Last Updated
 
-2026-08-25 (2) — GAP_ANALYSIS Phase 1, part 1. **CI** (§1.6): `.github/workflows/ci.yml` gates push-to-main and PRs on type-check → lint → test → production build (`APP_MODE=dev` + placeholder secrets; no live keys). ESLint had no config, so `next lint` hit its interactive setup prompt and would have hung CI — added `.eslintrc.json` (`next/core-web-vitals`, plugin registered but its ruleset not enabled: `next/typescript` surfaces 51 pre-existing errors, deferred). Fixed the 12 real errors (8 raw `<a>` page nav → `next/link`, 4 unescaped entities). **Rate limiting** (§1.5): new `lib/ratelimit.ts` — 0 of 96 routes were limited, so a looping client could drain the LLM budget. **OTP auth** (§1.1): passwordless email sign-in, password login retained for legacy accounts. type-check clean, lint clean, 963/963 tests pass (37 new).
+2026-08-25 (2) — GAP_ANALYSIS Phase 1, part 1. **CI** (§1.6): `.github/workflows/ci.yml` gates push-to-main and PRs on type-check → lint → test → production build (`APP_MODE=dev` + placeholder secrets; no live keys). ESLint had no config, so `next lint` hit its interactive setup prompt and would have hung CI — added `.eslintrc.json` (`next/core-web-vitals`, plugin registered but its ruleset not enabled: `next/typescript` surfaces 51 pre-existing errors, deferred). Fixed the 12 real errors (8 raw `<a>` page nav → `next/link`, 4 unescaped entities). **Rate limiting** (§1.5): new `lib/ratelimit.ts` — 0 of 96 routes were limited, so a looping client could drain the LLM budget. **OTP auth** (§1.1): passwordless email sign-in, password login retained for legacy accounts. **Observability** (§1.5): Sentry (3 runtime configs + `onRequestError`), PostHog, and API cost tracking. New env vars: `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`; new collection `api_costs`. type-check clean, lint clean, 980/980 tests pass (54 new), build green.
 
 2026-08-25 — Demo/live data provenance + docs cleanup. Mock fallbacks now carry `isDemoData: true` (`markDemoCards()` in `lib/services/types.ts`, applied across all 12 adapters + mock modules); `stageStore` drops demo cards from a row once a live card arrives, and the `StageShell` header badge is derived per-stage (`live` / `mixed` / `demo`) instead of hardcoding "Demo data". Removed `PHASEPLAN.md` (Phases 7–12 — all shipped) and `TRANSFORMATION_PLAN.md` (Phases 0–9 rebrand/pipeline — all shipped), plus a stray checked-in `memory/` dir whose index pointed at 6 non-existent files. `GAP_ANALYSIS.md` is the only remaining forward-looking doc — it now carries a status banner flagging its three since-shipped sections and a new §5.5 for the unbuilt mobile app (carried over from PHASEPLAN 9.3). type-check clean, 926/926 tests pass.
 

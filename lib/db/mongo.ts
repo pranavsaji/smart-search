@@ -86,6 +86,8 @@ export const COLLECTIONS = {
   knowledgeNodes:       'knowledge_nodes',
   knowledgeEdges:       'knowledge_edges',
   insightReports:       'insight_reports',
+  // Observability (GAP_ANALYSIS 1.5) — LLM/vendor API spend
+  apiCosts:             'api_costs',
 } as const
 
 export async function ensureIndexes(): Promise<void> {
