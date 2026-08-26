@@ -79,7 +79,7 @@ function ExperimentCard({ experiment }: { experiment: Experiment }) {
 
       {open && (
         <div className="mt-3 border-t border-border pt-3">
-          {assignment && <p className="mb-2 text-xs">You're in: <Badge variant="locked" className="text-[10px]">{assignment}</Badge></p>}
+          {assignment && <p className="mb-2 text-xs">You&rsquo;re in: <Badge variant="locked" className="text-[10px]">{assignment}</Badge></p>}
           {!results ? <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" /> : results.length === 0 ? (
             <p className="text-xs text-muted-foreground">No exposures recorded yet.</p>
           ) : (

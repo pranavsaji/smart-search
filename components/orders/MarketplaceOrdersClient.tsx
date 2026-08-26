@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
 import { Package } from 'lucide-react'
@@ -86,7 +87,7 @@ export function MarketplaceOrdersClient({ initialOrders, userId }: { initialOrde
       <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border py-16 text-center">
         <Package className="h-8 w-8 text-muted-foreground" />
         <p className="text-muted-foreground text-sm">No marketplace orders yet</p>
-        <a href="/" className="text-sm text-primary hover:underline">Browse the marketplace →</a>
+        <Link href="/" className="text-sm text-primary hover:underline">Browse the marketplace →</Link>
       </div>
     )
   }

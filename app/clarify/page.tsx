@@ -233,7 +233,7 @@ function ClarifyInner() {
         </div>
         <span className="text-lg font-bold text-slate-800">Smart Search</span>
         <div className="mx-4 h-5 w-px bg-slate-200" />
-        <p className="text-sm text-slate-500 truncate max-w-xl">"{originalPrompt}"</p>
+        <p className="text-sm text-slate-500 truncate max-w-xl">&ldquo;{originalPrompt}&rdquo;</p>
         {(displayServices.length > 0 || previewLoading) && (
           <div className="ml-auto flex items-center gap-2">
             {displayServices.map(svc => {
@@ -404,7 +404,7 @@ function ClarifyInner() {
             {groupSize > 1 && (
               <div className="space-y-2">
                 <p className="text-sm font-medium text-slate-500 flex items-center gap-1.5">
-                  <UserPlus className="h-4 w-4" /> Who's coming?
+                  <UserPlus className="h-4 w-4" /> Who&rsquo;s coming?
                 </p>
                 <div className="grid gap-2 grid-cols-2">
                   <div className="flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3">

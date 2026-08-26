@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Navbar } from '@/components/layout/Navbar'
 import { auth } from '@/lib/auth'
 import { getDb, COLLECTIONS } from '@/lib/db/mongo'
@@ -39,7 +40,7 @@ export default async function OrdersPage() {
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border py-16 text-center mb-10">
             <Package className="h-10 w-10 text-muted-foreground" />
             <p className="text-muted-foreground">No bookings yet.</p>
-            <a href="/" className="text-sm text-primary hover:underline">Plan your first trip →</a>
+            <Link href="/" className="text-sm text-primary hover:underline">Plan your first trip →</Link>
           </div>
         ) : (
           <div className="space-y-4 mb-10">

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import {
   Sparkles, Zap, Users, Lock, ShoppingBag, Wrench, Stethoscope,
   Plane, Code2, CalendarClock, ArrowRight, Globe,
@@ -328,21 +329,21 @@ export default async function HomePage() {
             </p>
             <div className="flex items-center justify-center gap-3">
               {!user && (
-                <a
+                <Link
                   href="/signup"
                   className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:bg-primary/90 hover:shadow-blue-500/30 hover:scale-[1.02]"
                 >
                   <Sparkles className="h-4 w-4" />
                   Create your account
-                </a>
+                </Link>
               )}
-              <a
+              <Link
                 href="/#search"
                 className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-6 py-2.5 text-sm font-medium text-blue-700 transition-all hover:bg-blue-100 hover:text-blue-800"
               >
                 Try a prompt
                 <ArrowRight className="h-3.5 w-3.5" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

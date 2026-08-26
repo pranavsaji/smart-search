@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link'
 import { useState } from 'react'
 import { Wallet, Users, Pencil } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -71,9 +72,9 @@ export function ProfileHeader({
       {/* Action */}
       {isOwner ? (
         <Button variant="outline" size="sm" className="gap-1.5 shrink-0" asChild>
-          <a href="/settings">
+          <Link href="/settings">
             <Pencil className="h-3.5 w-3.5" /> Edit profile
-          </a>
+          </Link>
         </Button>
       ) : (
         <Button
