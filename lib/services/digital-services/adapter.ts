@@ -1,4 +1,4 @@
-import type { ServiceCard, ServiceResult } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard, type ServiceResult } from '@/lib/services/types'
 import type { SearchContext } from '@/lib/intent/types'
 import { withCache, hashParams } from '@/lib/cache/serviceCache'
 import { RedisKeys } from '@/lib/cache/redis'
@@ -54,14 +54,14 @@ async function fetchDigitalServiceCards(ctx: SearchContext): Promise<ServiceCard
   }
 
   // Mock fallback
-  if (isDev) return developerCards(isPremium, isBudget)
-  if (isDesign) return designerCards(isPremium, isBudget)
-  if (isCopy) return copywriterCards(isPremium, isBudget)
-  return [
+  if (isDev) return markDemoCards(developerCards(isPremium, isBudget))
+  if (isDesign) return markDemoCards(designerCards(isPremium, isBudget))
+  if (isCopy) return markDemoCards(copywriterCards(isPremium, isBudget))
+  return markDemoCards([
     ...developerCards(isPremium, isBudget).slice(0, 1),
     ...designerCards(isPremium, isBudget).slice(0, 1),
     domainCards()[0],
-  ]
+  ])
 }
 
 // ── Domain registration (Namecheap live or mock) ──────────────────────────────
@@ -74,7 +74,7 @@ async function fetchDomainCards(ctx: SearchContext): Promise<ServiceCard[]> {
       logger.error('[DigitalServicesAdapter] Namecheap API failed, falling back to mock', err)
     }
   }
-  return domainCards()
+  return markDemoCards(domainCards())
 }
 
 async function fetchNamecheapCards(ctx: SearchContext): Promise<ServiceCard[]> {

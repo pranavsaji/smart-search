@@ -1,4 +1,4 @@
-import type { ServiceCard } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard } from '@/lib/services/types'
 import type { ExperienceCardMetadata } from '@/lib/services/metadata'
 import type { SearchContext } from '@/lib/intent/types'
 import { getCurrencyForDestination, scalePriceFromGBP, formatPrice } from '@/lib/geo/currency'
@@ -33,6 +33,10 @@ function makeCard(
 }
 
 export function getExperienceMocks(ctx: SearchContext): ServiceCard[] {
+  return markDemoCards(buildExperienceMocks(ctx))
+}
+
+function buildExperienceMocks(ctx: SearchContext): ServiceCard[] {
   const { destination } = ctx.intent
   const currency = getCurrencyForDestination(destination)
 

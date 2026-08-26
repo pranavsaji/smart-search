@@ -1,4 +1,4 @@
-import type { ServiceCard, ServiceResult } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard, type ServiceResult } from '@/lib/services/types'
 import type { CartItem, OrderConfirmation } from '@/lib/checkout/types'
 import type { SearchContext } from '@/lib/intent/types'
 import { withCache, hashParams } from '@/lib/cache/serviceCache'
@@ -75,16 +75,16 @@ async function fetchHomeServiceCards(ctx: SearchContext): Promise<ServiceCard[]>
 
   // Mock fallback
   const loc = location ?? 'your area'
-  if (detectedCategories.includes('mechanic')) return mechanicCards(loc)
-  if (detectedCategories.includes('plumber')) return plumberCards(loc)
-  if (detectedCategories.includes('electrician')) return electricianCards(loc)
-  if (detectedCategories.includes('cleaner')) return cleanerCards(loc)
-  if (detectedCategories.includes('handyman')) return handymanCards(loc)
-  return [
+  if (detectedCategories.includes('mechanic')) return markDemoCards(mechanicCards(loc))
+  if (detectedCategories.includes('plumber')) return markDemoCards(plumberCards(loc))
+  if (detectedCategories.includes('electrician')) return markDemoCards(electricianCards(loc))
+  if (detectedCategories.includes('cleaner')) return markDemoCards(cleanerCards(loc))
+  if (detectedCategories.includes('handyman')) return markDemoCards(handymanCards(loc))
+  return markDemoCards([
     ...plumberCards(loc).slice(0, 1),
     ...electricianCards(loc).slice(0, 1),
     ...cleanerCards(loc).slice(0, 1),
-  ]
+  ])
 }
 
 // ── Mock fallbacks ────────────────────────────────────────────────────────────

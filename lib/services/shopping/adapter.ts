@@ -1,4 +1,4 @@
-import type { ServiceCard, ServiceResult } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard, type ServiceResult } from '@/lib/services/types'
 import type { SearchContext } from '@/lib/intent/types'
 import { withCache, hashParams } from '@/lib/cache/serviceCache'
 import { RedisKeys } from '@/lib/cache/redis'
@@ -81,6 +81,10 @@ function rainforestToCard(p: RainforestProduct): ServiceCard {
 // ── Mock fallback ─────────────────────────────────────────────────────────────
 
 function mockProductCards(ctx: SearchContext): ServiceCard[] {
+  return markDemoCards(buildMockProductCards(ctx))
+}
+
+function buildMockProductCards(ctx: SearchContext): ServiceCard[] {
   const isPremium = ctx.intent.budgetSignal === 'premium'
   const isBudget = ctx.intent.budgetSignal === 'budget'
   const query = ctx.intent.rawPrompt.toLowerCase()

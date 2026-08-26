@@ -2,7 +2,7 @@
 // Replaces Rainforest (Amazon proxy) with direct MongoDB-backed commerce.
 // All catalog cards are isBookable: true — stock is decremented at createOrder().
 
-import type { ServiceCard, ServiceResult } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard, type ServiceResult } from '@/lib/services/types'
 import type { SearchContext } from '@/lib/intent/types'
 import type { CartItem, OrderConfirmation, ShippingAddress } from '@/lib/checkout/types'
 import { AbstractServiceAdapter } from '@/lib/services/base/adapter'
@@ -209,6 +209,10 @@ async function dispatchVendorPayout(orderId: string, vendorId: string, amount: n
 // ─── Mock catalog for dev mode ────────────────────────────────────────────────
 
 function mockCatalogCards(ctx: SearchContext): ServiceCard[] {
+  return markDemoCards(buildMockCatalogCards(ctx))
+}
+
+function buildMockCatalogCards(ctx: SearchContext): ServiceCard[] {
   const isPremium = ctx.intent.budgetSignal === 'premium'
   const isBudget = ctx.intent.budgetSignal === 'budget'
 

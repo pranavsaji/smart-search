@@ -1,4 +1,4 @@
-import type { ServiceCard, ServiceResult } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard, type ServiceResult } from '@/lib/services/types'
 import type { CartItem, OrderConfirmation } from '@/lib/checkout/types'
 import type { SearchContext } from '@/lib/intent/types'
 import { withCache, hashParams } from '@/lib/cache/serviceCache'
@@ -90,10 +90,10 @@ async function fetchHealthCards(ctx: SearchContext): Promise<ServiceCard[]> {
   // Mock fallback — locale-aware
   const loc = location ?? 'your area'
   const startDate = ctx.intent.dates.start
-  if (detectedCategories.includes('dentist')) return dentistCards(loc, startDate, isUS)
-  if (detectedCategories.includes('therapist')) return therapistCards(loc, startDate, isUS)
-  if (detectedCategories.includes('physio')) return physioCards(loc, startDate, isUS)
-  return gpCards(loc, startDate, isUS)
+  if (detectedCategories.includes('dentist')) return markDemoCards(dentistCards(loc, startDate, isUS))
+  if (detectedCategories.includes('therapist')) return markDemoCards(therapistCards(loc, startDate, isUS))
+  if (detectedCategories.includes('physio')) return markDemoCards(physioCards(loc, startDate, isUS))
+  return markDemoCards(gpCards(loc, startDate, isUS))
 }
 
 // ── Mock fallbacks ────────────────────────────────────────────────────────────

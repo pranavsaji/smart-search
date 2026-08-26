@@ -1,4 +1,4 @@
-import type { ServiceCard } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard } from '@/lib/services/types'
 import type { SearchContext } from '@/lib/intent/types'
 import type { MapsCardMetadata } from '@/lib/services/metadata'
 
@@ -49,6 +49,10 @@ const GENERIC_POIS: PoiTemplate[] = [
 ]
 
 export function getMapsMocks(ctx: SearchContext): ServiceCard[] {
+  return markDemoCards(buildMapsMocks(ctx))
+}
+
+function buildMapsMocks(ctx: SearchContext): ServiceCard[] {
   const dest = ctx.intent.destination?.toLowerCase() ?? ''
   const key = Object.keys(POI_BY_DESTINATION).find(k => dest.includes(k))
   const pois = key ? POI_BY_DESTINATION[key] : GENERIC_POIS

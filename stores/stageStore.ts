@@ -66,6 +66,12 @@ export const useStageStore = create<StageStore>(set => ({
           ranked = [...keptRanked, ...ranked].sort((a, b) => b.scores.final - a.scores.final)
         }
       }
+      // Live data supersedes demo fallbacks: once any live card is in the row,
+      // drop mock/demo cards instead of mixing them with real results.
+      if (result.cards.some(c => !c.isDemoData) && result.cards.some(c => c.isDemoData)) {
+        result = { ...result, cards: result.cards.filter(c => !c.isDemoData) }
+        ranked = ranked.filter(c => !c.isDemoData)
+      }
       return { rows: { ...s.rows, [type]: { result, rankedCards: ranked, isLoading: false } } }
     }),
 

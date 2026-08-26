@@ -1,4 +1,4 @@
-import type { ServiceCard } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard } from '@/lib/services/types'
 import type { StayCardMetadata } from '@/lib/services/metadata'
 import type { SearchContext } from '@/lib/intent/types'
 import { getCurrencyForDestination, scalePriceFromGBP, formatPrice } from '@/lib/geo/currency'
@@ -68,6 +68,10 @@ function getHotels(destination: string) {
 }
 
 export function getMockStays(ctx: SearchContext): ServiceCard[] {
+  return markDemoCards(buildMockStays(ctx))
+}
+
+function buildMockStays(ctx: SearchContext): ServiceCard[] {
   const { intent } = ctx
   const hotels = getHotels(intent.destination)
   const currency = getCurrencyForDestination(intent.destination)

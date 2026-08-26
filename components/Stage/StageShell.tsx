@@ -134,6 +134,13 @@ export function StageShell({ stageId, parsedIntent, stageContext, userId, pendin
 
   const progressPct = totalCount > 0 ? Math.round((loadedCount / totalCount) * 100) : 0
 
+  // Data-source badge reflects what the rows actually contain: only claim
+  // "Demo data" when every loaded card is a mock fallback.
+  const loadedCards = activeTypes.flatMap(t => rows[t] && !rows[t].isLoading ? rows[t].rankedCards : [])
+  const demoCount = loadedCards.filter(c => c.isDemoData).length
+  const dataSource: 'demo' | 'live' | 'mixed' =
+    demoCount === 0 ? 'live' : demoCount === loadedCards.length ? 'demo' : 'mixed'
+
   return (
     <CardActionsProvider stageId={stageId} userId={userId ?? 'anonymous'} onGift={setGiftCard}>
       {brandConfig && <BrandHeader brand={brandConfig} onExit={() => setBrandConfig(null)} />}
@@ -259,13 +266,23 @@ export function StageShell({ stageId, parsedIntent, stageContext, userId, pendin
             <span className="text-sm font-medium text-foreground">
               Found results across <span className="text-primary">{loadedCount}</span> services
             </span>
-            <Badge
-              variant="outline"
-              className="ml-auto text-[10px] gap-1 text-muted-foreground border-white/[0.07] bg-transparent"
-            >
-              <Database className="h-2.5 w-2.5" />
-              Demo data
-            </Badge>
+            {dataSource === 'live' ? (
+              <Badge
+                variant="outline"
+                className="ml-auto text-[10px] gap-1 text-emerald-400 border-emerald-500/25 bg-emerald-500/5"
+              >
+                <Zap className="h-2.5 w-2.5" />
+                Live data
+              </Badge>
+            ) : (
+              <Badge
+                variant="outline"
+                className="ml-auto text-[10px] gap-1 text-muted-foreground border-white/[0.07] bg-transparent"
+              >
+                <Database className="h-2.5 w-2.5" />
+                {dataSource === 'mixed' ? 'Includes demo data' : 'Demo data'}
+              </Badge>
+            )}
           </div>
         )}
 

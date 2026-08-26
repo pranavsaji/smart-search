@@ -33,6 +33,14 @@ export interface ServiceCard {
   deepLinkUrl?: string          // when isBookable=false, redirect to vendor site
   ctaLabel: string              // "Book Flight", "Reserve Table", etc.
   supportsGenie?: boolean       // Genie can auto-book on user's behalf
+  isDemoData?: boolean          // true = mock/demo fallback, not a live vendor API or catalog DB
+}
+
+// Tag mock-fallback cards so the UI can distinguish demo data from live results.
+// Live cards are superseded: the Stage drops demo cards from a row once any
+// live card for that row arrives.
+export function markDemoCards<T extends ServiceCard>(cards: T[]): T[] {
+  return cards.map(c => ({ ...c, isDemoData: true }))
 }
 
 // Type-safe metadata accessor — use when serviceType is known at call site

@@ -1,4 +1,4 @@
-import type { ServiceCard } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard } from '@/lib/services/types'
 import type { RestaurantCardMetadata } from '@/lib/services/metadata'
 import type { SearchContext } from '@/lib/intent/types'
 import { getCurrencyForDestination, scalePriceFromGBP, formatPrice } from '@/lib/geo/currency'
@@ -42,6 +42,10 @@ function makeCard(
 }
 
 export function getRestaurantMocks(ctx: SearchContext): ServiceCard[] {
+  return markDemoCards(buildRestaurantMocks(ctx))
+}
+
+function buildRestaurantMocks(ctx: SearchContext): ServiceCard[] {
   const { destination, groupSize } = ctx.intent
   const currency = getCurrencyForDestination(destination)
 

@@ -69,6 +69,18 @@ New integration never touches assembler, SSE, checkout, or ranking:
 
 Set `isBookable: false` on any card whose `createOrder()` doesn't call a real vendor API.
 
+### Demo vs Live Data
+
+Mock fallbacks are tagged `isDemoData: true` via `markDemoCards()` (`lib/services/types.ts`) — every
+adapter wraps its mock path with it. Two consumers:
+
+- `stageStore`: **live supersedes demo** — once a row holds any live card, demo cards are dropped
+  rather than mixed in.
+- `StageShell`: the header badge is derived from the loaded cards — `live` / `mixed` / `demo`. Only
+  claim "Demo data" when *every* loaded card is a fallback.
+
+Any new adapter must run its mock cards through `markDemoCards()` or they will be reported as live.
+
 ---
 
 ## Intent Pipeline (Two-Phase)
@@ -270,6 +282,8 @@ App pages live in `app/*/page.tsx` (server: `auth()` → redirect → `AppShell`
 All client islands fetch the existing JSON APIs; mock-first so they render without live keys.
 
 ## Last Updated
+
+2026-08-25 — Demo/live data provenance + docs cleanup. Mock fallbacks now carry `isDemoData: true` (`markDemoCards()` in `lib/services/types.ts`, applied across all 12 adapters + mock modules); `stageStore` drops demo cards from a row once a live card arrives, and the `StageShell` header badge is derived per-stage (`live` / `mixed` / `demo`) instead of hardcoding "Demo data". Removed `PHASEPLAN.md` (Phases 7–12 — all shipped) and `TRANSFORMATION_PLAN.md` (Phases 0–9 rebrand/pipeline — all shipped), plus a stray checked-in `memory/` dir whose index pointed at 6 non-existent files. `GAP_ANALYSIS.md` is the only remaining forward-looking doc — it now carries a status banner flagging its three since-shipped sections and a new §5.5 for the unbuilt mobile app (carried over from PHASEPLAN 9.3). type-check clean, 926/926 tests pass.
 
 2026-07-14 — Streaming/ranking fixes + USD + tour. **SSE row-wipe fix**: `stageStore.setStageId` is idempotent (same-id re-runs no longer reset rows) and `StageShell` keys stage init on `stageId` only — an RSC re-render mid-assembly used to wipe streamed rows that the per-connection SSE dedupe never re-sent. **Gate fix**: flight cards carry `metadata.destinationCity` (Duffel + mock) and `gate.ts` matches it — IATA-only display names ("SJC → MAD") no longer gate out real flights for cities missing from the alias table. `/api/intent` derives userId/handle from session (fallback: body); reserved `anonymous` handle gets no invite token. **Platform currency is USD** (wallet/credits/splits/Pro/products/local services/org/seeds; travel cards still price in destination currency); Rainforest searches amazon.com; Amazon image hosts whitelisted in `next.config.ts`; `extractSearchTerm` keeps @brand, strips quotes/trip noise/clarify metadata. Wallet-family routes returned 500 instead of 401 (checked `err.message` for the `UnauthorizedError` `code`) — fixed in 8 routes. `/settings` now redirects to `/settings/style`; `app/[handle]` decodes percent-encoded params (`/@test` 404 fix). Clarify form derives return-date from "N nights" (parseISO, no UTC off-by-one). New `components/Onboarding/PlatformTour.tsx` — 6-step first-run wizard on home (localStorage-gated, "?" reopens). type-check clean, 926/926 tests pass.
 

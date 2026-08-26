@@ -1,4 +1,4 @@
-import type { ServiceCard } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard } from '@/lib/services/types'
 import type { FlightCardMetadata } from '@/lib/services/metadata'
 import type { SearchContext } from '@/lib/intent/types'
 import { getCurrencyForDestination, scalePriceFromGBP, formatPrice } from '@/lib/geo/currency'
@@ -150,6 +150,10 @@ function makeCard(
 }
 
 export function getMockFlights(ctx: SearchContext): ServiceCard[] {
+  return markDemoCards(buildMockFlights(ctx))
+}
+
+function buildMockFlights(ctx: SearchContext): ServiceCard[] {
   const { intent } = ctx
 
   const originCode = cityToIATA(intent.origin ?? 'London')

@@ -1,4 +1,4 @@
-import type { ServiceCard } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard } from '@/lib/services/types'
 import type { CarCardMetadata } from '@/lib/services/metadata'
 import type { SearchContext } from '@/lib/intent/types'
 import { getCurrencyForDestination, scalePriceFromGBP, formatPrice } from '@/lib/geo/currency'
@@ -60,6 +60,10 @@ function makeCard(
 }
 
 export function getCarMocks(ctx: SearchContext): ServiceCard[] {
+  return markDemoCards(buildCarMocks(ctx))
+}
+
+function buildCarMocks(ctx: SearchContext): ServiceCard[] {
   const { destination, groupSize, budgetSignal } = ctx.intent
   const needsLarge = groupSize >= 4
   const inventory = getInventory(destination)

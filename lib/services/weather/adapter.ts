@@ -47,6 +47,7 @@ function getMockWeatherCard(destination: string, startDate: string): ServiceCard
     bookingPayload: null,
     isBookable: false,
     ctaLabel: '',
+    isDemoData: true,
   }
 }
 

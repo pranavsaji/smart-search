@@ -1,4 +1,4 @@
-import type { ServiceCard, ServiceResult } from '@/lib/services/types'
+import { markDemoCards, type ServiceCard, type ServiceResult } from '@/lib/services/types'
 import type { CartItem, OrderConfirmation } from '@/lib/checkout/types'
 import type { SearchContext } from '@/lib/intent/types'
 import { withCache, hashParams } from '@/lib/cache/serviceCache'
@@ -146,6 +146,10 @@ function filterRelevantEventTypes(types: CalendlyEventType[], query: string): Ca
 // ── Mock fallback ─────────────────────────────────────────────────────────────
 
 function mockAppointmentCards(ctx: SearchContext): ServiceCard[] {
+  return markDemoCards(buildMockAppointmentCards(ctx))
+}
+
+function buildMockAppointmentCards(ctx: SearchContext): ServiceCard[] {
   const query = ctx.intent.rawPrompt.toLowerCase()
   const startDate = ctx.intent.dates.start
 
