@@ -3,6 +3,16 @@
 
 This document audits every roadmap item against the current codebase, states what is done, what is not, why each gap matters, and gives a concrete implementation path. Organised into 5 phases matching the 24-month roadmap. Each phase is sequenced so later phases have stable foundations.
 
+
+> **Status note (2026-08-25):** This is the only remaining forward-looking plan doc.
+> `PHASEPLAN.md` (Phases 7–12) and `TRANSFORMATION_PLAN.md` (Phases 0–9 rebrand/pipeline)
+> were deleted because their scope shipped — see `CLAUDE.md` for what was built.
+> Sections below that overlap with shipped work are **already done**:
+> Phase 3.1 Wallet → shipped as Phase 10 (`lib/wallet/*`);
+> Phase 3.4 SDK Ecosystem → shipped as Phase 8 (`lib/ecosystem/*`, `/developer`, `/marketplace`);
+> Phase 2.2 Genie Proactive → shipped as Phase 9 (`/proactive` + cron).
+> Everything else here is still open.
+
 ---
 
 ## Current Codebase Baseline
@@ -971,6 +981,19 @@ Target: 300+ tests before Phase 3 ships. E2E tests (Playwright) for the booking 
 - Vercel Analytics (built-in) for Core Web Vitals
 - Image optimisation: `next/image` for all card images. Current: some images use raw `<img>` tags.
 - Bundle analysis: `npm run build -- --analyze` → identify and split large client bundles
+
+---
+
+
+### 5.5 Mobile App (React Native / Expo) — carried over from PHASEPLAN 9.3
+
+**Current state:** Web only. No `mobile/` workspace, no Expo dependency.
+
+**Gap:** No iOS/Android client. Push notifications exist server-side (VAPID web push) but there is no native delivery path.
+
+**Why it matters:** Native share-sheet capture ("share any link → parsed intent") is the highest-leverage acquisition surface and is impossible from the web app.
+
+**Implementation:** Expo Router app wrapping the web experience; native share extension → `POST /api/capture` (already built for the browser extension); Expo push tokens alongside the existing VAPID subscriptions; offline IntentGraph cache.
 
 ---
 
