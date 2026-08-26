@@ -9,6 +9,8 @@ import { getDb, COLLECTIONS } from '@/lib/db/mongo'
 import { ingestStage } from '@/lib/graph/knowledgeGraph'
 import { ObjectId } from 'mongodb'
 import { nanoid } from 'nanoid'
+import { enforceRateLimit, rateLimitIdentifier, RATE_LIMITS } from '@/lib/ratelimit'
+import { ApiError, handleApiError } from '@/lib/api/response'
 
 const schema = z.object({
   prompt: z.string().min(3).max(500).optional(),
@@ -34,6 +36,9 @@ export async function POST(req: NextRequest) {
     const sessionUser = session?.user as { id?: string; handle?: string } | undefined
     const userId = sessionUser?.id ?? parsed.userId
     const handle = sessionUser?.handle ?? parsed.handle
+
+    // Every call here is a paid two-phase LLM round trip — throttle before it runs.
+    await enforceRateLimit(RATE_LIMITS.intent, rateLimitIdentifier(userId, req))
 
     // Build messages array from either `messages` or `prompt`
     const chatMessages = messages && messages.length > 0
@@ -109,6 +114,7 @@ export async function POST(req: NextRequest) {
         .map(p => ({ handle: p.handle, token: p.inviteToken, url: `${process.env.NEXT_PUBLIC_APP_URL}/join/${p.inviteToken}` })),
     })
   } catch (err) {
+    if (err instanceof ApiError) return handleApiError(err, 'POST /api/intent')
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: 'Invalid input', details: err.errors }, { status: 400 })
     }

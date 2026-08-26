@@ -3,6 +3,8 @@ import { z } from 'zod'
 import { getDb, COLLECTIONS } from '@/lib/db/mongo'
 import bcrypt from 'bcryptjs'
 import { ObjectId } from 'mongodb'
+import { enforceRateLimit, rateLimitIdentifier, RATE_LIMITS } from '@/lib/ratelimit'
+import { ApiError, handleApiError } from '@/lib/api/response'
 
 const schema = z.object({
   email: z.string().email(),
@@ -13,6 +15,9 @@ const schema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    // No session yet, so this buckets by IP — it is the account-spam surface.
+    await enforceRateLimit(RATE_LIMITS.register, rateLimitIdentifier(null, req))
+
     const body = schema.parse(await req.json())
     const db = await getDb()
 
@@ -51,6 +56,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true, userId: userId.toString(), redirectTo: '/onboarding' }, { status: 201 })
   } catch (err) {
+    if (err instanceof ApiError) return handleApiError(err, 'POST /api/auth/register')
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.errors }, { status: 400 })
     return NextResponse.json({ error: String(err) }, { status: 500 })
   }

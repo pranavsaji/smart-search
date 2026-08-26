@@ -6,6 +6,8 @@ import { z } from 'zod'
 import { withApiHandler, BadRequestError } from '@/lib/api/response'
 import { synthesizeSpeech } from '@/lib/voice/tts'
 import type { TTSVoice, TTSModel } from '@/lib/voice/types'
+import { enforceRateLimit, rateLimitIdentifier, RATE_LIMITS } from '@/lib/ratelimit'
+import { auth } from '@/lib/auth'
 
 const schema = z.object({
   text: z.string().min(1).max(4096),
@@ -15,6 +17,9 @@ const schema = z.object({
 })
 
 export const POST = withApiHandler(async (req: NextRequest) => {
+  const session = await auth().catch(() => null)
+  await enforceRateLimit(RATE_LIMITS.voice, rateLimitIdentifier(session?.user?.id, req))
+
   const body = schema.parse(await req.json())
 
   const audioBuffer = await synthesizeSpeech(body.text, {

@@ -44,6 +44,12 @@ export class ConflictError extends ApiError {
   }
 }
 
+export class TooManyRequestsError extends ApiError {
+  constructor(message = 'Too many requests', public readonly retryAfterSeconds?: number) {
+    super(message, 429, 'RATE_LIMITED')
+  }
+}
+
 export class OfferExpiredError extends ConflictError {
   constructor(public readonly expiredIds: string[]) {
     super('One or more offers have expired', { expiredIds })
@@ -70,6 +76,19 @@ export function handleApiError(err: unknown, routeContext?: string): NextRespons
     return NextResponse.json(
       { error: err.message, code: err.code, expiredIds: err.expiredIds },
       { status: 409 }
+    )
+  }
+
+  if (err instanceof TooManyRequestsError) {
+    return NextResponse.json(
+      { error: err.message, code: err.code, retryAfter: err.retryAfterSeconds },
+      {
+        status: 429,
+        // Retry-After lets well-behaved clients back off instead of hot-looping.
+        headers: err.retryAfterSeconds
+          ? { 'Retry-After': String(err.retryAfterSeconds) }
+          : undefined,
+      }
     )
   }
 

@@ -5,6 +5,7 @@ import { createPendingOrder } from '@/lib/checkout/pendingOrder'
 import { createPaymentIntent } from '@/lib/payments/stripe'
 import { ok, withApiHandler, BadRequestError } from '@/lib/api/response'
 import { requireUserId } from '@/lib/api/auth'
+import { enforceRateLimit, RATE_LIMITS } from '@/lib/ratelimit'
 
 const schema = z.object({
   stageId: z.string(),
@@ -13,6 +14,7 @@ const schema = z.object({
 
 export const POST = withApiHandler(async (req: NextRequest) => {
   const userId = await requireUserId()
+  await enforceRateLimit(RATE_LIMITS.checkout, `u:${userId}`)
   const { stageId, paymentMode } = schema.parse(await req.json())
 
   const db = await getDb()

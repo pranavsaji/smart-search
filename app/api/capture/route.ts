@@ -5,6 +5,7 @@
 import { type NextRequest } from 'next/server'
 import { z } from 'zod'
 import { ok, withApiHandler, BadRequestError } from '@/lib/api/response'
+import { enforceRateLimit, rateLimitIdentifier, RATE_LIMITS } from '@/lib/ratelimit'
 import { processCapturedPage } from '@/lib/capture/capture'
 import { auth } from '@/lib/auth'
 
@@ -39,6 +40,7 @@ export const POST = withApiHandler(async (req: NextRequest) => {
 
   // Check for authenticated session (optional — extension may be unauthenticated)
   const session = await auth()
+  await enforceRateLimit(RATE_LIMITS.capture, rateLimitIdentifier(session?.user?.id, req))
   const userId = session?.user?.id
 
   if (!userId && !body.sessionToken) {

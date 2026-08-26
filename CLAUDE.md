@@ -43,6 +43,17 @@ New integration never touches assembler, SSE, checkout, or ranking:
 - Gift SCA: SetupIntent `usage: 'off_session'`; EU users need 3DS handling at redemption
 - Stripe: both `payment_intent.payment_failed` and `payment_intent.canceled` mark order failed
 
+### Rate Limiting
+`lib/ratelimit.ts` — fixed-window (Redis INCR + EXPIRE) on the routes that cost money:
+`/api/intent`, `/api/genie/chat`, `/api/voice/{transcribe,tts}`, `/api/resolve`, `/api/checkout`,
+`/api/capture`, `/api/auth/register`. Rules live in `RATE_LIMITS`; keys via `RedisKeys.apiRateLimit`.
+
+- **Fails open** — Redis down means requests are allowed, not dropped.
+- TTL is set only on the window-opening call; re-setting it would slide the expiry and never close.
+- `enforceRateLimit()` throws `TooManyRequestsError` → `withApiHandler` renders 429 + `Retry-After`.
+- Routes with a hand-rolled try/catch must re-throw via `handleApiError` on `ApiError`, or the 429 is
+  swallowed — `/api/resolve` in particular used to convert every error into an empty 200.
+
 ### SSE
 - SSE route polls Redis every 500ms — Upstash HTTP doesn't support pub/sub in Edge runtime. For higher throughput: WebSocket provider (Partykit, Ably) or `runtime = 'nodejs'`.
 
@@ -282,6 +293,8 @@ App pages live in `app/*/page.tsx` (server: `auth()` → redirect → `AppShell`
 All client islands fetch the existing JSON APIs; mock-first so they render without live keys.
 
 ## Last Updated
+
+2026-08-25 (2) — GAP_ANALYSIS Phase 1, part 1. **CI** (§1.6): `.github/workflows/ci.yml` gates push-to-main and PRs on type-check → lint → test → production build (`APP_MODE=dev` + placeholder secrets; no live keys). ESLint had no config, so `next lint` hit its interactive setup prompt and would have hung CI — added `.eslintrc.json` (`next/core-web-vitals`, plugin registered but its ruleset not enabled: `next/typescript` surfaces 51 pre-existing errors, deferred). Fixed the 12 real errors (8 raw `<a>` page nav → `next/link`, 4 unescaped entities). **Rate limiting** (§1.5): new `lib/ratelimit.ts` — 0 of 96 routes were limited, so a looping client could drain the LLM budget. type-check clean, 943/943 tests pass (17 new).
 
 2026-08-25 — Demo/live data provenance + docs cleanup. Mock fallbacks now carry `isDemoData: true` (`markDemoCards()` in `lib/services/types.ts`, applied across all 12 adapters + mock modules); `stageStore` drops demo cards from a row once a live card arrives, and the `StageShell` header badge is derived per-stage (`live` / `mixed` / `demo`) instead of hardcoding "Demo data". Removed `PHASEPLAN.md` (Phases 7–12 — all shipped) and `TRANSFORMATION_PLAN.md` (Phases 0–9 rebrand/pipeline — all shipped), plus a stray checked-in `memory/` dir whose index pointed at 6 non-existent files. `GAP_ANALYSIS.md` is the only remaining forward-looking doc — it now carries a status banner flagging its three since-shipped sections and a new §5.5 for the unbuilt mobile app (carried over from PHASEPLAN 9.3). type-check clean, 926/926 tests pass.
 

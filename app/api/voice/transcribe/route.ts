@@ -4,10 +4,15 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { withApiHandler, BadRequestError, ok } from '@/lib/api/response'
 import { transcribeAudio, isSupportedMimeType } from '@/lib/voice/transcribe'
+import { enforceRateLimit, rateLimitIdentifier, RATE_LIMITS } from '@/lib/ratelimit'
+import { auth } from '@/lib/auth'
 
 const MAX_AUDIO_BYTES = 25 * 1024 * 1024  // 25 MB (Whisper limit)
 
 export const POST = withApiHandler(async (req: NextRequest) => {
+  const session = await auth().catch(() => null)
+  await enforceRateLimit(RATE_LIMITS.voice, rateLimitIdentifier(session?.user?.id, req))
+
   const formData = await req.formData()
   const audioFile = formData.get('audio')
 

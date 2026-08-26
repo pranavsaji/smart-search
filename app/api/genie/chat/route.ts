@@ -5,6 +5,7 @@ import { getDb } from '@/lib/db/mongo'
 import { ObjectId } from 'mongodb'
 import { queryUserMemory, formatMemoryContext } from '@/lib/rag/query'
 import type { IntentGraph } from '@/lib/intent/types'
+import { enforceRateLimit, rateLimitIdentifier, RATE_LIMITS } from '@/lib/ratelimit'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -53,6 +54,9 @@ export async function POST(req: NextRequest) {
   // caller read another user's intent graph and memories.
   const session = await auth()
   const userId = session?.user?.id
+
+  // Claude tool-use loop + RAG retrieval per message — the priciest route here.
+  await enforceRateLimit(RATE_LIMITS.genie, rateLimitIdentifier(userId, req))
 
   // Latest user message for RAG query
   const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')?.content ?? ''

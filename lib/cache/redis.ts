@@ -83,4 +83,7 @@ export const RedisKeys = {
   analyticsVendor:    (vendorId: string) => `analytics:vendor:${vendorId}`,  // 10min vendor dashboard cache
   insightLatest:      (userId: string) => `insights:latest:${userId}`,       // 1h latest-report cache
   graphRelated:       (nodeKey: string) => `graph:related:${nodeKey}`,       // 30min related-entity cache
+  // User-facing API rate limiting — TTL = the rule's window
+  apiRateLimit:       (scope: string, identifier: string, windowStart: number) =>
+                        `ratelimit:${scope}:${identifier}:${windowStart}`,
 } as const
